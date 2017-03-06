@@ -1,0 +1,19 @@
+{
+  "private": true,
+  "scripts": {
+    "exec": "lerna exec --",
+    "clean": "npm run exec -- rm -rf lib",
+    "clean:js": "npm run exec -- rm -rf \"src/{,**/}{,**/}*.js\"",
+    "ava": "npm run exec -- ava -v",
+    "build": "npm run exec -- tsc",
+    "test": "npm run lint && npm run build && npm run ava",
+    "lint": "tslint -c tslint.json --fix packages/**/src/{,**/}{,**/}*.ts{,x}"
+  },
+  "devDependencies": {
+    "@types/node": "7.0.x",
+    "ava": "0.18.x",
+    "lerna": "2.0.0-beta.38",
+    "tslint": "4.5.x",
+    "typescript": "2.2.x"
+  }
+}

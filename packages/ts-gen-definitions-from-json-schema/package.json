@@ -1,0 +1,21 @@
+{
+  "name": "@morlay/ts-gen-definitions-from-json-schema",
+  "version": "0.0.0",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "license": "WTFPL",
+  "author": "Morlay Null <morlay.null@gmail.com>",
+  "description": "",
+  "dependencies": {
+    "@types/lodash": "4.14.54",
+    "lodash": "4.17.4",
+    "@morlay/ts-gen-core": "0.0.0"
+  },
+  "devDependencies": {
+    "require-dir": "0.3.1"
+  }
+}
