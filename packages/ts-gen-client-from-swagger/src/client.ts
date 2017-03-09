@@ -36,6 +36,25 @@ export type IPatchedOperation = IOperation & IExtraOperation;
 export const urlToTemplate = (url: string) =>
   `\`${lodash.replace(url, /\{/g, "${")}\``;
 
+export const reservedWords = ["abstract", "await", "boolean", "break", "byte", "case",
+  "catch", "char", "class", "const", "continue", "debugger", "default",
+  "delete", "do", "double", "else", "enum", "export", "extends", "false",
+  "final", "finally", "float", "for", "function", "goto", "if", "implements",
+  "import", "in", "instanceof", "int", "interface", "let", "long", "native",
+  "new", "null", "package", "private", "protected", "public", "return", "short",
+  "static", "super", "switch", "synchronized", "this", "throw", "throws",
+  "transient", "true", "try", "typeof", "var", "void", "volatile", "while", "with", "yield"];
+
+/** IdentifierName can be written as unquoted property names, but may be reserved words. */
+export function isIdentifierName(s: string) {
+  return /^[$A-Z_][0-9A-Z_$]*$/i.test(s);
+}
+
+/** Identifiers are e.g. legal variable names. They may not be reserved words */
+export function isIdentifier(s: string) {
+  return isIdentifierName(s) && reservedWords.indexOf(s) < 0;
+}
+
 export const filterParametersIn = (position: IParameterPosition) => {
   return (parameters: IParameter[]): IParameter[] =>
     lodash.filter(parameters, (parameter: IParameter): boolean => parameter.in === position);
@@ -65,15 +84,32 @@ export const pickRequiredList = (parameters: IParameter[]): string[] =>
 
 const createParameterObject = (parameters: IParameter[]) =>
   Value.objectOf(
-    ...lodash.map(parameters, (parameter) => Identifier.of(parameter.name)),
+    ...lodash.map(parameters, (parameter) => {
+        const propName = mayToId(parameter.name);
+        if (propName !== parameter.name) {
+          return Identifier.of(String(Value.of(parameter.name)))
+            .valueOf(Identifier.of(propName))
+        }
+        return Identifier.of(parameter.name);
+      },
+    )
   );
+
+const mayToId = (id: string): string => isIdentifier(id) ? id : toLowerCamelCase(id)
 
 export const getReqParamSchema = (parameters: IParameter[]): IJSONSchema => ( {
   type: "object",
   properties: lodash.reduce(parameters, (properties: { [k: string]: IJSONSchema }, parameter: IParameter) => {
     const schema = toSchema(parameter);
+
+    let propName = mayToId(parameter.name);
+
+    if (parameter.name !== propName) {
+      propName = String(Value.of(parameter.name));
+    }
+
     return lodash.assign(properties, {
-      [schema.name]: schema,
+      [propName]: schema,
     });
   }, {}),
   required: pickRequiredList(parameters),

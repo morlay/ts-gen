@@ -37,6 +37,11 @@ export default {
         "operationId": "findPets",
         "parameters": [
           {
+            "name": "Content-Type",
+            "in": "header",
+            "type": "string",
+          },
+          {
             "name": "tags",
             "in": "query",
             "description": "tags to filter by",

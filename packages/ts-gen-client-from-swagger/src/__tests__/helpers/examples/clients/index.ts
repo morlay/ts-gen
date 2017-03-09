@@ -9,9 +9,11 @@ import {
 } from "./definitions"
 
 export function findPets({
+  "Content-Type": contentType,
   tags,
   limit,
 }: {
+  "Content-Type"?: string;
   tags?: string[];
   limit?: number;
 }) {
@@ -21,6 +23,9 @@ export function findPets({
     query: {
       tags,
       limit,
+    },
+    headers: {
+      "Content-Type": contentType,
     },
   });
 }
