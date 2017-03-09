@@ -179,24 +179,29 @@ export const getOperations = (operation: IPatchedOperation, clientOpts: IClientO
     members.push(Identifier.of("data").valueOf(Identifier.of("body")));
   }
 
-  let func = Identifier.of(operationId);
+  let callbackFunc = Identifier.of("").operatorsWith(": ", " => ");
 
   if (parameters.length) {
-    func = func.paramsWith(
-      Identifier.of(String(createParameterObject(parameters))).typed(toTypings(getReqParamSchema(parameters)))
-    )
+    callbackFunc = callbackFunc.paramsWith(
+      Identifier.of(String(createParameterObject(parameters)))
+    );
   }
 
-  func = func.valueOf(Value.memberOf(
-    Decl.returnOf(Identifier.of(clientOpts.clientLib.method)
-      .generics(toTypings(respbodySchema || { type: "null" }))
-      .paramsWith(
-        Identifier.of(String(Value.of(operationUiq))),
-        Identifier.of(String(Value.objectOf(...members)))
-      ))
-  ))
+  callbackFunc = callbackFunc.valueOf(Value.memberOf(
+    Decl.returnOf(Identifier.of(String(Value.objectOf(...members)))),
+  ));
 
-  return `${ModuleExport.decl(Decl.func(func))}`;
+  const callFunc = Identifier.of(clientOpts.clientLib.method)
+    .generics(
+      toTypings(getReqParamSchema(parameters)),
+      toTypings(respbodySchema || { type: "null" })
+    )
+    .paramsWith(
+      Identifier.of(String(Value.of(operationUiq))),
+      callbackFunc,
+    );
+
+  return `${ModuleExport.decl(Decl.const(Identifier.of(operationId).valueOf(callFunc)))}`;
 }
 
 export const getTypes = (paths: any): string[] => {

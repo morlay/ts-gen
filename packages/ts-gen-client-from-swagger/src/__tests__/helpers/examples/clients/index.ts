@@ -8,16 +8,16 @@ import {
   INewPet,
 } from "./definitions"
 
-export function findPets({
-  "Content-Type": contentType,
-  tags,
-  limit,
-}: {
+export const findPets = createRequest<{
   "Content-Type"?: string;
   tags?: string[];
   limit?: number;
-}) {
-  return createRequest<IPet[]>("pets.ungroup.findPets", {
+}, IPet[]>("pets.ungroup.findPets", ({
+  "Content-Type": contentType,
+  tags,
+  limit,
+}) => {
+  return {
     method: "GET",
     url: `/pets`,
     query: {
@@ -27,39 +27,39 @@ export function findPets({
     headers: {
       "Content-Type": contentType,
     },
-  });
-}
+  };
+})
 
-export function addPet({
-  body,
-}: {
+export const addPet = createRequest<{
   body: INewPet;
-}) {
-  return createRequest<IPet>("pets.ungroup.addPet", {
+}, IPet>("pets.ungroup.addPet", ({
+  body,
+}) => {
+  return {
     method: "POST",
     url: `/pets`,
     data: body,
-  });
-}
+  };
+})
 
-export function findPetByID({
-  id,
-}: {
+export const findPetByID = createRequest<{
   id: number;
-}) {
-  return createRequest<IPet>("pets.ungroup.findPetByID", {
+}, IPet>("pets.ungroup.findPetByID", ({
+  id,
+}) => {
+  return {
     method: "GET",
     url: `/pets/${id}`,
-  });
-}
+  };
+})
 
-export function deletePet({
-  id,
-}: {
+export const deletePet = createRequest<{
   id: number;
-}) {
-  return createRequest<null>("pets.ungroup.deletePet", {
+}, null>("pets.ungroup.deletePet", ({
+  id,
+}) => {
+  return {
     method: "DELETE",
     url: `/pets/${id}`,
-  });
-}
+  };
+})
