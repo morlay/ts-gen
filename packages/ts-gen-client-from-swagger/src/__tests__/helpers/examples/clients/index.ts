@@ -8,25 +8,10 @@ import {
   INewPet,
 } from "./definitions"
 
-export const findPets = createRequest<{
-  "Content-Type"?: string;
-  tags?: string[];
-  limit?: number;
-}, IPet[]>("pets.ungroup.findPets", ({
-  "Content-Type": contentType,
-  tags,
-  limit,
-}) => {
+export const findPets = createRequest<any, IPet[]>("pets.ungroup.findPets", () => {
   return {
     method: "GET",
     url: `/pets`,
-    query: {
-      tags,
-      limit,
-    },
-    headers: {
-      "Content-Type": contentType,
-    },
   };
 })
 
@@ -54,12 +39,17 @@ export const findPetByID = createRequest<{
 })
 
 export const deletePet = createRequest<{
+  "Content-Type"?: string;
   id: number;
 }, null>("pets.ungroup.deletePet", ({
+  "Content-Type": contentType,
   id,
 }) => {
   return {
     method: "DELETE",
     url: `/pets/${id}`,
+    headers: {
+      "Content-Type": contentType,
+    },
   };
 })

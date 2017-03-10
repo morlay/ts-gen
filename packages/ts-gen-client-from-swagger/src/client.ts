@@ -185,6 +185,10 @@ export const getOperations = (operation: IPatchedOperation, clientOpts: IClientO
     callbackFunc = callbackFunc.paramsWith(
       Identifier.of(String(createParameterObject(parameters)))
     );
+  } else {
+    callbackFunc = callbackFunc.paramsWith(
+      Identifier.of("")
+    );
   }
 
   callbackFunc = callbackFunc.valueOf(Value.memberOf(
@@ -193,7 +197,7 @@ export const getOperations = (operation: IPatchedOperation, clientOpts: IClientO
 
   const callFunc = Identifier.of(clientOpts.clientLib.method)
     .generics(
-      toTypings(getReqParamSchema(parameters)),
+      toTypings(parameters.length ? getReqParamSchema(parameters) : {}),
       toTypings(respbodySchema || { type: "null" })
     )
     .paramsWith(
