@@ -4,7 +4,8 @@ import {
   IJSONSchema,
   toLowerCamelCase,
   toTypings,
-  toSafeId
+  toSafeId,
+  pickSideDefs
 } from "@morlay/ts-gen-definitions-from-json-schema";
 import {
   ModuleExport,
@@ -62,7 +63,13 @@ export const filterParametersIn = (position: IParameterPosition) => {
 
 export const getDefinitions = (swagger: ISwagger): string => {
   const definitions = lodash.assign({}, swagger.definitions) as { [key: string]: IJSONSchema };
-  return lodash.map(definitions, (definition: ISchema, id: string): string => toDeclaration(lodash.assign(definition, { id }))).join("\n\n");
+
+  const definitionString: string = lodash.map(
+    definitions,
+    (definition: ISchema, id: string): string => toDeclaration(lodash.assign(definition, { id }))
+  ).join("\n\n");
+
+  return pickSideDefs(definitionString);
 };
 
 export const toSchema = (parameter: IParameter): IParameter =>
@@ -137,15 +144,20 @@ export interface IClientOpts {
 }
 
 export const getOperations = (operation: IPatchedOperation, clientOpts: IClientOpts): string => {
-  const parameters = lodash.map(operation.parameters, (parameter: IParameter) => {
-    if (parameter.in === "body") {
-      return {
-        ...parameter,
-        name: "body",
+  const parameters = lodash
+    .map(operation.parameters, (parameter: IParameter) => {
+      if (parameter.in === "body") {
+        return {
+          ...parameter,
+          name: "body",
+        }
       }
-    }
-    return parameter;
-  });
+      return parameter;
+    })
+    .map((parameter: IParameter) => ({
+      ...parameter,
+      id: [operation.operationId, parameter.name].join("_")
+    }));
 
   const query = filterParametersIn("query")(parameters);
   const headers = filterParametersIn("header")(parameters);
@@ -219,25 +231,27 @@ export const getTypes = (paths: any): string[] => {
   );
 };
 
-export const getClientMain = (swagger: ISwagger, clientOpts: IClientOpts) => {
-  return lodash.flattenDeep(
-    [].concat(
-      ModuleImport.from(clientOpts.clientLib.path).membersAs(
-        Identifier.of(clientOpts.clientLib.method),
-      ),
-      ModuleImport.from("./definitions").membersAs(
-        ...getTypes(swagger.paths).map(Identifier.of),
-      ),
-      lodash.map(swagger.paths, (pathItem, path: string) =>
-        lodash.map(pathItem, (operation: IOperation, method: IMethod) =>
-          getOperations({
-            ...operation,
-            method,
-            path,
-            group: operation.tags ? operation.tags[0] : "ungroup",
-          }, clientOpts),
+export const getClientMain: (swagger: ISwagger, clientOpts: IClientOpts) => any = (swagger: ISwagger, clientOpts: IClientOpts) => {
+  return pickSideDefs(
+    lodash.flattenDeep(
+      [].concat(
+        ModuleImport.from(clientOpts.clientLib.path).membersAs(
+          Identifier.of(clientOpts.clientLib.method),
+        ),
+        ModuleImport.from("./definitions").membersAs(
+          ...getTypes(swagger.paths).map(Identifier.of),
+        ),
+        lodash.map(swagger.paths, (pathItem, path: string) =>
+          lodash.map(pathItem, (operation: IOperation, method: IMethod) =>
+            getOperations({
+              ...operation,
+              method,
+              path,
+              group: operation.tags ? operation.tags[0] : "ungroup",
+            }, clientOpts),
+          ),
         ),
       ),
-    ),
-  ).join("\n\n")
+    ).join("\n\n")
+  )
 };

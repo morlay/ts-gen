@@ -1,3 +1,9 @@
+export enum FindPetByIDTag {
+  A,
+  B,
+  C,
+}
+
 import {
   createRequest,
 } from "../utils"
@@ -29,8 +35,10 @@ export const addPet = createRequest<{
 
 export const findPetByID = createRequest<{
   id: number;
+  tag?: keyof typeof FindPetByIDTag;
 }, IPet>("pets.ungroup.findPetByID", ({
   id,
+  tag,
 }) => {
   return {
     method: "GET",

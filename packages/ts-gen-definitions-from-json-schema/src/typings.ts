@@ -50,9 +50,9 @@ export const extendsableAllOfSchema = (schemas: IJSONSchema[]): [IJSONSchema, IJ
 };
 
 export const encode = (type: string) => `/**${encodeURIComponent(type)}**/`;
-export const decode = (encodedType: string) => {
+export const decode = (encodedType: string): [string, string[]] => {
   const sideDefs: string[] = [];
-  const res = encodedType.replace(/\/\*\*([^\*\*\/]+)\*\*\//g, (m, $1) => {
+  const res: string = encodedType.replace(/\/\*\*([^\*\*\/]+)\*\*\//g, (m, $1) => {
     sideDefs.push(decodeURIComponent($1));
     return "";
   });
@@ -65,7 +65,7 @@ export const toTypings = (schema: IJSONSchema): Type => {
   }
 
   if (schema.enum) {
-    if (schema.id && schema.enum.length > 1 && typeof schema.enum[0] === "string") {
+    if (schema.id && schema.enum.length > 1 && lodash.isNaN(Number(schema.enum[0]))) {
       const id = Identifier.of(toUpperCamelCase(schema.id));
       return Type.of(`keyof typeof ${id}${encode(Decl.enum(id.valueOf(Type.enumOf(...lodash.map(schema.enum, (value: any) => Identifier.of(value))))).toString())}`);
     }
@@ -193,8 +193,11 @@ export const toTypings = (schema: IJSONSchema): Type => {
   return Type.any();
 };
 
-export const pickSideDefs = (s: string) => {
-  const [result, sideDefs] = decode(s);
+export const pickSideDefs = (s: string): string => {
+  const [
+    result,
+    sideDefs
+  ] = decode(s);
   const uniqedSideDefs = lodash.uniq(sideDefs);
 
   if (uniqedSideDefs.length > 0) {

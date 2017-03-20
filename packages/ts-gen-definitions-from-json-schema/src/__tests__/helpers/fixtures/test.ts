@@ -17,7 +17,18 @@ export default {
       "type": "object",
       "properties": {
         "id": {
-          "type": "string"
+          "type": "string",
+          "enum": [
+            "1",
+            "2"
+          ]
+        },
+        "id2": {
+          "type": "string",
+          "enum": [
+            "V1",
+            "V2"
+          ],
         }
       }
     },
