@@ -1,10 +1,20 @@
+export enum SimpleTypes {
+  array,
+  boolean,
+  integer,
+  null,
+  number,
+  object,
+  string,
+}
+
 export type ISchemaArray = IJSONSchema[]
 
 export type IPositiveInteger = number
 
 export type IPositiveIntegerDefault0 = IPositiveInteger
 
-export type ISimpleTypes = "array" | "boolean" | "integer" | "null" | "number" | "object" | "string"
+export type ISimpleTypes = keyof typeof SimpleTypes
 
 export type IStringArray = string[]
 

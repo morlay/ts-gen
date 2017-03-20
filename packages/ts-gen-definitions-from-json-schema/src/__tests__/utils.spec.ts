@@ -40,6 +40,7 @@ test("could replace imports schema with deep path", (t) => {
   });
 
   t.deepEqual(result, {
+    id: "Test",
     type: "string",
   } as IJSONSchema);
 });

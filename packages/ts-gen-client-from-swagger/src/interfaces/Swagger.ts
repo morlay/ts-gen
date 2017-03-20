@@ -1,3 +1,89 @@
+export enum HeaderType {
+  string,
+  number,
+  integer,
+  boolean,
+  array,
+}
+
+export enum HeaderParameterSubSchemaType {
+  string,
+  number,
+  boolean,
+  integer,
+  array,
+}
+
+export enum QueryParameterSubSchemaType {
+  string,
+  number,
+  boolean,
+  integer,
+  array,
+}
+
+export enum FormDataParameterSubSchemaType {
+  string,
+  number,
+  boolean,
+  integer,
+  array,
+  file,
+}
+
+export enum PathParameterSubSchemaType {
+  string,
+  number,
+  boolean,
+  integer,
+  array,
+}
+
+export enum SimpleTypes {
+  array,
+  boolean,
+  integer,
+  null,
+  number,
+  object,
+  string,
+}
+
+export enum PrimitivesItemsType {
+  string,
+  number,
+  integer,
+  boolean,
+  array,
+}
+
+export enum APIKeySecurityIn {
+  header,
+  query,
+}
+
+export enum SchemesListItems {
+  http,
+  https,
+  ws,
+  wss,
+}
+
+export enum CollectionFormat {
+  csv,
+  ssv,
+  tsv,
+  pipes,
+}
+
+export enum CollectionFormatWithMulti {
+  csv,
+  ssv,
+  tsv,
+  pipes,
+  multi,
+}
+
 export interface IInfo {
   title: string;
   version: string;
@@ -97,7 +183,7 @@ export interface IHeaders {
 }
 
 export interface IHeader {
-  type: "string" | "number" | "integer" | "boolean" | "array";
+  type: keyof typeof HeaderType;
   format?: string;
   items?: IPrimitivesItems;
   collectionFormat?: ICollectionFormat;
@@ -134,7 +220,7 @@ export interface IHeaderParameterSubSchema {
   in?: "header";
   description?: string;
   name?: string;
-  type?: "string" | "number" | "boolean" | "integer" | "array";
+  type?: keyof typeof HeaderParameterSubSchemaType;
   format?: string;
   items?: IPrimitivesItems;
   collectionFormat?: ICollectionFormat;
@@ -160,7 +246,7 @@ export interface IQueryParameterSubSchema {
   description?: string;
   name?: string;
   allowEmptyValue?: boolean;
-  type?: "string" | "number" | "boolean" | "integer" | "array";
+  type?: keyof typeof QueryParameterSubSchemaType;
   format?: string;
   items?: IPrimitivesItems;
   collectionFormat?: ICollectionFormatWithMulti;
@@ -186,7 +272,7 @@ export interface IFormDataParameterSubSchema {
   description?: string;
   name?: string;
   allowEmptyValue?: boolean;
-  type?: "string" | "number" | "boolean" | "integer" | "array" | "file";
+  type?: keyof typeof FormDataParameterSubSchemaType;
   format?: string;
   items?: IPrimitivesItems;
   collectionFormat?: ICollectionFormatWithMulti;
@@ -211,7 +297,7 @@ export interface IPathParameterSubSchema {
   in?: "path";
   description?: string;
   name?: string;
-  type?: "string" | "number" | "boolean" | "integer" | "array";
+  type?: keyof typeof PathParameterSubSchemaType;
   format?: string;
   items?: IPrimitivesItems;
   collectionFormat?: ICollectionFormat;
@@ -257,7 +343,7 @@ export interface ISchema {
   required?: string[];
   enum?: any[];
   additionalProperties?: ISchema | boolean;
-  type?: "array" | "boolean" | "integer" | "null" | "number" | "object" | "string" | Array<"array" | "boolean" | "integer" | "null" | "number" | "object" | "string">;
+  type?: keyof typeof SimpleTypes | Array<keyof typeof SimpleTypes>;
   items?: ISchema | ISchema[];
   allOf?: ISchema[];
   properties?: {
@@ -285,7 +371,7 @@ export interface IFileSchema {
 }
 
 export interface IPrimitivesItems {
-  type?: "string" | "number" | "integer" | "boolean" | "array";
+  type?: keyof typeof PrimitivesItemsType;
   format?: string;
   items?: IPrimitivesItems;
   collectionFormat?: ICollectionFormat;
@@ -340,7 +426,7 @@ export interface IBasicAuthenticationSecurity {
 export interface IAPIKeySecurity {
   type: "apiKey";
   name: string;
-  in: "header" | "query";
+  in: keyof typeof APIKeySecurityIn;
   description?: string;
   [k: string]: IVendorExtension;
 }
@@ -390,11 +476,11 @@ export type IMediaTypeList = IMimeType[]
 
 export type IParametersList = Array<IParameter | IJSONReference | any>
 
-export type ISchemesList = Array<"http" | "https" | "ws" | "wss">
+export type ISchemesList = Array<keyof typeof SchemesListItems>
 
-export type ICollectionFormat = "csv" | "ssv" | "tsv" | "pipes"
+export type ICollectionFormat = keyof typeof CollectionFormat
 
-export type ICollectionFormatWithMulti = "csv" | "ssv" | "tsv" | "pipes" | "multi"
+export type ICollectionFormatWithMulti = keyof typeof CollectionFormatWithMulti
 
 export type ITitle = string
 

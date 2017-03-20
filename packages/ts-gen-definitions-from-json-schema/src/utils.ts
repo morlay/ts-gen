@@ -20,7 +20,10 @@ const resolveRef = (imports: IImports) =>
 
         if (lodash.isEmpty(importRef)) {
           if (imports["#"]) {
-            return lodash.cloneDeep(lodash.get(imports["#"], keyPathArr));
+            return {
+              ...lodash.cloneDeep(lodash.get(imports["#"], keyPathArr)),
+              id: lodash.last(keyPathArr),
+            };
           }
 
           if (keyPathArr.length === 2 && lodash.first(keyPathArr) === "definitions") {
