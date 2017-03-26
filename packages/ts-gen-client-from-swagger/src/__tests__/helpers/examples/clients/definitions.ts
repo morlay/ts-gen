@@ -1,5 +1,6 @@
-export interface IPet extends INewPet {
-  id: number;
+export interface IError {
+  code: number;
+  message: string;
 }
 
 export interface INewPet {
@@ -7,7 +8,6 @@ export interface INewPet {
   tag?: string;
 }
 
-export interface IError {
-  code: number;
-  message: string;
+export interface IPet extends INewPet {
+  id: number;
 }

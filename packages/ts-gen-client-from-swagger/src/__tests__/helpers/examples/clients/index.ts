@@ -14,13 +14,6 @@ import {
   INewPet,
 } from "./definitions"
 
-export const findPets = createRequest<any, IPet[]>("pets.ungroup.findPets", () => {
-  return {
-    method: "GET",
-    url: `/pets`,
-  };
-})
-
 export const addPet = createRequest<{
   body: INewPet;
 }, IPet>("pets.ungroup.addPet", ({
@@ -30,19 +23,6 @@ export const addPet = createRequest<{
     method: "POST",
     url: `/pets`,
     data: body,
-  };
-})
-
-export const findPetByID = createRequest<{
-  id: number;
-  tag?: keyof typeof FindPetByIDTag;
-}, IPet>("pets.ungroup.findPetByID", ({
-  id,
-  tag,
-}) => {
-  return {
-    method: "GET",
-    url: `/pets/${id}`,
   };
 })
 
@@ -59,5 +39,25 @@ export const deletePet = createRequest<{
     headers: {
       "Content-Type": contentType,
     },
+  };
+})
+
+export const findPetByID = createRequest<{
+  id: number;
+  tag?: keyof typeof FindPetByIDTag;
+}, IPet>("pets.ungroup.findPetByID", ({
+  id,
+  tag,
+}) => {
+  return {
+    method: "GET",
+    url: `/pets/${id}`,
+  };
+})
+
+export const findPets = createRequest<any, IPet[]>("pets.ungroup.findPets", () => {
+  return {
+    method: "GET",
+    url: `/pets`,
   };
 })
