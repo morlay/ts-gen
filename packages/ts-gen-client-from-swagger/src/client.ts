@@ -35,7 +35,7 @@ export interface IExtraOperation {
 export type IPatchedOperation = IOperation & IExtraOperation;
 
 export const urlToTemplate = (url: string) =>
-  `\`${lodash.replace(url, /\{/g, "${")}\``
+  `\`${lodash.replace(url, /\{/g, "$" + "{")}\``
 
 export const reservedWords = ["abstract", "await", "boolean", "break", "byte", "case",
   "catch", "char", "class", "const", "continue", "debugger", "default",

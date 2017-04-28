@@ -11,11 +11,11 @@
   "author": "Morlay Null <morlay.null@gmail.com>",
   "description": "",
   "dependencies": {
-    "@types/lodash": "4.14.54",
-    "lodash": "4.17.4",
+    "@types/lodash": "4.14.x",
+    "lodash": "4.17.x",
     "@morlay/ts-gen-core": "^0.0.0"
   },
   "devDependencies": {
-    "require-dir": "0.3.1"
+    "require-dir": "0.3.x"
   }
 }

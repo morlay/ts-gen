@@ -15,7 +15,7 @@ import {
   getClientMain,
 } from "../"
 
-test("#toSwagger", () => {
+test("#toSwagger", (t) => {
   const mergedSchema = toSingleSchema(swaggerJSON, {
     "http://json-schema.org/draft-04/schema": schemaJSON as IJSONSchema,
   });
@@ -26,9 +26,10 @@ test("#toSwagger", () => {
   });
 
   fs.writeFileSync("src/interfaces/Swagger.ts", `${result}\n`);
+  t.pass()
 });
 
-test("#toClient", () => {
+test("#toClient", (t) => {
   const definitions = getDefinitions(petsSwaggerJSON);
   const requests = getClientMain(petsSwaggerJSON, {
     clientId: "pets",
@@ -40,4 +41,5 @@ test("#toClient", () => {
 
   fs.writeFileSync("src/__tests__/helpers/examples/clients/definitions.ts", `${definitions}\n`);
   fs.writeFileSync("src/__tests__/helpers/examples/clients/index.ts", `${requests}\n`);
+  t.pass()
 });
