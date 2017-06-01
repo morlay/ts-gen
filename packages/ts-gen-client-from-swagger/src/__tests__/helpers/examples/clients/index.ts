@@ -10,7 +10,6 @@ import {
 
 import {
   IPet,
-  IError,
   INewPet,
 } from "./definitions"
 
@@ -29,7 +28,7 @@ export const addPet = createRequest<{
 export const deletePet = createRequest<{
   "Content-Type"?: string;
   id: number;
-}, null>("pets.ungroup.deletePet", ({
+}, any>("pets.ungroup.deletePet", ({
   "Content-Type": contentType,
   id,
 }) => {

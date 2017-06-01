@@ -21,6 +21,7 @@ import {
   IResponses,
   ISchema,
   ISwagger,
+  IParametersList,
 } from "./interfaces"
 
 export type IMethod = "get" | "delete" | "head" | "post" | "put" | "patch";
@@ -87,7 +88,7 @@ export const pickRequiredList = (parameters: IParameter[]): string[] =>
   lodash.reduce(
     parameters,
     (result: string[], parameter: IParameter): string[] => {
-      if (parameter.required) {
+      if (parameter.required && parameter.name) {
         return lodash.concat(result, parameter.name)
       }
       return result
@@ -98,7 +99,7 @@ export const pickRequiredList = (parameters: IParameter[]): string[] =>
 const createParameterObject = (parameters: IParameter[]) =>
   Value.objectOf(
     ...lodash.map(parameters, (parameter) => {
-        const propName = mayToId(parameter.name)
+        const propName = mayToId(parameter.name || "")
         if (propName !== parameter.name) {
           return Identifier.of(String(Value.of(parameter.name)))
                            .valueOf(Identifier.of(propName))
@@ -115,7 +116,7 @@ export const getReqParamSchema = (parameters: IParameter[]): IJSONSchema => ( {
   properties: lodash.reduce(parameters, (properties: { [k: string]: IJSONSchema }, parameter: IParameter) => {
     const schema = toSchema(parameter)
 
-    let propName = mayToId(parameter.name)
+    let propName = mayToId(parameter.name || "")
 
     if (parameter.name !== propName) {
       propName = String(Value.of(parameter.name))
@@ -129,7 +130,7 @@ export const getReqParamSchema = (parameters: IParameter[]): IJSONSchema => ( {
 })
 
 const getRespBodySchema = (responses: IResponses) => {
-  let bodySchema: ISchema
+  let bodySchema: ISchema = {}
 
   lodash.forEach(responses, (resp, codeOrDefault) => {
     const code = Number(codeOrDefault)
@@ -151,7 +152,7 @@ export interface IClientOpts {
 
 export const getOperations = (operation: IPatchedOperation, clientOpts: IClientOpts): string => {
   const parameters = lodash
-    .map(operation.parameters, (parameter: IParameter) => {
+    .map(operation.parameters || [], (parameter: IParameter) => {
       if (parameter.in === "body") {
         return {
           ...parameter,
@@ -172,7 +173,7 @@ export const getOperations = (operation: IPatchedOperation, clientOpts: IClientO
 
   const respbodySchema = getRespBodySchema(operation.responses)
 
-  const operationId = toLowerCamelCase(operation.operationId)
+  const operationId = toLowerCamelCase(operation.operationId || "")
 
   const operationUiq = (`${clientOpts.clientId}.${operation.group}.${operationId}`)
 
@@ -229,19 +230,28 @@ export const getOperations = (operation: IPatchedOperation, clientOpts: IClientO
 export const getTypes = (paths: any): string[] => {
   const reg = /"\$ref":"#\/definitions\/([\s\S]+?)"/
   const operationsString = JSON.stringify(paths)
-  return lodash.uniq(
-    lodash.map(
-      operationsString.match(new RegExp(reg as any, "g")),
-      (str: string): string => toSafeId(reg.exec(str)[1]),
-    ),
+  const importTypes = lodash.map(
+    operationsString.match(new RegExp(reg as any, "g")) || [],
+    (str: string): string => toSafeId(reg.exec(str)![1]),
   )
+
+  return lodash.uniq(importTypes)
 }
 
 export const getClientMain = (swagger: ISwagger, clientOpts: IClientOpts) => {
+  let responses: IResponses = []
+  let parameters: IParametersList = []
+
   let operations = lodash.flattenDeep<IPatchedOperation>(
     lodash.map(
       swagger.paths, (pathItem, path: string) =>
         lodash.map(pathItem, (operation: IOperation, method: IMethod) => {
+            responses = responses.concat(
+              lodash.pickBy(operation.responses, (_, status) => Number(status) >= 200 && Number(status) < 400),
+            )
+
+            parameters = parameters.concat(operation.parameters)
+
             return {
               ...operation,
               method,
@@ -256,13 +266,18 @@ export const getClientMain = (swagger: ISwagger, clientOpts: IClientOpts) => {
   operations = lodash.sortBy(operations, (op) => op.operationId)
 
   return pickSideDefs(
-    [].concat(
-      ModuleImport.from(clientOpts.clientLib.path).membersAs(
-        Identifier.of(clientOpts.clientLib.method),
-      ),
-      ModuleImport.from("./definitions").membersAs(
-        ...getTypes(swagger.paths).map(Identifier.of),
-      ),
+    ([] as string[]).concat(
+      ModuleImport.from(clientOpts.clientLib.path)
+                  .membersAs(
+                    Identifier.of(clientOpts.clientLib.method),
+                  )
+                  .toString(),
+      responses.length
+        ? ModuleImport.from("./definitions")
+                      .membersAs(
+                        ...getTypes(responses.concat(parameters)).map(Identifier.of),
+                      ).toString()
+        : "",
       lodash.map(operations, (op) => getOperations(op, clientOpts)),
     ).join("\n\n"),
   )
