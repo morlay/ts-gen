@@ -215,7 +215,7 @@ export const getOperations = (operation: IPatchedOperation, clientOpts: IClientO
 
   const callFunc = Identifier.of(clientOpts.clientLib.method)
                              .generics(
-                               toTypings(parameters.length ? getReqParamSchema(parameters) : {}),
+                               parameters.length ? toTypings(getReqParamSchema(parameters)) : Identifier.of("void"),
                                toTypings(respbodySchema || { type: "null" }),
                              )
                              .paramsWith(

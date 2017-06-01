@@ -55,7 +55,7 @@ export const findPetByID = createRequest<{
   };
 })
 
-export const findPets = createRequest<any, IPet[]>("pets.ungroup.findPets", () => {
+export const findPets = createRequest<void, IPet[]>("pets.ungroup.findPets", () => {
   return {
     method: "GET",
     url: `/pets`,
