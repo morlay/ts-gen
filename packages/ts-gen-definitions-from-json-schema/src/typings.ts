@@ -68,8 +68,9 @@ export const toTypings = (schema: IJSONSchema): Type => {
   if (schema.enum) {
     if (schema.id && schema.enum.length > 1 && lodash.isNaN(Number(schema.enum[0]))) {
       const id = Identifier.of(toUpperCamelCase(schema.id))
-      return Type.of(`keyof typeof ${id}${encode(Decl.enum(
-        id.valueOf(Type.enumOf(...lodash.map(schema.enum, (value: any) => Identifier.of(value))))).toString())}`)
+      return Type.of(`keyof typeof ${id}${encode(Decl.enum(id.valueOf(
+        Type.enumOf(...lodash.map(schema.enum,
+          (value: any) => Identifier.of(value).valueOf(Identifier.of(JSON.stringify(value))))))).toString())}`)
     }
 
     return Type.unionOf(...lodash.map(schema.enum, (value: any) => Type.of(Value.of(value))))
@@ -139,12 +140,12 @@ export const toTypings = (schema: IJSONSchema): Type => {
     if (!lodash.isEmpty(mayWithAdditionalPropertiesTypes)) {
       props = props.concat(
         Identifier.of("")
-                  .indexBy(
-                    Identifier.of("k").typed(Type.string()),
-                  )
-                  .typed(
-                    Type.unionOf(...mayWithAdditionalPropertiesTypes),
-                  ),
+          .indexBy(
+            Identifier.of("k").typed(Type.string()),
+          )
+          .typed(
+            Type.unionOf(...mayWithAdditionalPropertiesTypes),
+          ),
       )
     }
 
@@ -204,8 +205,8 @@ export const pickSideDefs = (s: string): string => {
 
   if (uniqedSideDefs.length > 0) {
     return uniqedSideDefs.map((sideDef) => `export ${sideDef}`)
-                         .concat(result)
-                         .join("\n\n")
+      .concat(result)
+      .join("\n\n")
   }
 
   return result
@@ -224,7 +225,7 @@ export const toDeclaration = (schema: IJSONSchema): string | never => {
     if (objectSchema) {
       return `${ModuleExport.decl(Decl.interface(
         Identifier.of(toSafeId(schema.id)).extendsWith(...refSchemas.map(toTypings).map(String).map(Identifier.of))
-                  .typed(toTypings(objectSchema))),
+          .typed(toTypings(objectSchema))),
       )}`
     }
   }
@@ -247,8 +248,8 @@ export const toDeclarations = (schema: IJSONSchema) => {
     lodash.map(
       lodash.isEmpty(schema.definitions) ? {} : schema.definitions!,
       (defSchema, id) => toDeclaration(lodash.assign(defSchema, { id })))
-          .concat(main)
-          .join("\n\n")
-          .replace(new RegExp(MAIN_SCHEMA_PLACEHOLDER, "g"), toSafeId(schema.id || "")),
+      .concat(main)
+      .join("\n\n")
+      .replace(new RegExp(MAIN_SCHEMA_PLACEHOLDER, "g"), toSafeId(schema.id || "")),
   )
 }

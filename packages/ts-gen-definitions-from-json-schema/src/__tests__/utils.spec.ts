@@ -1,6 +1,6 @@
-import { test } from "ava";
-import { toSingleSchema } from "../utils";
-import { IJSONSchema } from "../interfaces";
+import { test } from "ava"
+import { IJSONSchema, SimpleTypes } from "../interfaces"
+import { toSingleSchema } from "../utils"
 
 test("could replace imports schema with definitions", (t) => {
   const result = toSingleSchema({
@@ -9,16 +9,16 @@ test("could replace imports schema with definitions", (t) => {
     otherSchema: {
       definitions: {
         Test: {
-          type: "string",
+          type: SimpleTypes.string,
         },
       },
     },
-  });
+  })
 
   t.deepEqual(result, {
     type: "string",
-  } as IJSONSchema);
-});
+  } as IJSONSchema)
+})
 
 test("could replace imports schema with deep path", (t) => {
   const result = toSingleSchema({
@@ -37,10 +37,10 @@ test("could replace imports schema with deep path", (t) => {
         },
       },
     },
-  });
+  })
 
   t.deepEqual(result, {
     id: "Test",
     type: "string",
-  } as IJSONSchema);
-});
+  } as IJSONSchema)
+})

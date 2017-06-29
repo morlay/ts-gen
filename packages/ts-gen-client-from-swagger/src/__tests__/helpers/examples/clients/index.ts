@@ -1,7 +1,7 @@
 export enum FindPetByIDTag {
-  A,
-  B,
-  C,
+  A = "A",
+  B = "B",
+  C = "C",
 }
 
 import {

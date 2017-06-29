@@ -1,87 +1,87 @@
 export enum HeaderType {
-  string,
-  number,
-  integer,
-  boolean,
-  array,
+  string = "string",
+  number = "number",
+  integer = "integer",
+  boolean = "boolean",
+  array = "array",
 }
 
 export enum HeaderParameterSubSchemaType {
-  string,
-  number,
-  boolean,
-  integer,
-  array,
+  string = "string",
+  number = "number",
+  boolean = "boolean",
+  integer = "integer",
+  array = "array",
 }
 
 export enum QueryParameterSubSchemaType {
-  string,
-  number,
-  boolean,
-  integer,
-  array,
+  string = "string",
+  number = "number",
+  boolean = "boolean",
+  integer = "integer",
+  array = "array",
 }
 
 export enum FormDataParameterSubSchemaType {
-  string,
-  number,
-  boolean,
-  integer,
-  array,
-  file,
+  string = "string",
+  number = "number",
+  boolean = "boolean",
+  integer = "integer",
+  array = "array",
+  file = "file",
 }
 
 export enum PathParameterSubSchemaType {
-  string,
-  number,
-  boolean,
-  integer,
-  array,
+  string = "string",
+  number = "number",
+  boolean = "boolean",
+  integer = "integer",
+  array = "array",
 }
 
 export enum SimpleTypes {
-  array,
-  boolean,
-  integer,
-  null,
-  number,
-  object,
-  string,
+  array = "array",
+  boolean = "boolean",
+  integer = "integer",
+  null = "null",
+  number = "number",
+  object = "object",
+  string = "string",
 }
 
 export enum PrimitivesItemsType {
-  string,
-  number,
-  integer,
-  boolean,
-  array,
+  string = "string",
+  number = "number",
+  integer = "integer",
+  boolean = "boolean",
+  array = "array",
 }
 
 export enum APIKeySecurityIn {
-  header,
-  query,
+  header = "header",
+  query = "query",
 }
 
 export enum SchemesListItems {
-  http,
-  https,
-  ws,
-  wss,
+  http = "http",
+  https = "https",
+  ws = "ws",
+  wss = "wss",
 }
 
 export enum CollectionFormat {
-  csv,
-  ssv,
-  tsv,
-  pipes,
+  csv = "csv",
+  ssv = "ssv",
+  tsv = "tsv",
+  pipes = "pipes",
 }
 
 export enum CollectionFormatWithMulti {
-  csv,
-  ssv,
-  tsv,
-  pipes,
-  multi,
+  csv = "csv",
+  ssv = "ssv",
+  tsv = "tsv",
+  pipes = "pipes",
+  multi = "multi",
 }
 
 export interface IInfo {
