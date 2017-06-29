@@ -51,6 +51,9 @@ export const findPetByID = createRequest<{
   return {
     method: "GET",
     url: `/pets/${id}`,
+    query: {
+      tag,
+    },
   };
 })
 

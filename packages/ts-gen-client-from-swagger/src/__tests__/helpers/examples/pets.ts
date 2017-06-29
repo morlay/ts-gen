@@ -99,7 +99,7 @@ export default {
           },
           {
             "name": "tag",
-            "in": "path",
+            "in": "query",
             "type": "string",
             "enum": [
               "A",

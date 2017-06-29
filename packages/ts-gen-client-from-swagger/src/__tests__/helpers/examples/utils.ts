@@ -9,6 +9,6 @@ export interface IRequestOptions {
   formData?: any;
 }
 
-export function createRequest<TReq, TRespBody>(id: string, reqBuilder: (req: TReq) => IRequestOptions) {
-  return (req: TReq): Promise<TRespBody> => Promise.resolve({} as TRespBody);
+export function createRequest<TReq, TRespBody>(_: string, _2: (req: TReq) => IRequestOptions) {
+  return (_3: TReq): Promise<TRespBody> => Promise.resolve({} as TRespBody)
 }

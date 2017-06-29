@@ -53,7 +53,7 @@ export const extendsableAllOfSchema = (schemas: IJSONSchema[]): [IJSONSchema | u
 export const encode = (type: string) => `/**${encodeURIComponent(type)}**/`
 export const decode = (encodedType: string): [string, string[]] => {
   const sideDefs: string[] = []
-  const res: string = encodedType.replace(/\/\*\*([^\*\*\/]+)\*\*\//g, (m, $1) => {
+  const res: string = encodedType.replace(/\/\*\*([^\*\*\/]+)\*\*\//g, (_: any, $1) => {
     sideDefs.push(decodeURIComponent($1))
     return ""
   })
