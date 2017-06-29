@@ -4,7 +4,6 @@
     "outDir": "lib",
     "module": "commonjs",
     "moduleResolution": "node",
-    "declaration": true,
     "strict": true,
     "target": "es2015",
     "sourceMap": true

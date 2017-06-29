@@ -10,10 +10,10 @@
     "lint": "tslint -c tslint.json --fix packages/**/src/{,**/}{,**/}*.ts{,x}"
   },
   "devDependencies": {
-    "@types/node": "7.0.x",
-    "ava": "0.19.x",
+    "@types/node": "8.0.x",
+    "ava": "0.20.x",
     "lerna": "2.0.0-rc.5",
-    "tslint": "5.1.x",
-    "typescript": "2.3.x"
+    "tslint": "5.4.x",
+    "typescript": "2.4.x"
   }
 }

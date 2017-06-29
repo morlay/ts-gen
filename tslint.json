@@ -20,6 +20,7 @@
     "member-access": false,
     "max-classes-per-file": false,
     "no-bitwise": false,
+    "no-object-literal-type-assertion": false,
     "callable-types": false
   }
 }
