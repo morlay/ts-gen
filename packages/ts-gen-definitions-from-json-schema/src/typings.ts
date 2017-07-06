@@ -225,7 +225,10 @@ export const toDeclaration = (schema: IJSONSchema): string | never => {
     if (objectSchema) {
       return `${ModuleExport.decl(Decl.interface(
         Identifier.of(toSafeId(schema.id)).extendsWith(...refSchemas.map(toTypings).map(String).map(Identifier.of))
-          .typed(toTypings(objectSchema))),
+          .typed(toTypings({
+            ...objectSchema,
+            id: schema.id,
+          }))),
       )}`
     }
   }
