@@ -1,6 +1,6 @@
 {
   "name": "@morlay/ts-gen-client-from-swagger",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "main": "lib/index.js",
   "types": "src/index.ts",
   "files": [
@@ -12,7 +12,7 @@
   "description": "",
   "dependencies": {
     "@morlay/ts-gen-core": "^0.2.2",
-    "@morlay/ts-gen-definitions-from-json-schema": "^0.2.2",
+    "@morlay/ts-gen-definitions-from-json-schema": "^0.2.3",
     "@types/lodash": "4.14.x",
     "lodash": "4.17.x"
   }
