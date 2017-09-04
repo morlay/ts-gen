@@ -32,7 +32,7 @@ export const pickRefName = (schema: IJSONSchema): string => {
 }
 
 export const filterNonTypeSchemas = (schemas: IJSONSchema[]) => lodash.filter(schemas,
-  (schema) => lodash.keys(lodash.pick(schema, ["enum", "type", "$ref"])).length)
+  (schema) => !!lodash.keys(lodash.pick(schema, ["enum", "type", "$ref"])).length)
 
 export const extendsableAllOfSchema = (schemas: IJSONSchema[]): [IJSONSchema | undefined, IJSONSchema[]] => {
   const refSchemas: IJSONSchema[] = []
@@ -114,9 +114,9 @@ export const toTypings = (schema: IJSONSchema): Type => {
 
     if (schema.patternProperties) {
       patternPropertiesTypes = lodash.map(
-          lodash.values(schema.patternProperties),
-          toTypings,
-        ) || []
+        lodash.values(schema.patternProperties),
+        toTypings,
+      ) || []
     }
 
     const mayWithAdditionalPropertiesTypes = lodash.concat(patternPropertiesTypes, additionalPropertyType || [])
