@@ -10,9 +10,9 @@ import {
   getClientMain,
   getDefinitions,
 } from "../"
-import petsSwaggerJSON from "./helpers/examples/pets"
-import schemaJSON from "./helpers/fixtures/schema"
-import swaggerJSON from "./helpers/fixtures/swagger"
+import petsSwaggerJSON from "./examples/pets"
+import schemaJSON from "./fixtures/schema"
+import swaggerJSON from "./fixtures/swagger"
 
 describe("ts-gen-client-from-swagger", () => {
   it("#toSwagger", () => {
@@ -38,7 +38,7 @@ describe("ts-gen-client-from-swagger", () => {
       },
     })
 
-    fs.writeFileSync(path.resolve(__dirname, "./helpers/examples/clients/definitions.ts"), `${definitions}\n`)
-    fs.writeFileSync(path.resolve(__dirname, "./helpers/examples/clients/index.ts"), `${requests}\n`)
+    fs.writeFileSync(path.resolve(__dirname, "./examples/clients/definitions.ts"), `${definitions}\n`)
+    fs.writeFileSync(path.resolve(__dirname, "./examples/clients/index.ts"), `${requests}\n`)
   })
 })

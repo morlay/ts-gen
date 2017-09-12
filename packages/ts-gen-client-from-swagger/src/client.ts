@@ -18,10 +18,10 @@ import {
   IBodyParameter,
   IOperation,
   IParameter,
+  IParametersList,
   IResponses,
   ISchema,
   ISwagger,
-  IParametersList,
 } from "./interfaces"
 
 export type IMethod = "get" | "delete" | "head" | "post" | "put" | "patch";
@@ -102,7 +102,7 @@ const createParameterObject = (parameters: IParameter[]) =>
         const propName = mayToId(parameter.name || "")
         if (propName !== parameter.name) {
           return Identifier.of(String(Value.of(parameter.name)))
-                           .valueOf(Identifier.of(propName))
+            .valueOf(Identifier.of(propName))
         }
         return Identifier.of(parameter.name)
       },
@@ -130,7 +130,7 @@ export const getReqParamSchema = (parameters: IParameter[]): IJSONSchema => ({
 })
 
 const getRespBodySchema = (responses: IResponses) => {
-  let bodySchema: ISchema = {}
+  let bodySchema: ISchema = { type: "null" }
 
   lodash.forEach(responses, (resp, codeOrDefault) => {
     const code = Number(codeOrDefault)
@@ -214,17 +214,15 @@ export const getOperations = (operation: IPatchedOperation, clientOpts: IClientO
     Decl.returnOf(Identifier.of(String(Value.objectOf(...members)))),
   ))
 
-  console.log(respbodySchema)
-
   const callFunc = Identifier.of(clientOpts.clientLib.method)
-                             .generics(
-                               parameters.length ? toTypings(getReqParamSchema(parameters)) : Identifier.of("void"),
-                               toTypings(respbodySchema || { type: "null" }),
-                             )
-                             .paramsWith(
-                               Identifier.of(String(Value.of(operationUiq))),
-                               callbackFunc,
-                             )
+    .generics(
+      parameters.length ? toTypings(getReqParamSchema(parameters)) : Identifier.of("void"),
+      toTypings(respbodySchema || { type: "null" }),
+    )
+    .paramsWith(
+      Identifier.of(String(Value.of(operationUiq))),
+      callbackFunc,
+    )
 
   return `${ModuleExport.decl(Decl.const(Identifier.of(operationId).valueOf(callFunc)))}`
 }
@@ -270,15 +268,15 @@ export const getClientMain = (swagger: ISwagger, clientOpts: IClientOpts) => {
   return pickSideDefs(
     ([] as string[]).concat(
       ModuleImport.from(clientOpts.clientLib.path)
-                  .membersAs(
-                    Identifier.of(clientOpts.clientLib.method),
-                  )
-                  .toString(),
+        .membersAs(
+          Identifier.of(clientOpts.clientLib.method),
+        )
+        .toString(),
       responses.length
         ? ModuleImport.from("./definitions")
-                      .membersAs(
-                        ...getTypes(responses.concat(parameters)).map(Identifier.of),
-                      ).toString()
+          .membersAs(
+            ...getTypes(responses.concat(parameters)).map(Identifier.of),
+          ).toString()
         : "",
       lodash.map(operations, (op) => getOperations(op, clientOpts)),
     ).join("\n\n"),

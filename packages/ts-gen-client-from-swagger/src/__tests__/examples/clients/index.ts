@@ -28,7 +28,7 @@ export const addPet = createRequest<{
 export const deletePet = createRequest<{
   "Content-Type"?: string;
   id: number;
-}, any>("pets.ungroup.deletePet", ({
+}, null>("pets.ungroup.deletePet", ({
   "Content-Type": contentType,
   id,
 }) => {

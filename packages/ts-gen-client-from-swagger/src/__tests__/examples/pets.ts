@@ -1,6 +1,6 @@
 /* tslint:disable */
 // https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v2.0/json/petstore-expanded.json
-import { ISwagger } from "../../../interfaces";
+import { ISwagger } from "../../interfaces"
 
 export default {
   "swagger": "2.0",
@@ -12,23 +12,23 @@ export default {
     "contact": {
       "name": "Swagger API Team",
       "email": "foo@example.com",
-      "url": "http://madskristensen.net"
+      "url": "http://madskristensen.net",
     },
     "license": {
       "name": "MIT",
-      "url": "http://github.com/gruntjs/grunt/blob/master/LICENSE-MIT"
-    }
+      "url": "http://github.com/gruntjs/grunt/blob/master/LICENSE-MIT",
+    },
   },
   "host": "petstore.swagger.io",
   "basePath": "/api",
   "schemes": [
-    "http"
+    "http",
   ],
   "consumes": [
-    "application/json"
+    "application/json",
   ],
   "produces": [
-    "application/json"
+    "application/json",
   ],
   "paths": {
     "/pets": {
@@ -42,17 +42,17 @@ export default {
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/Pet"
-              }
-            }
+                "$ref": "#/definitions/Pet",
+              },
+            },
           },
           "default": {
             "description": "unexpected error",
             "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
+              "$ref": "#/definitions/Error",
+            },
+          },
+        },
       },
       "post": {
         "description": "Creates a new pet in the store.  Duplicates are allowed",
@@ -64,25 +64,25 @@ export default {
             "description": "Pet to add to the store",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/NewPet"
-            }
-          }
+              "$ref": "#/definitions/NewPet",
+            },
+          },
         ],
         "responses": {
           "200": {
             "description": "pet response",
             "schema": {
-              "$ref": "#/definitions/Pet"
-            }
+              "$ref": "#/definitions/Pet",
+            },
           },
           "default": {
             "description": "unexpected error",
             "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      }
+              "$ref": "#/definitions/Error",
+            },
+          },
+        },
+      },
     },
     "/pets/{id}": {
       "get": {
@@ -95,7 +95,7 @@ export default {
             "description": "ID of pet to fetch",
             "required": true,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
           },
           {
             "name": "tag",
@@ -112,16 +112,16 @@ export default {
           "200": {
             "description": "pet response",
             "schema": {
-              "$ref": "#/definitions/Pet"
-            }
+              "$ref": "#/definitions/Pet",
+            },
           },
           "default": {
             "description": "unexpected error",
             "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
+              "$ref": "#/definitions/Error",
+            },
+          },
+        },
       },
       "delete": {
         "description": "deletes a single pet based on the ID supplied",
@@ -138,72 +138,72 @@ export default {
             "description": "ID of pet to delete",
             "required": true,
             "type": "integer",
-            "format": "int64"
-          }
+            "format": "int64",
+          },
         ],
         "responses": {
           "204": {
-            "description": "pet deleted"
+            "description": "pet deleted",
           },
           "default": {
             "description": "unexpected error",
             "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      }
-    }
+              "$ref": "#/definitions/Error",
+            },
+          },
+        },
+      },
+    },
   },
   "definitions": {
     "Pet": {
       "type": "object",
       "allOf": [
         {
-          "$ref": "#/definitions/NewPet"
+          "$ref": "#/definitions/NewPet",
         },
         {
           "required": [
-            "id"
+            "id",
           ],
           "properties": {
             "id": {
               "type": "integer",
-              "format": "int64"
-            }
-          }
-        }
-      ]
+              "format": "int64",
+            },
+          },
+        },
+      ],
     },
     "NewPet": {
       "type": "object",
       "required": [
-        "name"
+        "name",
       ],
       "properties": {
         "name": {
-          "type": "string"
+          "type": "string",
         },
         "tag": {
-          "type": "string"
-        }
-      }
+          "type": "string",
+        },
+      },
     },
     "Error": {
       "type": "object",
       "required": [
         "code",
-        "message"
+        "message",
       ],
       "properties": {
         "code": {
           "type": "integer",
-          "format": "int32"
+          "format": "int32",
         },
         "message": {
-          "type": "string"
-        }
-      }
-    }
-  }
-} as ISwagger;
+          "type": "string",
+        },
+      },
+    },
+  },
+} as ISwagger
