@@ -1,8 +1,10 @@
-import { test } from "ava"
-import { IJSONSchema, SimpleTypes } from "../interfaces"
+import {
+  IJSONSchema,
+  SimpleTypes,
+} from "../interfaces"
 import { toSingleSchema } from "../utils"
 
-test("could replace imports schema with definitions", (t) => {
+test("could replace imports schema with definitions", () => {
   const result = toSingleSchema({
     $ref: "otherSchema#/definitions/Test",
   }, {
@@ -15,12 +17,12 @@ test("could replace imports schema with definitions", (t) => {
     },
   })
 
-  t.deepEqual(result, {
+  expect(result).toEqual({
     type: "string",
   } as IJSONSchema)
 })
 
-test("could replace imports schema with deep path", (t) => {
+test("could replace imports schema with deep path", () => {
   const result = toSingleSchema({
     $ref: "otherSchema#/properties/test",
   }, {
@@ -39,7 +41,7 @@ test("could replace imports schema with deep path", (t) => {
     },
   })
 
-  t.deepEqual(result, {
+  expect(result).toEqual({
     id: "Test",
     type: "string",
   } as IJSONSchema)

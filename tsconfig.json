@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "strict": true,
+    "target": "es2015",
+    "sourceMap": true
+  },
+  "exclude": [
+    "node_modules/*",
+    "lib/*"
+  ]
+}

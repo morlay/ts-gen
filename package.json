@@ -1,18 +1,35 @@
 {
   "private": true,
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "moduleFileExtensions": [
+      "tsx",
+      "ts",
+      "json",
+      "jsx",
+      "js"
+    ],
+    "modulePaths": [
+      "<rootDir>"
+    ],
+    "testRegex": ".*/__tests__/.+\\.(test|spec)\\.(ts|tsx)$"
+  },
   "scripts": {
     "exec": "lerna exec --",
     "clean": "npm run exec -- rm -rf lib",
     "clean:js": "npm run exec -- rm -rf \"src/{,**/}{,**/}*.js\"",
-    "ava": "npm run exec -- ava -v",
     "build": "npm run exec -- tsc",
-    "test": "npm run lint && npm run build && npm run ava",
+    "test": "npm run lint && npm run jest",
     "lint": "tslint -c tslint.json --fix packages/**/src/{,**/}{,**/}*.ts{,x}"
   },
   "devDependencies": {
+    "@types/jest": "20.0.8",
     "@types/node": "8.0.x",
-    "ava": "0.22.x",
+    "jest": "21.0.2",
     "lerna": "2.1.x",
+    "ts-jest": "21.0.0",
     "tslint": "5.7.x",
     "typescript": "2.5.x"
   }

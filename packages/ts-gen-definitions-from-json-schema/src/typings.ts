@@ -102,9 +102,9 @@ export const toTypings = (schema: IJSONSchema): Type => {
     let additionalPropertyType: Type | undefined
     let patternPropertiesTypes: Type[] = []
 
-    if (lodash.isEmpty(schema.properties) && !schema.additionalProperties) {
-      schema.additionalProperties = true
-    }
+    // if (lodash.isEmpty(schema.properties) && !schema.additionalProperties) {
+    //   schema.additionalProperties = true
+    // }
 
     if (schema.additionalProperties) {
       additionalPropertyType = typeof schema.additionalProperties === "boolean"

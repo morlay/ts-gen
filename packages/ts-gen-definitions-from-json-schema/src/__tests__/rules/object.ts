@@ -48,7 +48,7 @@ export const cases = [{
     type: "object",
   },
   result: `{
-  [k: string]: any;
+
 }`,
 }, {
   schema: {

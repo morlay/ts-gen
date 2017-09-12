@@ -111,7 +111,7 @@ const createParameterObject = (parameters: IParameter[]) =>
 
 const mayToId = (id: string): string => isIdentifier(id) ? id : toLowerCamelCase(id)
 
-export const getReqParamSchema = (parameters: IParameter[]): IJSONSchema => ( {
+export const getReqParamSchema = (parameters: IParameter[]): IJSONSchema => ({
   type: "object",
   properties: lodash.reduce(parameters, (properties: { [k: string]: IJSONSchema }, parameter: IParameter) => {
     const schema = toSchema(parameter)
@@ -213,6 +213,8 @@ export const getOperations = (operation: IPatchedOperation, clientOpts: IClientO
   callbackFunc = callbackFunc.valueOf(Value.memberOf(
     Decl.returnOf(Identifier.of(String(Value.objectOf(...members)))),
   ))
+
+  console.log(respbodySchema)
 
   const callFunc = Identifier.of(clientOpts.clientLib.method)
                              .generics(

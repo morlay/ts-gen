@@ -1,45 +1,44 @@
-import { test } from "ava";
-import * as fs from "fs";
-import schemaJSON from "./helpers/fixtures/schema";
-import swaggerJSON from "./helpers/fixtures/swagger";
-import petsSwaggerJSON from "./helpers/examples/pets";
-
 import {
+  IJSONSchema,
   toDeclarations,
   toSingleSchema,
-  IJSONSchema
-} from "@morlay/ts-gen-definitions-from-json-schema";
+} from "@morlay/ts-gen-definitions-from-json-schema"
+import * as fs from "fs"
+import * as path from "path"
 
 import {
-  getDefinitions,
   getClientMain,
+  getDefinitions,
 } from "../"
+import petsSwaggerJSON from "./helpers/examples/pets"
+import schemaJSON from "./helpers/fixtures/schema"
+import swaggerJSON from "./helpers/fixtures/swagger"
 
-test("#toSwagger", (t) => {
-  const mergedSchema = toSingleSchema(swaggerJSON, {
-    "http://json-schema.org/draft-04/schema": schemaJSON as IJSONSchema,
-  });
+describe("ts-gen-client-from-swagger", () => {
+  it("#toSwagger", () => {
+    const mergedSchema = toSingleSchema(swaggerJSON, {
+      "http://json-schema.org/draft-04/schema": schemaJSON as IJSONSchema,
+    })
 
-  const result = toDeclarations({
-    ...mergedSchema,
-    id: "Swagger",
-  });
+    const result = toDeclarations({
+      ...mergedSchema,
+      id: "Swagger",
+    })
 
-  fs.writeFileSync("src/interfaces/Swagger.ts", `${result}\n`);
-  t.pass()
-});
+    fs.writeFileSync(path.resolve(__dirname, "../interfaces/Swagger.ts"), `${result}\n`)
+  })
 
-test("#toClient", (t) => {
-  const definitions = getDefinitions(petsSwaggerJSON);
-  const requests = getClientMain(petsSwaggerJSON, {
-    clientId: "pets",
-    clientLib: {
-      path: "../utils",
-      method: "createRequest"
-    }
-  });
+  it("#toClient", () => {
+    const definitions = getDefinitions(petsSwaggerJSON)
+    const requests = getClientMain(petsSwaggerJSON, {
+      clientId: "pets",
+      clientLib: {
+        path: "../utils",
+        method: "createRequest",
+      },
+    })
 
-  fs.writeFileSync("src/__tests__/helpers/examples/clients/definitions.ts", `${definitions}\n`);
-  fs.writeFileSync("src/__tests__/helpers/examples/clients/index.ts", `${requests}\n`);
-  t.pass()
-});
+    fs.writeFileSync(path.resolve(__dirname, "./helpers/examples/clients/definitions.ts"), `${definitions}\n`)
+    fs.writeFileSync(path.resolve(__dirname, "./helpers/examples/clients/index.ts"), `${requests}\n`)
+  })
+})

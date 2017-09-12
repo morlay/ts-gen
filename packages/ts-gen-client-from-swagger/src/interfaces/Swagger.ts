@@ -108,7 +108,7 @@ export interface ILicense {
 }
 
 export interface IPaths {
-  [k: string]: IVendorExtension | IPathItem | any;
+  [k: string]: IVendorExtension | IPathItem;
 }
 
 export interface IDefinitions {
@@ -165,7 +165,7 @@ export interface IPathItem {
 }
 
 export interface IResponses {
-  [k: string]: IResponseValue | IVendorExtension | any;
+  [k: string]: IResponseValue | IVendorExtension;
 }
 
 export type IResponseValue = IResponse | IJSONReference
