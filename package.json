@@ -21,6 +21,7 @@
     "clean": "npm run exec -- rm -rf lib",
     "clean:js": "npm run exec -- rm -rf \"src/{,**/}{,**/}{,**/}*.js\"",
     "build": "npm run exec -- tsc",
+    "prepublish": "npm run clean && npm run clean:js && npm run build",
     "test": "npm run lint && npm run jest",
     "lint": "tslint -c tslint.json --fix packages/**/src/{,**/}{,**/}*.ts{,x}"
   },
