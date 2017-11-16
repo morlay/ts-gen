@@ -231,7 +231,7 @@ export class Identifier extends Stringable implements IIdentifier {
   }
 
   extendsWith(...identifiers: Array<Identifier | undefined>) {
-    return this.set("extends", identifiers.filter((i) => i).map((i: Identifier) => {
+    return this.set("extends", identifiers.filter((i) => !!i).map((i: Identifier = {} as Identifier) => {
       return Identifier.of(i.name).generics(...(i.types || []))
     }))
   }
@@ -322,11 +322,11 @@ export class Decl extends Stringable implements IDecl {
   static method(identifier: Identifier) {
     return Decl.of(
       Identifier.of(identifier.name)
-                .operatorsWith(": ", " ")
-                .typed(identifier.type)
-                .generics(...(identifier.types || []))
-                .paramsWith(...(identifier.parameters || []))
-                .valueOf(identifier.value),
+        .operatorsWith(": ", " ")
+        .typed(identifier.type)
+        .generics(...(identifier.types || []))
+        .paramsWith(...(identifier.parameters || []))
+        .valueOf(identifier.value),
     )
   }
 
@@ -337,9 +337,9 @@ export class Decl extends Stringable implements IDecl {
   static type(identifier: Identifier) {
     return Decl.of(
       Identifier.of(identifier.name)
-                .operatorsWith(" = ", " ")
-                .typed(identifier.type)
-                .generics(...(identifier.types || [])),
+        .operatorsWith(" = ", " ")
+        .typed(identifier.type)
+        .generics(...(identifier.types || [])),
     ).asKind("type")
   }
 
@@ -348,21 +348,21 @@ export class Decl extends Stringable implements IDecl {
   // }
   static interface(identifier: Identifier) {
     return Decl.of(Identifier.of(identifier.name)
-                             .operatorsWith(" ", undefined)
-                             .typed(identifier.type)
-                             .generics(...(identifier.types || []))
-                             .extendsWith(...(identifier.extends || [])),
+      .operatorsWith(" ", undefined)
+      .typed(identifier.type)
+      .generics(...(identifier.types || []))
+      .extendsWith(...(identifier.extends || [])),
     ).asKind("interface")
   }
 
   static class(identifier: Identifier) {
     return Decl.of(
       Identifier.of(identifier.name)
-                .operatorsWith(" ", " ")
-                .valueOf(identifier.value)
-                .generics(...identifier.types)
-                .extendsWith(identifier.extends ? identifier.extends[0] : undefined)
-                .implementsWith(...(identifier.implements || [])),
+        .operatorsWith(" ", " ")
+        .valueOf(identifier.value)
+        .generics(...identifier.types)
+        .extendsWith(identifier.extends ? identifier.extends[0] : undefined)
+        .implementsWith(...(identifier.implements || [])),
     ).asKind("class")
   }
 
@@ -372,8 +372,8 @@ export class Decl extends Stringable implements IDecl {
   // }
   static enum(identifier: Identifier) {
     return Decl.of(Identifier.of(identifier.name)
-                             .operatorsWith(" ", " ")
-                             .valueOf(identifier.value),
+      .operatorsWith(" ", " ")
+      .valueOf(identifier.value),
     ).asKind("enum")
   }
 

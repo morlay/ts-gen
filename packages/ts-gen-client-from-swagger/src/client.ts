@@ -151,8 +151,8 @@ export interface IClientOpts {
 }
 
 export const getOperations = (operation: IPatchedOperation, clientOpts: IClientOpts): string => {
-  const parameters = lodash
-    .map(operation.parameters || [], (parameter: IParameter) => {
+  const parameters = (operation.parameters || [] as IParameter)
+    .map((parameter: IParameter) => {
       if (parameter.in === "body") {
         return {
           ...parameter,
@@ -244,7 +244,7 @@ export const getClientMain = (swagger: ISwagger, clientOpts: IClientOpts) => {
 
   let operations = lodash.flattenDeep<IPatchedOperation>(
     lodash.map(
-      swagger.paths, (pathItem, path: string) =>
+      swagger.paths, (pathItem: any, path: string) =>
         lodash.map(pathItem, (operation: IOperation, method: IMethod) => {
             responses = responses.concat(
               lodash.pickBy(operation.responses, (_, status) => Number(status) >= 200 && Number(status) < 400),
@@ -260,10 +260,10 @@ export const getClientMain = (swagger: ISwagger, clientOpts: IClientOpts) => {
             }
           },
         ),
-    ),
+    ) as any,
   )
 
-  operations = lodash.sortBy(operations, (op) => op.operationId)
+  operations = lodash.sortBy(operations, (op: IPatchedOperation) => op.operationId)
 
   return pickSideDefs(
     ([] as string[]).concat(
@@ -272,13 +272,13 @@ export const getClientMain = (swagger: ISwagger, clientOpts: IClientOpts) => {
           Identifier.of(clientOpts.clientLib.method),
         )
         .toString(),
-      responses.length
-        ? ModuleImport.from("./definitions")
+      lodash.isEmpty(swagger.definitions)
+        ? ""
+        : ModuleImport.from("./definitions")
           .membersAs(
             ...getTypes(responses.concat(parameters)).map(Identifier.of),
-          ).toString()
-        : "",
-      lodash.map(operations, (op) => getOperations(op, clientOpts)),
+          ).toString(),
+      lodash.map(operations, (op) => getOperations(op as IPatchedOperation, clientOpts)),
     ).join("\n\n"),
   )
 }
