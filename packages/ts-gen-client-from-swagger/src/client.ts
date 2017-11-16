@@ -66,7 +66,7 @@ export const getDefinitions = (swagger: ISwagger): string => {
   let definitions = lodash.assign({}, swagger.definitions) as { [key: string]: IJSONSchema }
   const sortedKeys = lodash.sortBy(lodash.keys(definitions), (v) => v)
 
-  definitions = lodash.pick<{ [key: string]: IJSONSchema }, { [key: string]: IJSONSchema }>(
+  definitions = lodash.pick(
     definitions,
     sortedKeys,
   )
