@@ -1,6 +1,6 @@
 {
   "name": "@morlay/ts-gen-client-from-swagger",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "main": "lib/index.js",
   "types": "src/index.ts",
   "files": [
