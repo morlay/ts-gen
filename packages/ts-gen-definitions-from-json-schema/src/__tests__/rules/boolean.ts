@@ -1,6 +1,8 @@
-export const cases = [{
-  schema: {
-    type: "boolean",
+export const cases = [
+  {
+    schema: {
+      type: "boolean",
+    },
+    result: "boolean",
   },
-  result: "boolean",
-}];
+];

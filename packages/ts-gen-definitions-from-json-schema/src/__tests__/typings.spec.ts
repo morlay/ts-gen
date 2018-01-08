@@ -1,6 +1,6 @@
-import * as lodash from "lodash"
-import { IJSONSchema } from "../interfaces"
-import { toTypings } from "../Typings"
+import * as lodash from "lodash";
+import { IJSONSchema } from "../interfaces";
+import { toTypings } from "../Typings";
 
 export interface ICase {
   schema: IJSONSchema;
@@ -21,16 +21,14 @@ const rules = {
   oneOf: require("./rules/oneOf"),
   ref: require("./rules/ref"),
   string: require("./rules/string"),
-}
+};
 
 describe("typings", () => {
   lodash.forEach(rules, ({ cases }, filename) => {
     lodash.forEach(cases, (caseItem: ICase, idx) => {
-
       test(`${filename} ${idx}`, () => {
-        expect(String(toTypings(caseItem.schema))).toEqual(caseItem.result)
-      })
-
-    })
-  })
-})
+        expect(String(toTypings(caseItem.schema))).toEqual(caseItem.result);
+      });
+    });
+  });
+});

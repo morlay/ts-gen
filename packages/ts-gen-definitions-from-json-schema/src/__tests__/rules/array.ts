@@ -1,56 +1,62 @@
-export const cases = [{
-  schema: {
-    type: "array",
-    items: {
-      type: "string",
+export const cases = [
+  {
+    schema: {
+      type: "array",
+      items: {
+        type: "string",
+      },
     },
+    result: "string[]",
   },
-  result: "string[]",
-}, {
-  schema: {
-    items: {
-      type: "integer",
+  {
+    schema: {
+      items: {
+        type: "integer",
+      },
     },
+    result: "number[]",
   },
-  result: "number[]",
-}, {
-  schema: {
-    items: {
-      type: "object",
-      properties: {
-        a: {
-          type: "string",
+  {
+    schema: {
+      items: {
+        type: "object",
+        properties: {
+          a: {
+            type: "string",
+          },
         },
       },
     },
-  },
-  result: `Array<{
+    result: `Array<{
   a?: string;
 }>`,
-}, {
-  // TODO additional Tuple ?
-  schema: {
-    items: [
-      {
-        type: "string",
-      },
-      {
-        type: "integer",
-      },
-    ],
   },
-  result: "Array<string | number>",
-}, {
-  schema: {
-    items: [
-      {
-        type: "string",
-      },
-      {
-        type: "integer",
-      },
-    ],
-    additionalItems: false,
+  {
+    // TODO additional Tuple ?
+    schema: {
+      items: [
+        {
+          type: "string",
+        },
+        {
+          type: "integer",
+        },
+      ],
+    },
+    result: "Array<string | number>",
   },
-  result: "[string, number]",
-}];
+  {
+    schema: {
+      items: [
+        {
+          type: "string",
+        },
+        {
+          type: "integer",
+        },
+      ],
+      additionalItems: false,
+    },
+    result: "[string, number]",
+  },
+];

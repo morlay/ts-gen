@@ -4,8 +4,8 @@ export interface IRequestOptions {
   method: IMethod;
   url: string;
   query?: any;
-  data?: any;
   headers?: any;
+  data?: any;
   formData?: any;
 }
 

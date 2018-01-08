@@ -1,16 +1,20 @@
-export const cases = [{
-  schema: {
-    type: "string",
+export const cases = [
+  {
+    schema: {
+      type: "string",
+    },
+    result: "string",
   },
-  result: "string",
-}, {
-  schema: {
-    maxLength: 1,
+  {
+    schema: {
+      maxLength: 1,
+    },
+    result: "string",
   },
-  result: "string",
-}, {
-  schema: {
-    minLength: 1,
+  {
+    schema: {
+      minLength: 1,
+    },
+    result: "string",
   },
-  result: "string",
-}];
+];

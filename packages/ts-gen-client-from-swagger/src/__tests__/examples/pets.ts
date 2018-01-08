@@ -1,207 +1,192 @@
 /* tslint:disable */
 // https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v2.0/json/petstore-expanded.json
-import { ISwagger } from "../../interfaces"
+import { ISwagger } from "../../interfaces/Swagger"
 
 export default {
-  "swagger": "2.0",
-  "info": {
-    "version": "1.0.0",
-    "title": "Swagger Petstore",
-    "description": "A sample API that uses a petstore as an example to demonstrate features in the swagger-2.0 specification",
-    "termsOfService": "http://swagger.io/terms/",
-    "contact": {
-      "name": "Swagger API Team",
-      "email": "foo@example.com",
-      "url": "http://madskristensen.net",
+  swagger: "2.0",
+  info: {
+    version: "1.0.0",
+    title: "Swagger Petstore",
+    description:
+      "A sample API that uses a petstore as an example to demonstrate features in the swagger-2.0 specification",
+    termsOfService: "http://swagger.io/terms/",
+    contact: {
+      name: "Swagger API Team",
+      email: "foo@example.com",
+      url: "http://madskristensen.net",
     },
-    "license": {
-      "name": "MIT",
-      "url": "http://github.com/gruntjs/grunt/blob/master/LICENSE-MIT",
+    license: {
+      name: "MIT",
+      url: "http://github.com/gruntjs/grunt/blob/master/LICENSE-MIT",
     },
   },
-  "host": "petstore.swagger.io",
-  "basePath": "/api",
-  "schemes": [
-    "http",
-  ],
-  "consumes": [
-    "application/json",
-  ],
-  "produces": [
-    "application/json",
-  ],
-  "paths": {
+  host: "petstore.swagger.io",
+  basePath: "/api",
+  schemes: ["http"],
+  consumes: ["application/json"],
+  produces: ["application/json"],
+  paths: {
     "/pets": {
-      "get": {
-        "description": "Returns all pets from the system that the user has access to\nNam sed condimentum est. Maecenas tempor sagittis sapien, nec rhoncus sem sagittis sit amet. Aenean at gravida augue, ac iaculis sem. Curabitur odio lorem, ornare eget elementum nec, cursus id lectus. Duis mi turpis, pulvinar ac eros ac, tincidunt varius justo. In hac habitasse platea dictumst. Integer at adipiscing ante, a sagittis ligula. Aenean pharetra tempor ante molestie imperdiet. Vivamus id aliquam diam. Cras quis velit non tortor eleifend sagittis. Praesent at enim pharetra urna volutpat venenatis eget eget mauris. In eleifend fermentum facilisis. Praesent enim enim, gravida ac sodales sed, placerat id erat. Suspendisse lacus dolor, consectetur non augue vel, vehicula interdum libero. Morbi euismod sagittis libero sed lacinia.\n\nSed tempus felis lobortis leo pulvinar rutrum. Nam mattis velit nisl, eu condimentum ligula luctus nec. Phasellus semper velit eget aliquet faucibus. In a mattis elit. Phasellus vel urna viverra, condimentum lorem id, rhoncus nibh. Ut pellentesque posuere elementum. Sed a varius odio. Morbi rhoncus ligula libero, vel eleifend nunc tristique vitae. Fusce et sem dui. Aenean nec scelerisque tortor. Fusce malesuada accumsan magna vel tempus. Quisque mollis felis eu dolor tristique, sit amet auctor felis gravida. Sed libero lorem, molestie sed nisl in, accumsan tempor nisi. Fusce sollicitudin massa ut lacinia mattis. Sed vel eleifend lorem. Pellentesque vitae felis pretium, pulvinar elit eu, euismod sapien.\n",
-        "operationId": "findPets",
-        "parameters": [],
-        "responses": {
+      get: {
+        description:
+          "Returns all pets from the system that the user has access to\nNam sed condimentum est. Maecenas tempor sagittis sapien, nec rhoncus sem sagittis sit amet. Aenean at gravida augue, ac iaculis sem. Curabitur odio lorem, ornare eget elementum nec, cursus id lectus. Duis mi turpis, pulvinar ac eros ac, tincidunt varius justo. In hac habitasse platea dictumst. Integer at adipiscing ante, a sagittis ligula. Aenean pharetra tempor ante molestie imperdiet. Vivamus id aliquam diam. Cras quis velit non tortor eleifend sagittis. Praesent at enim pharetra urna volutpat venenatis eget eget mauris. In eleifend fermentum facilisis. Praesent enim enim, gravida ac sodales sed, placerat id erat. Suspendisse lacus dolor, consectetur non augue vel, vehicula interdum libero. Morbi euismod sagittis libero sed lacinia.\n\nSed tempus felis lobortis leo pulvinar rutrum. Nam mattis velit nisl, eu condimentum ligula luctus nec. Phasellus semper velit eget aliquet faucibus. In a mattis elit. Phasellus vel urna viverra, condimentum lorem id, rhoncus nibh. Ut pellentesque posuere elementum. Sed a varius odio. Morbi rhoncus ligula libero, vel eleifend nunc tristique vitae. Fusce et sem dui. Aenean nec scelerisque tortor. Fusce malesuada accumsan magna vel tempus. Quisque mollis felis eu dolor tristique, sit amet auctor felis gravida. Sed libero lorem, molestie sed nisl in, accumsan tempor nisi. Fusce sollicitudin massa ut lacinia mattis. Sed vel eleifend lorem. Pellentesque vitae felis pretium, pulvinar elit eu, euismod sapien.\n",
+        operationId: "findPets",
+        parameters: [],
+        responses: {
           "200": {
-            "description": "pet response",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Pet",
+            description: "pet response",
+            schema: {
+              type: "array",
+              items: {
+                $ref: "#/definitions/Pet",
               },
             },
           },
-          "default": {
-            "description": "unexpected error",
-            "schema": {
-              "$ref": "#/definitions/Error",
+          default: {
+            description: "unexpected error",
+            schema: {
+              $ref: "#/definitions/Error",
             },
           },
         },
       },
-      "post": {
-        "description": "Creates a new pet in the store.  Duplicates are allowed",
-        "operationId": "addPet",
-        "parameters": [
+      post: {
+        description: "Creates a new pet in the store.  Duplicates are allowed",
+        operationId: "addPet",
+        parameters: [
           {
-            "name": "pet",
-            "in": "body",
-            "description": "Pet to add to the store",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/NewPet",
+            name: "pet",
+            in: "body",
+            description: "Pet to add to the store",
+            required: true,
+            schema: {
+              $ref: "#/definitions/NewPet",
             },
           },
         ],
-        "responses": {
+        responses: {
           "200": {
-            "description": "pet response",
-            "schema": {
-              "$ref": "#/definitions/Pet",
+            description: "pet response",
+            schema: {
+              $ref: "#/definitions/Pet",
             },
           },
-          "default": {
-            "description": "unexpected error",
-            "schema": {
-              "$ref": "#/definitions/Error",
+          default: {
+            description: "unexpected error",
+            schema: {
+              $ref: "#/definitions/Error",
             },
           },
         },
       },
     },
     "/pets/{id}": {
-      "get": {
-        "description": "Returns a user based on a single ID, if the user does not have access to the pet",
-        "operationId": "find pet by id",
-        "parameters": [
+      get: {
+        description: "Returns a user based on a single ID, if the user does not have access to the pet",
+        operationId: "find pet by id",
+        parameters: [
           {
-            "name": "id",
-            "in": "path",
-            "description": "ID of pet to fetch",
-            "required": true,
-            "type": "integer",
-            "format": "int64",
+            name: "id",
+            in: "path",
+            description: "ID of pet to fetch",
+            required: true,
+            type: "integer",
+            format: "int64",
           },
           {
-            "name": "tag",
-            "in": "query",
-            "type": "string",
-            "enum": [
-              "A",
-              "B",
-              "C",
-            ],
+            name: "tag",
+            in: "query",
+            type: "string",
+            enum: ["A", "B", "C"],
           },
         ],
-        "responses": {
+        responses: {
           "200": {
-            "description": "pet response",
-            "schema": {
-              "$ref": "#/definitions/Pet",
+            description: "pet response",
+            schema: {
+              $ref: "#/definitions/Pet",
             },
           },
-          "default": {
-            "description": "unexpected error",
-            "schema": {
-              "$ref": "#/definitions/Error",
+          default: {
+            description: "unexpected error",
+            schema: {
+              $ref: "#/definitions/Error",
             },
           },
         },
       },
-      "delete": {
-        "description": "deletes a single pet based on the ID supplied",
-        "operationId": "deletePet",
-        "parameters": [
+      delete: {
+        description: "deletes a single pet based on the ID supplied",
+        operationId: "deletePet",
+        parameters: [
           {
-            "name": "Content-Type",
-            "in": "header",
-            "type": "string",
+            name: "Content-Type",
+            in: "header",
+            type: "string",
           },
           {
-            "name": "id",
-            "in": "path",
-            "description": "ID of pet to delete",
-            "required": true,
-            "type": "integer",
-            "format": "int64",
+            name: "id",
+            in: "path",
+            description: "ID of pet to delete",
+            required: true,
+            type: "integer",
+            format: "int64",
           },
         ],
-        "responses": {
+        responses: {
           "204": {
-            "description": "pet deleted",
+            description: "pet deleted",
           },
-          "default": {
-            "description": "unexpected error",
-            "schema": {
-              "$ref": "#/definitions/Error",
+          default: {
+            description: "unexpected error",
+            schema: {
+              $ref: "#/definitions/Error",
             },
           },
         },
       },
     },
   },
-  "definitions": {
-    "Pet": {
-      "type": "object",
-      "allOf": [
+  definitions: {
+    Pet: {
+      type: "object",
+      allOf: [
         {
-          "$ref": "#/definitions/NewPet",
+          $ref: "#/definitions/NewPet",
         },
         {
-          "required": [
-            "id",
-          ],
-          "properties": {
-            "id": {
-              "type": "integer",
-              "format": "int64",
+          required: ["id"],
+          properties: {
+            id: {
+              type: "integer",
+              format: "int64",
             },
           },
         },
       ],
     },
-    "NewPet": {
-      "type": "object",
-      "required": [
-        "name",
-      ],
-      "properties": {
-        "name": {
-          "type": "string",
+    NewPet: {
+      type: "object",
+      required: ["name"],
+      properties: {
+        name: {
+          type: "string",
         },
-        "tag": {
-          "type": "string",
+        tag: {
+          type: "string",
         },
       },
     },
-    "Error": {
-      "type": "object",
-      "required": [
-        "code",
-        "message",
-      ],
-      "properties": {
-        "code": {
-          "type": "integer",
-          "format": "int32",
+    Error: {
+      type: "object",
+      required: ["code", "message"],
+      properties: {
+        code: {
+          type: "integer",
+          format: "int32",
         },
-        "message": {
-          "type": "string",
+        message: {
+          type: "string",
         },
       },
     },

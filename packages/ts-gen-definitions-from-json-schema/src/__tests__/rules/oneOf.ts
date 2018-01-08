@@ -1,9 +1,8 @@
-export const cases = [{
-  schema: {
-    oneOf: [
-      { type: "string" },
-      { type: "boolean" },
-    ],
+export const cases = [
+  {
+    schema: {
+      oneOf: [{ type: "string" }, { type: "boolean" }],
+    },
+    result: "string | boolean",
   },
-  result: "string | boolean",
-}];
+];

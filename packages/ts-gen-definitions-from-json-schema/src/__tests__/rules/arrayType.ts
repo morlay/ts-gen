@@ -1,9 +1,8 @@
-export const cases = [{
-  schema: {
-    type: [
-      "string",
-      "number",
-    ],
+export const cases = [
+  {
+    schema: {
+      type: ["string", "number"],
+    },
+    result: "string | number",
   },
-  result: "string | number",
-}];
+];

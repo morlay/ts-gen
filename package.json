@@ -22,15 +22,22 @@
     "clean:js": "npm run exec -- rm -rf \"src/{,**/}{,**/}{,**/}*.js\"",
     "build": "npm run exec -- tsc",
     "prepublish": "npm run clean && npm run clean:js && npm run build",
-    "test": "npm run lint && npx jest",
-    "lint": "npx tslint -c tslint.json --fix packages/**/src/{,**/}{,**/}*.ts{,x}"
+    "test": "jest"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,json}": [
+      "npx prettier --write",
+      "git add"
+    ]
   },
   "devDependencies": {
-    "@types/jest": "21.1.6",
-    "@types/node": "8.0.x",
-    "jest": "21.2.1",
-    "lerna": "^2.5.1",
-    "ts-jest": "21.2.2",
+    "@types/jest": "22.0.1",
+    "@types/node": "8.5.x",
+    "jest": "22.0.4",
+    "lerna": "2.5.1",
+    "lint-staged": "6.0.0",
+    "prettier": "1.9.2",
+    "ts-jest": "22.0.1",
     "tslint": "5.8.x",
     "typescript": "2.6.x"
   }

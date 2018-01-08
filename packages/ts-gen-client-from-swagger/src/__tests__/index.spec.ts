@@ -6,11 +6,12 @@ import {
 import * as fs from "fs"
 import * as path from "path"
 
-import {
-  getClientMain,
-  getDefinitions,
-} from "../"
+import { getClient } from "../client"
+import { getClient as getClientV3 } from "../client_v3"
+
 import petsSwaggerJSON from "./examples/pets"
+import petsOpenAPIJSON from "./examples/pets_v3"
+import openApiJSON from "./fixtures/openapi"
 import schemaJSON from "./fixtures/schema"
 import swaggerJSON from "./fixtures/swagger"
 
@@ -28,17 +29,42 @@ describe("ts-gen-client-from-swagger", () => {
     fs.writeFileSync(path.resolve(__dirname, "../interfaces/Swagger.ts"), `${result}\n`)
   })
 
+  it("#toOpenAPI", () => {
+    const mergedSchema = toSingleSchema(openApiJSON, {
+      "http://json-schema.org/draft-04/schema": schemaJSON as IJSONSchema,
+    })
+
+    console.log(mergedSchema.definitions!["schema"].properties)
+
+    const result = toDeclarations({
+      ...mergedSchema,
+      id: "OpenAPI",
+    })
+
+    fs.writeFileSync(path.resolve(__dirname, "../interfaces/OpenAPI.ts"), `${result}\n`)
+  })
+
   it("#toClient", () => {
-    const definitions = getDefinitions(petsSwaggerJSON)
-    const requests = getClientMain(petsSwaggerJSON, {
+    const codes = getClient(petsSwaggerJSON, {
       clientId: "pets",
       clientLib: {
-        path: "../utils",
+        path: "./utils",
         method: "createRequest",
       },
     })
 
-    fs.writeFileSync(path.resolve(__dirname, "./examples/clients/definitions.ts"), `${definitions}\n`)
-    fs.writeFileSync(path.resolve(__dirname, "./examples/clients/index.ts"), `${requests}\n`)
+    fs.writeFileSync(path.resolve(__dirname, "./examples/pets__client.ts"), codes)
+  })
+
+  it("#toClientV3", () => {
+    const codes = getClientV3(petsOpenAPIJSON, {
+      clientId: "pets",
+      clientLib: {
+        path: "./utils",
+        method: "createRequest",
+      },
+    })
+
+    fs.writeFileSync(path.resolve(__dirname, "./examples/pets_v3__client.ts"), codes)
   })
 })

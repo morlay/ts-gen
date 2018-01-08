@@ -187,7 +187,7 @@ export interface IHeader {
   format?: string;
   items?: IPrimitivesItems;
   collectionFormat?: ICollectionFormat;
-  default?: ITypeDefault;
+  default?: IDefault;
   maximum?: IMaximum;
   exclusiveMaximum?: IExclusiveMaximum;
   minimum?: IMinimum;
@@ -224,7 +224,7 @@ export interface IHeaderParameterSubSchema {
   format?: string;
   items?: IPrimitivesItems;
   collectionFormat?: ICollectionFormat;
-  default?: ITypeDefault;
+  default?: IDefault;
   maximum?: IMaximum;
   exclusiveMaximum?: IExclusiveMaximum;
   minimum?: IMinimum;
@@ -250,7 +250,7 @@ export interface IQueryParameterSubSchema {
   format?: string;
   items?: IPrimitivesItems;
   collectionFormat?: ICollectionFormatWithMulti;
-  default?: ITypeDefault;
+  default?: IDefault;
   maximum?: IMaximum;
   exclusiveMaximum?: IExclusiveMaximum;
   minimum?: IMinimum;
@@ -276,7 +276,7 @@ export interface IFormDataParameterSubSchema {
   format?: string;
   items?: IPrimitivesItems;
   collectionFormat?: ICollectionFormatWithMulti;
-  default?: ITypeDefault;
+  default?: IDefault;
   maximum?: IMaximum;
   exclusiveMaximum?: IExclusiveMaximum;
   minimum?: IMinimum;
@@ -301,7 +301,7 @@ export interface IPathParameterSubSchema {
   format?: string;
   items?: IPrimitivesItems;
   collectionFormat?: ICollectionFormat;
-  default?: ITypeDefault;
+  default?: IDefault;
   maximum?: IMaximum;
   exclusiveMaximum?: IExclusiveMaximum;
   minimum?: IMinimum;
@@ -375,7 +375,7 @@ export interface IPrimitivesItems {
   format?: string;
   items?: IPrimitivesItems;
   collectionFormat?: ICollectionFormat;
-  default?: ITypeDefault;
+  default?: IDefault;
   maximum?: IMaximum;
   exclusiveMaximum?: IExclusiveMaximum;
   minimum?: IMinimum;
@@ -486,7 +486,7 @@ export type ITitle = string
 
 export type IDescription = string
 
-export type ITypeDefault = any
+export type IDefault = any
 
 export type IMultipleOf = number
 

@@ -27,12 +27,12 @@ export const pickRefName = (schema: IJSONSchema): string => {
   if (schema.$ref === "#") {
     return MAIN_SCHEMA_PLACEHOLDER
   }
-  const refName = lodash.replace(schema.$ref || "", "#/definitions/", "")
+  const refName = lodash.last(lodash.split(schema.$ref || "", "/"))
   return toSafeId(refName)
 }
 
-export const filterNonTypeSchemas = (schemas: IJSONSchema[]) => lodash.filter(schemas,
-  (schema) => !!lodash.keys(lodash.pick(schema, ["enum", "type", "$ref"])).length)
+export const filterNonTypeSchemas = (schemas: IJSONSchema[]) =>
+  lodash.filter(schemas, (schema) => !!lodash.keys(lodash.pick(schema, ["enum", "type", "$ref"])).length)
 
 export const extendsableAllOfSchema = (schemas: IJSONSchema[]): [IJSONSchema | undefined, IJSONSchema[]] => {
   const refSchemas: IJSONSchema[] = []
@@ -68,9 +68,19 @@ export const toTypings = (schema: IJSONSchema): Type => {
   if (schema.enum) {
     if (schema.id && schema.enum.length > 1 && lodash.isNaN(Number(schema.enum[0]))) {
       const id = Identifier.of(toUpperCamelCase(schema.id))
-      return Type.of(`keyof typeof ${id}${encode(Decl.enum(id.valueOf(
-        Type.enumOf(...lodash.map(schema.enum,
-          (value: any) => Identifier.of(value).valueOf(Identifier.of(JSON.stringify(value))))))).toString())}`)
+      return Type.of(
+        `keyof typeof ${id}${encode(
+          Decl.enum(
+            id.valueOf(
+              Type.enumOf(
+                ...lodash.map(schema.enum, (value: any) =>
+                  Identifier.of(value).valueOf(Identifier.of(JSON.stringify(value))),
+                ),
+              ),
+            ),
+          ).toString(),
+        )}`,
+      )
     }
 
     return Type.unionOf(...lodash.map(schema.enum, (value: any) => Type.of(Value.of(value))))
@@ -107,51 +117,40 @@ export const toTypings = (schema: IJSONSchema): Type => {
     // }
 
     if (schema.additionalProperties) {
-      additionalPropertyType = typeof schema.additionalProperties === "boolean"
-        ? Type.any()
-        : toTypings(schema.additionalProperties)
+      additionalPropertyType =
+        typeof schema.additionalProperties === "boolean" ? Type.any() : toTypings(schema.additionalProperties)
     }
 
     if (schema.patternProperties) {
-      patternPropertiesTypes = lodash.map(
-        lodash.values(schema.patternProperties),
-        toTypings,
-      ) || []
+      patternPropertiesTypes = lodash.map(lodash.values(schema.patternProperties), toTypings) || []
     }
 
     const mayWithAdditionalPropertiesTypes = lodash.concat(patternPropertiesTypes, additionalPropertyType || [])
 
-    let props = lodash.map(
-      schema.properties || {},
-      (subSchema: IJSONSchema, key: string) => {
-        let id = Identifier.of(key)
+    let props = lodash.map(schema.properties || {}, (subSchema: IJSONSchema, key: string) => {
+      let id = Identifier.of(key)
 
-        if (lodash.indexOf(schema.required || [], key) === -1) {
-          id = id.asOptional()
-        }
+      if (lodash.indexOf(schema.required || [], key) === -1) {
+        id = id.asOptional()
+      }
 
-        return id.typed(toTypings({
+      return id.typed(
+        toTypings({
           ...subSchema,
           id: subSchema.id || [schema.id, key].join("_"),
-        }))
-      },
-    )
+        }),
+      )
+    })
 
     if (!lodash.isEmpty(mayWithAdditionalPropertiesTypes)) {
       props = props.concat(
         Identifier.of("")
-          .indexBy(
-            Identifier.of("k").typed(Type.string()),
-          )
-          .typed(
-            Type.unionOf(...mayWithAdditionalPropertiesTypes),
-          ),
+          .indexBy(Identifier.of("k").typed(Type.string()))
+          .typed(Type.unionOf(...mayWithAdditionalPropertiesTypes)),
       )
     }
 
-    return Type.objectOf(
-      ...props,
-    )
+    return Type.objectOf(...props)
   }
 
   if (isArrayType(schema)) {
@@ -170,9 +169,9 @@ export const toTypings = (schema: IJSONSchema): Type => {
               ...items,
               id: items.id || [schema.id, "items"].join("_"),
             }))
-            .concat(lodash.has(schema, "additionalItems") ? additionalItems as any : []),
+            .concat(lodash.has(schema, "additionalItems") ? (additionalItems as any) : []),
           toTypings,
-        )
+        ),
       ),
     )
   }
@@ -197,14 +196,12 @@ export const toTypings = (schema: IJSONSchema): Type => {
 }
 
 export const pickSideDefs = (s: string): string => {
-  const [
-    result,
-    sideDefs,
-  ] = decode(s)
+  const [result, sideDefs] = decode(s)
   const uniqedSideDefs = lodash.uniq(sideDefs)
 
   if (uniqedSideDefs.length > 0) {
-    return uniqedSideDefs.map((sideDef) => `export ${sideDef}`)
+    return uniqedSideDefs
+      .map((sideDef) => `export ${sideDef}`)
       .concat(result)
       .join("\n\n")
   }
@@ -223,34 +220,41 @@ export const toDeclaration = (schema: IJSONSchema): string | never => {
     const [objectSchema, refSchemas] = extendsableAllOfSchema(schema.allOf)
 
     if (objectSchema) {
-      return `${ModuleExport.decl(Decl.interface(
-        Identifier.of(toSafeId(schema.id)).extendsWith(...refSchemas.map(toTypings).map(String).map(Identifier.of))
-          .typed(toTypings({
-            ...objectSchema,
-            id: schema.id,
-          }))),
+      return `${ModuleExport.decl(
+        Decl.interface(
+          Identifier.of(toSafeId(schema.id))
+            .extendsWith(
+              ...refSchemas
+                .map(toTypings)
+                .map(String)
+                .map(Identifier.of),
+            )
+            .typed(
+              toTypings({
+                ...objectSchema,
+                id: schema.id,
+              }),
+            ),
+        ),
       )}`
     }
   }
 
   if (isObjectType(schema) && !isArrayType(schema) && !(schema.oneOf || schema.allOf || schema.anyOf)) {
-    return `${ModuleExport.decl(Decl.interface(
-      Identifier.of(toSafeId(schema.id)).typed(type)),
-    )}`
+    return `${ModuleExport.decl(Decl.interface(Identifier.of(toSafeId(schema.id)).typed(type)))}`
   }
 
-  return `${ModuleExport.decl(Decl.type(
-    Identifier.of(toSafeId(schema.id)).typed(type)),
-  )}`
+  return `${ModuleExport.decl(Decl.type(Identifier.of(toSafeId(schema.id)).typed(type)))}`
 }
 
 export const toDeclarations = (schema: IJSONSchema) => {
   const main = toDeclaration(schema)
 
   return pickSideDefs(
-    lodash.map(
-      lodash.isEmpty(schema.definitions) ? {} : schema.definitions!,
-      (defSchema, id) => toDeclaration(lodash.assign(defSchema, { id })))
+    lodash
+      .map(lodash.isEmpty(schema.definitions) ? {} : schema.definitions!, (defSchema, id) =>
+        toDeclaration(lodash.assign(defSchema, { id })),
+      )
       .concat(main)
       .join("\n\n")
       .replace(new RegExp(MAIN_SCHEMA_PLACEHOLDER, "g"), toSafeId(schema.id || "")),

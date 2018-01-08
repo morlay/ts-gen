@@ -1,21 +1,26 @@
-export const cases = [{
-  schema: {
-    type: "number",
+export const cases = [
+  {
+    schema: {
+      type: "number",
+    },
+    result: "number",
   },
-  result: "number",
-}, {
-  schema: {
-    type: "integer",
+  {
+    schema: {
+      type: "integer",
+    },
+    result: "number",
   },
-  result: "number",
-}, {
-  schema: {
-    maximum: 1,
+  {
+    schema: {
+      maximum: 1,
+    },
+    result: "number",
   },
-  result: "number",
-}, {
-  schema: {
-    minimum: 1,
+  {
+    schema: {
+      minimum: 1,
+    },
+    result: "number",
   },
-  result: "number",
-}];
+];

@@ -10,7 +10,6 @@ import {
   pickSideDefs,
   toDeclaration,
   toLowerCamelCase,
-  toSafeId,
   toTypings,
 } from "@morlay/ts-gen-definitions-from-json-schema"
 import * as lodash from "lodash"
@@ -18,43 +17,21 @@ import {
   IBodyParameter,
   IOperation,
   IParameter,
-  IParametersList,
   IResponses,
   ISchema,
   ISwagger,
-} from "./interfaces"
+} from "./interfaces/Swagger"
+import {
+  isIdentifier,
+  urlToTemplate,
+} from "./utils"
 
 export type IMethod = "get" | "delete" | "head" | "post" | "put" | "patch";
 export type IParameterPosition = "path" | "header" | "query" | "body" | "formData";
 
-export interface IExtraOperation {
-  path: string;
+export interface IExtraOperation extends IOperation {
   method: IMethod;
-  group?: string;
-}
-
-export type IPatchedOperation = IOperation & IExtraOperation;
-
-export const urlToTemplate = (url: string) =>
-  `\`${lodash.replace(url, /\{/g, "$" + "{")}\``
-
-export const reservedWords = ["abstract", "await", "boolean", "break", "byte", "case",
-  "catch", "char", "class", "const", "continue", "debugger", "default",
-  "delete", "do", "double", "else", "enum", "export", "extends", "false",
-  "final", "finally", "float", "for", "function", "goto", "if", "implements",
-  "import", "in", "instanceof", "int", "interface", "let", "long", "native",
-  "new", "null", "package", "private", "protected", "public", "return", "short",
-  "static", "super", "switch", "synchronized", "this", "throw", "throws",
-  "transient", "true", "try", "typeof", "var", "void", "volatile", "while", "with", "yield"]
-
-/** IdentifierName can be written as unquoted property names, but may be reserved words. */
-export function isIdentifierName(s: string) {
-  return /^[$A-Z_][0-9A-Z_$]*$/i.test(s)
-}
-
-/** Identifiers are e.g. legal variable names. They may not be reserved words */
-export function isIdentifier(s: string) {
-  return isIdentifierName(s) && reservedWords.indexOf(s) < 0
+  path: string;
 }
 
 export const filterParametersIn = (position: IParameterPosition) => {
@@ -63,25 +40,25 @@ export const filterParametersIn = (position: IParameterPosition) => {
 }
 
 export const getDefinitions = (swagger: ISwagger): string => {
-  let definitions = lodash.assign({}, swagger.definitions) as { [key: string]: IJSONSchema }
+  let definitions = lodash.assign({}, swagger.definitions) as {
+    [key: string]: IJSONSchema;
+  }
   const sortedKeys = lodash.sortBy(lodash.keys(definitions), (v) => v)
 
-  definitions = lodash.pick(
-    definitions,
-    sortedKeys,
-  )
+  definitions = lodash.pick(definitions, sortedKeys)
 
-  const definitionString: string = lodash.map(
-    definitions,
-    (definition: ISchema, id: string): string => toDeclaration(lodash.assign(definition, { id })),
-  ).join("\n\n")
+  const definitionString: string = lodash
+    .map(definitions, (definition: ISchema, id: string): string => toDeclaration(lodash.assign(definition, { id })))
+    .join("\n\n")
 
   return pickSideDefs(definitionString)
 }
 
 export const toSchema = (parameter: IParameter): IParameter =>
   "schema" in parameter
-    ? lodash.assign(parameter, (parameter as IBodyParameter).schema, { name: "body" })
+    ? lodash.assign(parameter, (parameter as IBodyParameter).schema, {
+      name: "body",
+    })
     : parameter
 
 export const pickRequiredList = (parameters: IParameter[]): string[] =>
@@ -99,33 +76,35 @@ export const pickRequiredList = (parameters: IParameter[]): string[] =>
 const createParameterObject = (parameters: IParameter[]) =>
   Value.objectOf(
     ...lodash.map(parameters, (parameter) => {
-        const propName = mayToId(parameter.name || "")
-        if (propName !== parameter.name) {
-          return Identifier.of(String(Value.of(parameter.name)))
-            .valueOf(Identifier.of(propName))
-        }
-        return Identifier.of(parameter.name)
-      },
-    )
+      const propName = mayToId(parameter.name || "")
+      if (propName !== parameter.name) {
+        return Identifier.of(String(Value.of(parameter.name))).valueOf(Identifier.of(propName))
+      }
+      return Identifier.of(parameter.name)
+    }),
   )
 
-const mayToId = (id: string): string => isIdentifier(id) ? id : toLowerCamelCase(id)
+const mayToId = (id: string): string => (isIdentifier(id) ? id : toLowerCamelCase(id))
 
 export const getReqParamSchema = (parameters: IParameter[]): IJSONSchema => ({
   type: "object",
-  properties: lodash.reduce(parameters, (properties: { [k: string]: IJSONSchema }, parameter: IParameter) => {
-    const schema = toSchema(parameter)
+  properties: lodash.reduce(
+    parameters,
+    (properties: { [k: string]: IJSONSchema }, parameter: IParameter) => {
+      const schema = toSchema(parameter)
 
-    let propName = mayToId(parameter.name || "")
+      let propName = mayToId(parameter.name || "")
 
-    if (parameter.name !== propName) {
-      propName = String(Value.of(parameter.name))
-    }
+      if (parameter.name !== propName) {
+        propName = String(Value.of(parameter.name))
+      }
 
-    return lodash.assign(properties, {
-      [propName]: schema,
-    })
-  }, {}),
+      return lodash.assign(properties, {
+        [propName]: schema,
+      })
+    },
+    {},
+  ),
   required: pickRequiredList(parameters),
 })
 
@@ -143,15 +122,15 @@ const getRespBodySchema = (responses: IResponses) => {
 }
 
 export interface IClientOpts {
-  clientId: string,
+  clientId: string;
   clientLib: {
-    path: string,
-    method: string,
-  }
+    path: string;
+    method: string;
+  };
 }
 
-export const getOperations = (operation: IPatchedOperation, clientOpts: IClientOpts): string => {
-  const parameters = (operation.parameters || [] as IParameter)
+export const getOperations = (operation: IExtraOperation, clientOpts: IClientOpts): string => {
+  const parameters = (operation.parameters || ([] as IParameter))
     .map((parameter: IParameter) => {
       if (parameter.in === "body") {
         return {
@@ -175,7 +154,7 @@ export const getOperations = (operation: IPatchedOperation, clientOpts: IClientO
 
   const operationId = toLowerCamelCase(operation.operationId || "")
 
-  const operationUiq = (`${clientOpts.clientId}.${operation.group}.${operationId}`)
+  const operationUiq = `${clientOpts.clientId}.${operation.operationId}`
 
   const members = [
     Identifier.of("method").valueOf(Value.of(lodash.toUpper(operation.method))),
@@ -201,84 +180,44 @@ export const getOperations = (operation: IPatchedOperation, clientOpts: IClientO
   let callbackFunc = Identifier.of("").operatorsWith(": ", " => ")
 
   if (parameters.length) {
-    callbackFunc = callbackFunc.paramsWith(
-      Identifier.of(String(createParameterObject(parameters))),
-    )
+    callbackFunc = callbackFunc.paramsWith(Identifier.of(String(createParameterObject(parameters as IParameter[]))))
   } else {
-    callbackFunc = callbackFunc.paramsWith(
-      Identifier.of(""),
-    )
+    callbackFunc = callbackFunc.paramsWith(Identifier.of(""))
   }
 
-  callbackFunc = callbackFunc.valueOf(Value.memberOf(
-    Decl.returnOf(Identifier.of(String(Value.objectOf(...members)))),
-  ))
+  callbackFunc = callbackFunc.valueOf(Value.memberOf(Decl.returnOf(Identifier.of(String(Value.objectOf(...members))))))
 
   const callFunc = Identifier.of(clientOpts.clientLib.method)
     .generics(
-      parameters.length ? toTypings(getReqParamSchema(parameters)) : Identifier.of("void"),
+      parameters.length ? toTypings(getReqParamSchema(parameters as IParameter[])) : Identifier.of("void"),
       toTypings(respbodySchema || { type: "null" }),
     )
-    .paramsWith(
-      Identifier.of(String(Value.of(operationUiq))),
-      callbackFunc,
-    )
+    .paramsWith(Identifier.of(String(Value.of(operationUiq))), callbackFunc)
 
   return `${ModuleExport.decl(Decl.const(Identifier.of(operationId).valueOf(callFunc)))}`
 }
 
-export const getTypes = (paths: any): string[] => {
-  const reg = /"\$ref":"#\/definitions\/([\s\S]+?)"/
-  const operationsString = JSON.stringify(paths)
-  const importTypes = lodash.map(
-    operationsString.match(new RegExp(reg as any, "g")) || [],
-    (str: string): string => toSafeId(reg.exec(str)![1]),
-  )
+export const getClient = (swagger: ISwagger, clientOpts: IClientOpts) => {
+  let operations = lodash.flattenDeep<IExtraOperation>(lodash.map(swagger.paths, (pathItem: any, path: string) =>
+    lodash.map(pathItem, (operation: IOperation, method: IMethod) => {
+      return {
+        ...operation,
+        method,
+        path,
+      }
+    }),
+  ) as any)
 
-  return lodash.uniq(importTypes)
-}
-
-export const getClientMain = (swagger: ISwagger, clientOpts: IClientOpts) => {
-  let responses: IResponses = []
-  let parameters: IParametersList = []
-
-  let operations = lodash.flattenDeep<IPatchedOperation>(
-    lodash.map(
-      swagger.paths, (pathItem: any, path: string) =>
-        lodash.map(pathItem, (operation: IOperation, method: IMethod) => {
-            responses = responses.concat(
-              lodash.pickBy(operation.responses, (_, status) => Number(status) >= 200 && Number(status) < 400),
-            )
-
-            parameters = parameters.concat(operation.parameters)
-
-            return {
-              ...operation,
-              method,
-              path,
-              group: operation.tags ? operation.tags[0] : "ungroup",
-            }
-          },
-        ),
-    ) as any,
-  )
-
-  operations = lodash.sortBy(operations, (op: IPatchedOperation) => op.operationId)
+  operations = lodash.sortBy(operations, (op: IExtraOperation) => op.operationId)
 
   return pickSideDefs(
-    ([] as string[]).concat(
-      ModuleImport.from(clientOpts.clientLib.path)
-        .membersAs(
-          Identifier.of(clientOpts.clientLib.method),
-        )
-        .toString(),
-      lodash.isEmpty(swagger.definitions)
-        ? ""
-        : ModuleImport.from("./definitions")
-          .membersAs(
-            ...getTypes(responses.concat(parameters)).map(Identifier.of),
-          ).toString(),
-      lodash.map(operations, (op) => getOperations(op as IPatchedOperation, clientOpts)),
-    ).join("\n\n"),
-  )
+    ([] as string[])
+      .concat(
+        ModuleImport.from(clientOpts.clientLib.path)
+          .membersAs(Identifier.of(clientOpts.clientLib.method))
+          .toString(),
+        lodash.map(operations, (op) => getOperations(op as IExtraOperation, clientOpts)),
+      )
+      .join("\n\n"),
+  ) + "\n\n" + getDefinitions(swagger)
 }

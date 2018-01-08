@@ -1,4 +1,6 @@
-export const cases = [{
-  schema: {},
-  result: "any",
-}];
+export const cases = [
+  {
+    schema: {},
+    result: "any",
+  },
+];
