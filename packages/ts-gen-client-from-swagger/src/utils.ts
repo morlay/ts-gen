@@ -76,3 +76,11 @@ export function isIdentifierName(s: string) {
 export function isIdentifier(s: string) {
   return isIdentifierName(s) && reservedWords.indexOf(s) < 0
 }
+
+export interface IClientOpts {
+  clientId: string;
+  clientLib: {
+    path: string;
+    method: string;
+  };
+}

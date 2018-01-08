@@ -22,6 +22,7 @@ import {
   ISwagger,
 } from "./interfaces/Swagger"
 import {
+  IClientOpts,
   isIdentifier,
   urlToTemplate,
 } from "./utils"
@@ -119,14 +120,6 @@ const getRespBodySchema = (responses: IResponses) => {
   })
 
   return bodySchema
-}
-
-export interface IClientOpts {
-  clientId: string;
-  clientLib: {
-    path: string;
-    method: string;
-  };
 }
 
 export const getOperations = (operation: IExtraOperation, clientOpts: IClientOpts): string => {

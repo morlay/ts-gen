@@ -25,6 +25,7 @@ import {
   ISchemaOrReference,
 } from "./interfaces/OpenAPI"
 import {
+  IClientOpts,
   isIdentifier,
   urlToTemplate,
 } from "./utils"
@@ -120,18 +121,9 @@ const getRespBodySchema = (responses: IResponses) => {
   return bodySchema
 }
 
-export interface IClientOpts {
-  clientId: string;
-  clientLib: {
-    path: string;
-    method: string;
-  };
-}
-
 export const isMultipartFormData = (contentType: string = "") => contentType.indexOf("multipart/form-data") > -1
 export const isFormURLEncoded = (contentType: string = "") => contentType.indexOf(
   "application/x-www-form-urlencoded") > -1
-
 
 export const getOperations = (operation: IExtraOperation, clientOpts: IClientOpts): string => {
   const parameters = ((operation.parameters || []) as IParameter[])
