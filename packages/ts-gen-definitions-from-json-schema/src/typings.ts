@@ -27,7 +27,7 @@ export const pickRefName = (schema: IJSONSchema): string => {
   if (schema.$ref === "#") {
     return MAIN_SCHEMA_PLACEHOLDER
   }
-  const refName = lodash.last(lodash.split(schema.$ref || "", "/"))
+  const refName = lodash.last(lodash.split(schema.$ref || "", "/")) || ""
   return toSafeId(refName)
 }
 
