@@ -25,6 +25,7 @@ import {
   ISchemaOrReference,
 } from "./interfaces/OpenAPI"
 import {
+  filterParametersIn,
   IClientOpts,
   isIdentifier,
   urlToTemplate,
@@ -57,6 +58,9 @@ export const getDefinitions = (openAPI: IOpenAPI): string => {
 const createParameterObject = (parameters: IParameter[]) =>
   Value.objectOf(
     ...lodash.map(parameters, (parameter) => {
+      if (!!parameter.value) {
+        return Identifier.of(String(Value.of(parameter.name))).valueOf(Value.of(parameter.value))
+      }
       const propName = mayToId(parameter.name || "")
       if (propName !== parameter.name) {
         return Identifier.of(String(Value.of(parameter.name))).valueOf(Identifier.of(propName))
@@ -72,7 +76,7 @@ export const getReqParamSchema = (parameters: IParameter[]): IJSONSchema => {
     type: "object",
     properties: lodash.reduce(
       parameters,
-      (properties: Dictionary<IJSONSchema>, parameter: IParameter) => {
+      (properties: Dictionary<ISchema>, parameter: IParameter) => {
         const schema = parameter.schema
 
         let propName = mayToId(parameter.name || "")
@@ -142,16 +146,20 @@ export const getOperations = (operation: IExtraOperation, clientOpts: IClientOpt
     Identifier.of("url").valueOf(new Value(urlToTemplate(operation.path))),
   ]
 
-  if (parameters.length) {
-    members.push(Identifier.of("query").valueOf(createParameterObject(parameters)))
+  const query = filterParametersIn("query")(parameters)
+  const headers = filterParametersIn("header")(parameters)
+
+  if (query.length) {
+    members.push(Identifier.of("query").valueOf(createParameterObject(query)))
   }
 
+  let bodyContentType = ""
 
   if (operation.requestBody) {
     for (const contentType in (operation.requestBody as IRequestBody).content) {
       const mediaType = (operation.requestBody as IRequestBody).content[contentType]
+      bodyContentType = contentType
       if (isMultipartFormData(contentType) || isFormURLEncoded(contentType)) {
-
         if (mediaType.schema) {
           lodash.forEach((mediaType.schema as ISchema).properties!, (propSchema: ISchema, key: string) => {
             parameters.push({
@@ -161,11 +169,16 @@ export const getOperations = (operation: IExtraOperation, clientOpts: IClientOpt
               schema: propSchema as ISchemaOrReference,
             } as any)
           })
-        }
 
-        members.push(
-          Identifier.of(isMultipartFormData(contentType) ? "formData" : "formDataURLEncoded")
-            .valueOf(toTypings((mediaType.schema || { type: "null" }) as IJSONSchema)))
+          members.push(
+            Identifier.of("data")
+              .valueOf(
+                createParameterObject(
+                  (lodash.map((mediaType.schema! as any).properties!, (propsSchema: any, name: string) => ({
+                    ...propsSchema,
+                    name,
+                  }))) as IParameter[])))
+        }
         break
       }
 
@@ -179,7 +192,19 @@ export const getOperations = (operation: IExtraOperation, clientOpts: IClientOpt
       }
 
       members.push(Identifier.of("data").valueOf(Identifier.of("body")))
+      break
     }
+  }
+
+  if (headers.length || bodyContentType) {
+    let parametersForHeader = headers
+    if (bodyContentType) {
+      parametersForHeader = parametersForHeader.concat({
+        name: "Content-Type",
+        value: bodyContentType,
+      })
+    }
+    members.push(Identifier.of("headers").valueOf(createParameterObject(parametersForHeader)))
   }
 
   let callbackFunc = Identifier.of("").operatorsWith(": ", " => ")

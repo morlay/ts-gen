@@ -67,6 +67,11 @@ export const reservedWords = [
   "yield",
 ]
 
+export const filterParametersIn = (position: string) => {
+  return (parameters: any[]): any[] =>
+    lodash.filter(parameters, (parameter: any): boolean => parameter.in === position)
+}
+
 /** IdentifierName can be written as unquoted property names, but may be reserved words. */
 export function isIdentifierName(s: string) {
   return /^[$A-Z_][0-9A-Z_$]*$/i.test(s)

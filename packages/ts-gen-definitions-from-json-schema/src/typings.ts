@@ -177,6 +177,9 @@ export const toTypings = (schema: IJSONSchema): Type => {
   }
 
   if (isStringType(schema)) {
+    if ((schema as any).format === "binary") {
+      return Type.of("File | Blob")
+    }
     return Type.string()
   }
 

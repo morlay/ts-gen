@@ -22,22 +22,17 @@ import {
   ISwagger,
 } from "./interfaces/Swagger"
 import {
+  filterParametersIn,
   IClientOpts,
   isIdentifier,
   urlToTemplate,
 } from "./utils"
 
 export type IMethod = "get" | "delete" | "head" | "post" | "put" | "patch";
-export type IParameterPosition = "path" | "header" | "query" | "body" | "formData";
 
 export interface IExtraOperation extends IOperation {
   method: IMethod;
   path: string;
-}
-
-export const filterParametersIn = (position: IParameterPosition) => {
-  return (parameters: IParameter[]): IParameter[] =>
-    lodash.filter(parameters, (parameter: IParameter): boolean => parameter.in === position)
 }
 
 export const getDefinitions = (swagger: ISwagger): string => {

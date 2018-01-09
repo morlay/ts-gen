@@ -2,6 +2,72 @@ import {
   createRequest,
 } from "./utils"
 
+export const formMultipartWithFile = createRequest<{
+  data?: IPet;
+  file: File | Blob;
+  slice?: string[];
+  string?: string;
+}, null>("pets.FormMultipartWithFile", ({
+  data,
+  file,
+  slice,
+  string,
+}) => {
+  return {
+    method: "POST",
+    url: `/demo/forms/multipart`,
+    data: {
+      data,
+      file,
+      slice,
+      string,
+    },
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  };
+})
+
+export const formMultipartWithFiles = createRequest<{
+  files: Array<File | Blob>;
+}, null>("pets.FormMultipartWithFiles", ({
+  files,
+}) => {
+  return {
+    method: "POST",
+    url: `/demo/forms/multipart-with-files`,
+    data: {
+      files,
+    },
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  };
+})
+
+export const formURLEncoded = createRequest<{
+  data: IPet;
+  slice: string[];
+  string: string;
+}, null>("pets.FormURLEncoded", ({
+  data,
+  slice,
+  string,
+}) => {
+  return {
+    method: "POST",
+    url: `/demo/forms/url-encoded`,
+    data: {
+      data,
+      slice,
+      string,
+    },
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+  };
+})
+
 export const addPet = createRequest<{
   body: INewPet;
 }, IPet>("pets.addPet", ({
@@ -11,6 +77,9 @@ export const addPet = createRequest<{
     method: "POST",
     url: `/pets`,
     data: body,
+    headers: {
+      "Content-Type": "application/json",
+    },
   };
 })
 
@@ -22,9 +91,6 @@ export const deletePet = createRequest<{
   return {
     method: "DELETE",
     url: `/pets/${id}`,
-    query: {
-      id,
-    },
   };
 })
 
@@ -36,9 +102,6 @@ export const findPetByID = createRequest<{
   return {
     method: "GET",
     url: `/pets/${id}`,
-    query: {
-      id,
-    },
   };
 })
 
