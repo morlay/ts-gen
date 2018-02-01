@@ -118,7 +118,7 @@ const getRespBodySchema = (responses: IResponses) => {
 }
 
 export const getOperations = (operation: IExtraOperation, clientOpts: IClientOpts): string => {
-  const parameters = (operation.parameters || ([] as IParameter))
+  const parameters = (operation.parameters || ([] as IParameter[]))
     .map((parameter: IParameter) => {
       if (parameter.in === "body") {
         return {

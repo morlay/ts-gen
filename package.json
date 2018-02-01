@@ -17,10 +17,9 @@
     "testRegex": ".*/__tests__/.+\\.(test|spec)\\.(ts|tsx)$"
   },
   "scripts": {
-    "exec": "lerna exec --",
-    "clean": "npm run exec -- rm -rf lib",
-    "clean:js": "npm run exec -- rm -rf \"src/{,**/}{,**/}{,**/}*.js\"",
-    "build": "npm run exec -- tsc",
+    "clean": "npx lerna exec -- rm -rf lib",
+    "clean:js": "npx lerna exec -- rm -rf \"src/{,**/}{,**/}{,**/}*.js\"",
+    "build": "npx lerna exec -- npx tsc",
     "prepublish": "npm run clean && npm run clean:js && npm run build",
     "test": "jest"
   },
@@ -31,14 +30,13 @@
     ]
   },
   "devDependencies": {
-    "@types/jest": "22.0.1",
-    "@types/node": "8.5.x",
-    "jest": "22.0.4",
-    "lerna": "2.5.1",
-    "lint-staged": "6.0.0",
-    "prettier": "1.9.2",
-    "ts-jest": "22.0.1",
-    "tslint": "5.8.x",
-    "typescript": "2.6.x"
+    "@types/jest": "22.1.1",
+    "@types/node": "9.4.x",
+    "jest": "22.1.4",
+    "lerna": "2.8.0",
+    "lint-staged": "6.1.0",
+    "prettier": "1.10.2",
+    "ts-jest": "22.0.2",
+    "typescript": "2.7.x"
   }
 }
