@@ -1,6 +1,6 @@
 {
   "name": "@morlay/ts-gen-core",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "main": "lib/index.js",
   "types": "src/index.ts",
   "files": [
