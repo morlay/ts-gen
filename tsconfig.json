@@ -1,17 +1,29 @@
 {
+  "compileOnSave": true,
   "compilerOptions": {
-    "module": "commonjs",
+    "baseUrl": "./packages",
+    "paths": {
+      "@morlay/ts-gen-client-from-swagger": [
+        "../../ts-gen-client-from-swagger/src"
+      ],
+      "@morlay/ts-gen-core": [
+        "../../ts-gen-core/src"
+      ],
+      "@morlay/ts-gen-definitions-from-json-schema": [
+        "../../ts-gen-definitions-from-json-schema/src"
+      ]
+    },
+    "noImplicitAny": true,
+    "experimentalDecorators": true,
     "moduleResolution": "node",
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "strict": true,
+    "module": "commonjs",
     "target": "es2015",
-    "sourceMap": true
+    "pretty": true,
+    "strict": true,
+    "skipLibCheck": true
   },
   "exclude": [
     "node_modules/*",
-    "lib/*"
+    "dist/*"
   ]
 }

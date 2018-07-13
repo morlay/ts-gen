@@ -1,6 +1,6 @@
 /* tslint:disable */
 // https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v2.0/json/petstore-expanded.json
-import { ISwagger } from "../../interfaces/Swagger"
+import { ISwagger } from "../../interfaces/Swagger";
 
 export default {
   swagger: "2.0",
@@ -191,4 +191,4 @@ export default {
       },
     },
   },
-} as ISwagger
+} as ISwagger;

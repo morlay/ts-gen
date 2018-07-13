@@ -16,6 +16,19 @@
     "lodash": "4.17.x"
   },
   "devDependencies": {
-    "require-dir": "0.3.x"
+    "require-dir": "1.0.x"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "<rootDir>/../../node_modules/ts-jest/preprocessor.js"
+    },
+    "moduleFileExtensions": [
+      "tsx",
+      "ts",
+      "json",
+      "jsx",
+      "js"
+    ],
+    "testRegex": ".*/__tests__/.+\\.(generator|test|spec)\\.(ts|tsx)$"
   }
 }

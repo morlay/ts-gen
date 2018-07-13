@@ -10,5 +10,5 @@ export interface IRequestOptions {
 }
 
 export function createRequest<TReq, TRespBody>(_: string, _2: (req: TReq) => IRequestOptions) {
-  return (_3: TReq): Promise<TRespBody> => Promise.resolve({} as TRespBody)
+  return (_3: TReq): Promise<TRespBody> => Promise.resolve({} as TRespBody);
 }

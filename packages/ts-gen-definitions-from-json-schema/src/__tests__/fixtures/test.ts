@@ -23,6 +23,7 @@ export default {
         id2: {
           type: "string",
           enum: ["V1", "V2"],
+          "x-enum-labels": ["v1", "v2"],
         },
       },
     },

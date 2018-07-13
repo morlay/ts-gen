@@ -1,6 +1,6 @@
-import * as lodash from "lodash"
+import * as lodash from "lodash";
 
-export const urlToTemplate = (url: string) => `\`${lodash.replace(url, /\{/g, "$" + "{")}\``
+export const urlToTemplate = (url: string) => `\`${lodash.replace(url, /\{/g, "$" + "{")}\``;
 
 export const reservedWords = [
   "abstract",
@@ -65,21 +65,21 @@ export const reservedWords = [
   "while",
   "with",
   "yield",
-]
+];
 
 export const filterParametersIn = (position: string) => {
   return (parameters: any[]): any[] =>
-    lodash.filter(parameters, (parameter: any): boolean => parameter.in === position)
-}
+    lodash.filter(parameters, (parameter: any): boolean => parameter.in === position);
+};
 
 /** IdentifierName can be written as unquoted property names, but may be reserved words. */
 export function isIdentifierName(s: string) {
-  return /^[$A-Z_][0-9A-Z_$]*$/i.test(s)
+  return /^[$A-Z_][0-9A-Z_$]*$/i.test(s);
 }
 
 /** Identifiers are e.g. legal variable names. They may not be reserved words */
 export function isIdentifier(s: string) {
-  return isIdentifierName(s) && reservedWords.indexOf(s) < 0
+  return isIdentifierName(s) && reservedWords.indexOf(s) < 0;
 }
 
 export interface IClientOpts {

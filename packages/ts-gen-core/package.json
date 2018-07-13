@@ -9,5 +9,18 @@
   ],
   "license": "WTFPL",
   "author": "Morlay Null <morlay.null@gmail.com>",
-  "description": ""
+  "description": "",
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "<rootDir>/../../node_modules/ts-jest/preprocessor.js"
+    },
+    "moduleFileExtensions": [
+      "tsx",
+      "ts",
+      "json",
+      "jsx",
+      "js"
+    ],
+    "testRegex": ".*/__tests__/.+\\.(generator|test|spec)\\.(ts|tsx)$"
+  }
 }
