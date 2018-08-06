@@ -11,12 +11,12 @@ import {
 export const addPet = createRequest<{
   body: INewPet;
 }, IPet>("pets.addPet", ({
-  body,
+  body: pBody,
 }) => {
   return {
     method: "POST",
     url: `/pets`,
-    data: body,
+    data: pBody,
   };
 })
 
@@ -24,14 +24,14 @@ export const deletePet = createRequest<{
   "Content-Type"?: string;
   id: number;
 }, null>("pets.deletePet", ({
-  "Content-Type": contentType,
-  id,
+  "Content-Type": pContentType,
+  id: pID,
 }) => {
   return {
     method: "DELETE",
-    url: `/pets/${id}`,
+    url: `/pets/${pID}`,
     headers: {
-      "Content-Type": contentType,
+      "Content-Type": pContentType,
     },
   };
 })
@@ -40,14 +40,14 @@ export const findPetByID = createRequest<{
   id: number;
   tag?: keyof typeof FindPetByIDTag;
 }, IPet>("pets.find pet by id", ({
-  id,
-  tag,
+  id: pID,
+  tag: pTag,
 }) => {
   return {
     method: "GET",
-    url: `/pets/${id}`,
+    url: `/pets/${pID}`,
     query: {
-      tag,
+      tag: pTag,
     },
   };
 })

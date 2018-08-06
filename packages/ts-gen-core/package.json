@@ -11,6 +11,7 @@
   "author": "Morlay Null <morlay.null@gmail.com>",
   "description": "",
   "jest": {
+    "testEnvironment": "node",
     "transform": {
       "^.+\\.tsx?$": "<rootDir>/../../node_modules/ts-jest/preprocessor.js"
     },

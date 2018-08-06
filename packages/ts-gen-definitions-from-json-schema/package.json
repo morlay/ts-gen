@@ -19,6 +19,7 @@
     "require-dir": "1.0.x"
   },
   "jest": {
+    "testEnvironment": "node",
     "transform": {
       "^.+\\.tsx?$": "<rootDir>/../../node_modules/ts-jest/preprocessor.js"
     },
