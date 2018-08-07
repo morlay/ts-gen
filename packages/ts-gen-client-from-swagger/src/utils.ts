@@ -4,7 +4,7 @@ import {
 } from "@morlay/ts-gen-core";
 import { toLowerCamelCase } from "@morlay/ts-gen-definitions-from-json-schema";
 import * as lodash from "lodash";
-import { IParameter } from "ts-gen-client-from-swagger/src/interfaces/Swagger";
+import { IParameter } from "./interfaces/Swagger";
 
 export const urlToTemplate = (url: string = "") => `\`${url.replace(/\{([^}]+)\}/g, (_, $1): string => {
   return `\${${mayToAliasID($1)}}`;
