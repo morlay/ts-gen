@@ -30,8 +30,6 @@ describe("ts-gen-client-from-swagger", () => {
       "http://json-schema.org/draft-04/schema": schemaJSON as IJSONSchema,
     });
 
-    console.log(mergedSchema.definitions!["schema"].properties);
-
     const result = toDeclarations({
       ...mergedSchema,
       id: "OpenAPI",

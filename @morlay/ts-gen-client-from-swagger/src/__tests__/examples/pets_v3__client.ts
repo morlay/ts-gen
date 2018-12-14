@@ -2,7 +2,11 @@ import { createRequest } from "./utils";
 
 export const formMultipartWithFile = createRequest<
   {
-    data?: IPet;
+    data?: {
+      name: string;
+      tag?: string;
+      id: number;
+    };
     file: File | Blob;
     slice?: string[];
     string?: string;
@@ -44,7 +48,11 @@ export const formMultipartWithFiles = createRequest<
 
 export const formURLEncoded = createRequest<
   {
-    data: IPet;
+    data: {
+      name: string;
+      tag?: string;
+      id: number;
+    };
     slice: string[];
     string: string;
   },
@@ -133,4 +141,14 @@ export interface INewPet {
 
 export interface IPet extends INewPet {
   id: number;
+}
+
+export interface IRequestForm {
+  data: {
+    name: string;
+    tag?: string;
+    id: number;
+  };
+  slice: string[];
+  string: string;
 }

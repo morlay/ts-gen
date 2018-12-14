@@ -121,33 +121,11 @@ export default {
           content: {
             "application/x-www-form-urlencoded": {
               schema: {
-                type: "object",
-                properties: {
-                  data: {
-                    allOf: [
-                      {
-                        $ref: "#/components/schemas/Pet",
-                      },
-                      {},
-                    ],
-                    "x-go-json": "data",
-                    "x-go-name": "Pet",
+                allOf: [
+                  {
+                    $ref: "#/components/schemas/RequestForm",
                   },
-                  slice: {
-                    type: "array",
-                    items: {
-                      type: "string",
-                    },
-                    "x-go-json": "slice",
-                    "x-go-name": "Slice",
-                  },
-                  string: {
-                    type: "string",
-                    "x-go-json": "string",
-                    "x-go-name": "String",
-                  },
-                },
-                required: ["string", "slice", "data"],
+                ],
               },
             },
           },
@@ -325,6 +303,35 @@ export default {
   },
   components: {
     schemas: {
+      RequestForm: {
+        type: "object",
+        properties: {
+          data: {
+            allOf: [
+              {
+                $ref: "#/components/schemas/Pet",
+              },
+              {},
+            ],
+            "x-go-json": "data",
+            "x-go-name": "Pet",
+          },
+          slice: {
+            type: "array",
+            items: {
+              type: "string",
+            },
+            "x-go-json": "slice",
+            "x-go-name": "Slice",
+          },
+          string: {
+            type: "string",
+            "x-go-json": "string",
+            "x-go-name": "String",
+          },
+        },
+        required: ["string", "slice", "data"],
+      },
       Pet: {
         allOf: [
           {

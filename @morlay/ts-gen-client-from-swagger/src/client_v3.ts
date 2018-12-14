@@ -19,6 +19,7 @@ import {
   ISchemaOrReference,
 } from "./interfaces/OpenAPI";
 import { filterParametersIn, IClientOpts, mayToAliasID, mayToId, urlToTemplate } from "./utils";
+import { deRefs } from "./deRefs";
 
 export type IMethod = "get" | "delete" | "head" | "post" | "put" | "patch";
 
@@ -116,7 +117,11 @@ export const isMultipartFormData = (contentType: string = "") => contentType.ind
 export const isFormURLEncoded = (contentType: string = "") =>
   contentType.indexOf("application/x-www-form-urlencoded") > -1;
 
-export const getOperations = (operation: IExtraOperation, clientOpts: IClientOpts): string => {
+export const getOperations = (
+  operation: IExtraOperation,
+  schemas: Dictionary<ISchema>,
+  clientOpts: IClientOpts,
+): string => {
   const parameters = ((operation.parameters || []) as IParameter[]).map((parameter: IParameter) => ({
     ...parameter,
     schema: {
@@ -147,24 +152,23 @@ export const getOperations = (operation: IExtraOperation, clientOpts: IClientOpt
       bodyContentType = contentType;
       if (isMultipartFormData(contentType) || isFormURLEncoded(contentType)) {
         if (mediaType.schema) {
-          lodash.forEach((mediaType.schema as ISchema).properties!, (propSchema: ISchema, key: string) => {
+          const mediaSchema = deRefs(mediaType.schema, schemas as any) as ISchema;
+
+          lodash.forEach(mediaSchema.properties!, (propSchema: ISchema, key: string) => {
             parameters.push({
               in: "formData",
               name: key,
-              required: lodash.includes((mediaType.schema as ISchema).required || [], key),
+              required: lodash.includes(mediaSchema.required || [], key),
               schema: propSchema as ISchemaOrReference,
             } as any);
           });
 
           members.push(
             Identifier.of("data").valueOf(
-              createParameterObject(lodash.map(
-                (mediaType.schema! as any).properties!,
-                (propsSchema: any, name: string) => ({
-                  ...propsSchema,
-                  name,
-                }),
-              ) as IParameter[]),
+              createParameterObject(lodash.map((mediaSchema! as any).properties!, (propsSchema: any, name: string) => ({
+                ...propsSchema,
+                name,
+              })) as IParameter[]),
             ),
           );
         }
@@ -240,7 +244,9 @@ export const getClient = (openApi: IOpenAPI, clientOpts: IClientOpts) => {
           ModuleImport.from(clientOpts.clientLib.path)
             .membersAs(Identifier.of(clientOpts.clientLib.method))
             .toString(),
-          lodash.map(operations, (op) => getOperations(op as IExtraOperation, clientOpts)),
+          lodash.map(operations, (op) =>
+            getOperations(op as IExtraOperation, (openApi.components || {}).schemas || {}, clientOpts),
+          ),
         )
         .join("\n\n"),
     ) +
