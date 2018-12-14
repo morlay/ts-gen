@@ -5,8 +5,8 @@
     "clean": "npx lerna exec -- rm -rf lib",
     "clean:js": "npx lerna exec -- rm -rf \"src/{,**/}{,**/}{,**/}*.js*\"",
     "build": "lerna exec -- rollup -c ../../rollup.config.ts",
-    "prepublish": "npm run clean && npm run clean:js && npm run build && npm run test",
-    "test": "jest"
+    "prepare": "npm run clean && npm run clean:js && npm run build && npm run test",
+    "test": "tsc --noEmit && jest"
   },
   "lint-staged": {
     "*.{ts,tsx,json}": [
