@@ -189,9 +189,7 @@ export interface ITag {
   [k: string]: ISpecificationExtension;
 }
 
-export interface IExamples {
-
-}
+export interface IExamples {}
 
 export interface IReference {
   $ref: string;
@@ -284,25 +282,25 @@ export interface ISecurityRequirement {
   [k: string]: string[];
 }
 
-export type IAnyOrExpression = IAny | IExpression
+export type IAnyOrExpression = IAny | IExpression;
 
-export type ICallbackOrReference = ICallback | IReference
+export type ICallbackOrReference = ICallback | IReference;
 
-export type IExampleOrReference = IExample | IReference
+export type IExampleOrReference = IExample | IReference;
 
-export type IHeaderOrReference = IHeader | IReference
+export type IHeaderOrReference = IHeader | IReference;
 
-export type ILinkOrReference = ILink | IReference
+export type ILinkOrReference = ILink | IReference;
 
-export type IParameterOrReference = IParameter | IReference
+export type IParameterOrReference = IParameter | IReference;
 
-export type IRequestBodyOrReference = IRequestBody | IReference
+export type IRequestBodyOrReference = IRequestBody | IReference;
 
-export type IResponseOrReference = IResponse | IReference
+export type IResponseOrReference = IResponse | IReference;
 
-export type ISchemaOrReference = ISchema | IReference
+export type ISchemaOrReference = ISchema | IReference;
 
-export type ISecuritySchemeOrReference = ISecurityScheme | IReference
+export type ISecuritySchemeOrReference = ISecurityScheme | IReference;
 
 export interface IAnysOrExpressions {
   [k: string]: IAnyOrExpression;
@@ -376,9 +374,9 @@ export interface IExpression {
   [k: string]: any;
 }
 
-export type ISpecificationExtension = any
+export type ISpecificationExtension = any;
 
-export type IDefaultType = any
+export type IDefaultType = any;
 
 export interface IOpenAPI {
   openapi: "3.0.0";

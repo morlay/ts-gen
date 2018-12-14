@@ -8,15 +8,15 @@ export enum SimpleTypes {
   string = "string",
 }
 
-export type ISchemaArray = IJSONSchema[]
+export type ISchemaArray = IJSONSchema[];
 
-export type IPositiveInteger = number
+export type IPositiveInteger = number;
 
-export type IPositiveIntegerDefault0 = IPositiveInteger
+export type IPositiveIntegerDefault0 = IPositiveInteger;
 
-export type ISimpleTypes = keyof typeof SimpleTypes
+export type ISimpleTypes = keyof typeof SimpleTypes;
 
-export type IStringArray = string[]
+export type IStringArray = string[];
 
 export interface IJSONSchema {
   id?: string;

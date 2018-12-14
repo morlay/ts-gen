@@ -2,6 +2,7 @@
   "name": "@morlay/ts-gen-client-from-swagger",
   "version": "0.8.1",
   "main": "lib/index.js",
+  "module": "es/index.js",
   "types": "src/index.ts",
   "files": [
     "lib",
@@ -15,19 +16,5 @@
     "@morlay/ts-gen-definitions-from-json-schema": "^0.8.1",
     "@types/lodash": "4.14.x",
     "lodash": "4.17.x"
-  },
-  "jest": {
-    "testEnvironment": "node",
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "moduleFileExtensions": [
-      "tsx",
-      "ts",
-      "json",
-      "jsx",
-      "js"
-    ],
-    "testRegex": ".*/__tests__/.+\\.(generator|test|spec)\\.(ts|tsx)$"
   }
 }

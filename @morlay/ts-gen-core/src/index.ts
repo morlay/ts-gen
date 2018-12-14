@@ -247,9 +247,11 @@ export class Identifier extends Stringable implements IIdentifier {
   extendsWith(...identifiers: Array<Identifier | undefined>) {
     return this.set(
       "extends",
-      identifiers.filter((i) => !!i).map((i: Identifier = {} as Identifier) => {
-        return Identifier.of(i.name).generics(...(i.types || []));
-      }),
+      identifiers
+        .filter((i) => !!i)
+        .map((i: Identifier = {} as Identifier) => {
+          return Identifier.of(i.name).generics(...(i.types || []));
+        }),
     );
   }
 

@@ -1,6 +1,7 @@
 {
-  "packages": [
-    "packages/*"
-  ],
+  "packages": ["@morlay/*"],
+  "publish": {
+    "ignoreChanges": ["*.js", "__tests__/**"]
+  },
   "version": "0.8.1"
 }

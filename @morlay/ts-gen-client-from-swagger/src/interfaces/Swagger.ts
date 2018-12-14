@@ -133,7 +133,7 @@ export interface IExamples {
   [k: string]: any;
 }
 
-export type IMimeType = string
+export type IMimeType = string;
 
 export interface IOperation {
   tags?: string[];
@@ -168,7 +168,7 @@ export interface IResponses {
   [k: string]: IResponseValue | IVendorExtension;
 }
 
-export type IResponseValue = IResponse | IJSONReference
+export type IResponseValue = IResponse | IJSONReference;
 
 export interface IResponse {
   description: string;
@@ -204,7 +204,7 @@ export interface IHeader {
   [k: string]: IVendorExtension;
 }
 
-export type IVendorExtension = any
+export type IVendorExtension = any;
 
 export interface IBodyParameter {
   description?: string;
@@ -317,9 +317,13 @@ export interface IPathParameterSubSchema {
   [k: string]: IVendorExtension;
 }
 
-export type INonBodyParameter = IHeaderParameterSubSchema | IFormDataParameterSubSchema | IQueryParameterSubSchema | IPathParameterSubSchema
+export type INonBodyParameter =
+  | IHeaderParameterSubSchema
+  | IFormDataParameterSubSchema
+  | IQueryParameterSubSchema
+  | IPathParameterSubSchema;
 
-export type IParameter = IBodyParameter | INonBodyParameter
+export type IParameter = IBodyParameter | INonBodyParameter;
 
 export interface ISchema {
   $ref?: string;
@@ -391,7 +395,7 @@ export interface IPrimitivesItems {
   [k: string]: IVendorExtension;
 }
 
-export type ISecurity = ISecurityRequirement[]
+export type ISecurity = ISecurityRequirement[];
 
 export interface ISecurityRequirement {
   [k: string]: string[];
@@ -414,7 +418,13 @@ export interface ITag {
 }
 
 export interface ISecurityDefinitions {
-  [k: string]: IBasicAuthenticationSecurity | IAPIKeySecurity | IOauth2ImplicitSecurity | IOauth2PasswordSecurity | IOauth2ApplicationSecurity | IOauth2AccessCodeSecurity;
+  [k: string]:
+    | IBasicAuthenticationSecurity
+    | IAPIKeySecurity
+    | IOauth2ImplicitSecurity
+    | IOauth2PasswordSecurity
+    | IOauth2ApplicationSecurity
+    | IOauth2AccessCodeSecurity;
 }
 
 export interface IBasicAuthenticationSecurity {
@@ -472,45 +482,45 @@ export interface IOauth2Scopes {
   [k: string]: string;
 }
 
-export type IMediaTypeList = IMimeType[]
+export type IMediaTypeList = IMimeType[];
 
-export type IParametersList = Array<IParameter | IJSONReference | any>
+export type IParametersList = Array<IParameter | IJSONReference | any>;
 
-export type ISchemesList = Array<keyof typeof SchemesListItems>
+export type ISchemesList = Array<keyof typeof SchemesListItems>;
 
-export type ICollectionFormat = keyof typeof CollectionFormat
+export type ICollectionFormat = keyof typeof CollectionFormat;
 
-export type ICollectionFormatWithMulti = keyof typeof CollectionFormatWithMulti
+export type ICollectionFormatWithMulti = keyof typeof CollectionFormatWithMulti;
 
-export type ITitle = string
+export type ITitle = string;
 
-export type IDescription = string
+export type IDescription = string;
 
-export type IDefault = any
+export type IDefault = any;
 
-export type IMultipleOf = number
+export type IMultipleOf = number;
 
-export type IMaximum = number
+export type IMaximum = number;
 
-export type IExclusiveMaximum = boolean
+export type IExclusiveMaximum = boolean;
 
-export type IMinimum = number
+export type IMinimum = number;
 
-export type IExclusiveMinimum = boolean
+export type IExclusiveMinimum = boolean;
 
-export type IMaxLength = number
+export type IMaxLength = number;
 
-export type IMinLength = number
+export type IMinLength = number;
 
-export type IPattern = string
+export type IPattern = string;
 
-export type IMaxItems = number
+export type IMaxItems = number;
 
-export type IMinItems = number
+export type IMinItems = number;
 
-export type IUniqueItems = boolean
+export type IUniqueItems = boolean;
 
-export type IEnum = any[]
+export type IEnum = any[];
 
 export interface IJSONReference {
   $ref: string;

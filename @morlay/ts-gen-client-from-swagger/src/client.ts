@@ -1,33 +1,14 @@
-import {
-  Decl,
-  Identifier,
-  ModuleExport,
-  ModuleImport,
-  Value
-} from "@morlay/ts-gen-core";
+import { Decl, Identifier, ModuleExport, ModuleImport, Value } from "@morlay/ts-gen-core";
 import {
   IJSONSchema,
   pickSideDefs,
   toDeclaration,
   toLowerCamelCase,
-  toTypings
+  toTypings,
 } from "@morlay/ts-gen-definitions-from-json-schema";
 import * as lodash from "lodash";
-import {
-  IBodyParameter,
-  IOperation,
-  IParameter,
-  IResponses,
-  ISchema,
-  ISwagger
-} from "./interfaces/Swagger";
-import {
-  filterParametersIn,
-  IClientOpts,
-  mayToAliasID,
-  mayToId,
-  urlToTemplate
-} from "./utils";
+import { IBodyParameter, IOperation, IParameter, IResponses, ISchema, ISwagger } from "./interfaces/Swagger";
+import { filterParametersIn, IClientOpts, mayToAliasID, mayToId, urlToTemplate } from "./utils";
 
 export type IMethod = "get" | "delete" | "head" | "post" | "put" | "patch";
 
@@ -54,8 +35,8 @@ export const getDefinitions = (swagger: ISwagger): string => {
 export const toSchema = (parameter: IParameter): IParameter =>
   "schema" in parameter
     ? lodash.assign(parameter, (parameter as IBodyParameter).schema, {
-      name: "body"
-    })
+        name: "body",
+      })
     : parameter;
 
 export const pickRequiredList = (parameters: IParameter[]): string[] =>
@@ -67,7 +48,7 @@ export const pickRequiredList = (parameters: IParameter[]): string[] =>
       }
       return result;
     },
-    ["body"] as string[]
+    ["body"] as string[],
   );
 
 const createParameterObject = (parameters: IParameter[]) =>
@@ -78,7 +59,7 @@ const createParameterObject = (parameters: IParameter[]) =>
         return Identifier.of(String(Value.of(parameter.name))).valueOf(Identifier.of(mayToAliasID(propName)));
       }
       return Identifier.of(parameter.name).valueOf(Identifier.of(mayToAliasID(propName)));
-    })
+    }),
   );
 
 export const getReqParamSchema = (parameters: IParameter[]): IJSONSchema => ({
@@ -95,12 +76,12 @@ export const getReqParamSchema = (parameters: IParameter[]): IJSONSchema => ({
       }
 
       return lodash.assign(properties, {
-        [propName]: schema
+        [propName]: schema,
       });
     },
-    {}
+    {},
   ),
-  required: pickRequiredList(parameters)
+  required: pickRequiredList(parameters),
 });
 
 const getRespBodySchema = (responses: IResponses) => {
@@ -122,14 +103,14 @@ export const getOperations = (operation: IExtraOperation, clientOpts: IClientOpt
       if (parameter.in === "body") {
         return {
           ...parameter,
-          name: "body"
+          name: "body",
         };
       }
       return parameter;
     })
     .map((parameter: IParameter) => ({
       ...parameter,
-      id: [operation.operationId, parameter.name].join("_")
+      id: [operation.operationId, parameter.name].join("_"),
     }));
 
   const query = filterParametersIn("query")(parameters);
@@ -145,7 +126,7 @@ export const getOperations = (operation: IExtraOperation, clientOpts: IClientOpt
 
   const members = [
     Identifier.of("method").valueOf(Value.of(lodash.toUpper(operation.method))),
-    Identifier.of("url").valueOf(new Value(urlToTemplate(operation.path)))
+    Identifier.of("url").valueOf(new Value(urlToTemplate(operation.path))),
   ];
 
   if (query.length) {
@@ -177,7 +158,7 @@ export const getOperations = (operation: IExtraOperation, clientOpts: IClientOpt
   const callFunc = Identifier.of(clientOpts.clientLib.method)
     .generics(
       parameters.length ? toTypings(getReqParamSchema(parameters as IParameter[])) : Identifier.of("void"),
-      toTypings(respbodySchema || { type: "null" })
+      toTypings(respbodySchema || { type: "null" }),
     )
     .paramsWith(Identifier.of(String(Value.of(operationUiq))), callbackFunc);
 
@@ -190,9 +171,9 @@ export const getClient = (swagger: ISwagger, clientOpts: IClientOpts) => {
       return {
         ...operation,
         method,
-        path
+        path,
       };
-    })
+    }),
   ) as any);
 
   operations = lodash.sortBy(operations, (op: IExtraOperation) => op.operationId);
@@ -204,9 +185,9 @@ export const getClient = (swagger: ISwagger, clientOpts: IClientOpts) => {
           ModuleImport.from(clientOpts.clientLib.path)
             .membersAs(Identifier.of(clientOpts.clientLib.method))
             .toString(),
-          lodash.map(operations, (op) => getOperations(op as IExtraOperation, clientOpts))
+          lodash.map(operations, (op) => getOperations(op as IExtraOperation, clientOpts)),
         )
-        .join("\n\n")
+        .join("\n\n"),
     ) +
     "\n\n" +
     getDefinitions(swagger)

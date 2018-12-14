@@ -1,14 +1,15 @@
-import {
-  Identifier,
-  Value
-} from "@morlay/ts-gen-core";
+import { Identifier, Value } from "@morlay/ts-gen-core";
 import { toLowerCamelCase } from "@morlay/ts-gen-definitions-from-json-schema";
 import * as lodash from "lodash";
 import { IParameter } from "./interfaces/Swagger";
 
-export const urlToTemplate = (url: string = "") => `\`${url.replace(/\{([^}]+)\}/g, (_, $1): string => {
-  return `\${${mayToAliasID($1)}}`;
-})}\``;
+export const urlToTemplate = (url: string = "") =>
+  `\`${url.replace(
+    /\{([^}]+)\}/g,
+    (_, $1): string => {
+      return `\${${mayToAliasID($1)}}`;
+    },
+  )}\``;
 
 export const reservedWords = [
   "abstract",
@@ -72,7 +73,7 @@ export const reservedWords = [
   "volatile",
   "while",
   "with",
-  "yield"
+  "yield",
 ];
 
 export const filterParametersIn = (position: string) => {
@@ -98,7 +99,6 @@ export interface IClientOpts {
   };
 }
 
-
 export const mayToId = (id: string): string => (isIdentifier(id) ? id : toLowerCamelCase(id));
 export const mayToAliasID = (id: string) => mayToId(`p-${id}`);
 
@@ -110,5 +110,5 @@ export const createParameterObject = (parameters: IParameter[]) =>
         return Identifier.of(String(Value.of(parameter.name))).valueOf(Identifier.of(mayToAliasID(propName)));
       }
       return Identifier.of(parameter.name).valueOf(Identifier.of(mayToAliasID(propName)));
-    })
+    }),
   );

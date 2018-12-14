@@ -1,18 +1,14 @@
-import {
-  createRequest,
-} from "./utils"
+import { createRequest } from "./utils";
 
-export const formMultipartWithFile = createRequest<{
-  data?: IPet;
-  file: File | Blob;
-  slice?: string[];
-  string?: string;
-}, null>("pets.FormMultipartWithFile", ({
-  data: pData,
-  file: pFile,
-  slice: pSlice,
-  string: pString,
-}) => {
+export const formMultipartWithFile = createRequest<
+  {
+    data?: IPet;
+    file: File | Blob;
+    slice?: string[];
+    string?: string;
+  },
+  null
+>("pets.FormMultipartWithFile", ({ data: pData, file: pFile, slice: pSlice, string: pString }) => {
   return {
     method: "POST",
     url: `/demo/forms/multipart`,
@@ -26,13 +22,14 @@ export const formMultipartWithFile = createRequest<{
       "Content-Type": "multipart/form-data",
     },
   };
-})
+});
 
-export const formMultipartWithFiles = createRequest<{
-  files: Array<File | Blob>;
-}, null>("pets.FormMultipartWithFiles", ({
-  files: pFiles,
-}) => {
+export const formMultipartWithFiles = createRequest<
+  {
+    files: Array<File | Blob>;
+  },
+  null
+>("pets.FormMultipartWithFiles", ({ files: pFiles }) => {
   return {
     method: "POST",
     url: `/demo/forms/multipart-with-files`,
@@ -43,17 +40,16 @@ export const formMultipartWithFiles = createRequest<{
       "Content-Type": "multipart/form-data",
     },
   };
-})
+});
 
-export const formURLEncoded = createRequest<{
-  data: IPet;
-  slice: string[];
-  string: string;
-}, null>("pets.FormURLEncoded", ({
-  data: pData,
-  slice: pSlice,
-  string: pString,
-}) => {
+export const formURLEncoded = createRequest<
+  {
+    data: IPet;
+    slice: string[];
+    string: string;
+  },
+  null
+>("pets.FormURLEncoded", ({ data: pData, slice: pSlice, string: pString }) => {
   return {
     method: "POST",
     url: `/demo/forms/url-encoded`,
@@ -66,13 +62,14 @@ export const formURLEncoded = createRequest<{
       "Content-Type": "application/x-www-form-urlencoded",
     },
   };
-})
+});
 
-export const addPet = createRequest<{
-  body: INewPet;
-}, IPet>("pets.addPet", ({
-  body: pBody,
-}) => {
+export const addPet = createRequest<
+  {
+    body: INewPet;
+  },
+  IPet
+>("pets.addPet", ({ body: pBody }) => {
   return {
     method: "POST",
     url: `/pets`,
@@ -81,37 +78,39 @@ export const addPet = createRequest<{
       "Content-Type": "application/json",
     },
   };
-})
+});
 
-export const deletePet = createRequest<{
-  id: number;
-}, null>("pets.deletePet", ({
-  id: pID,
-}) => {
+export const deletePet = createRequest<
+  {
+    id: number;
+  },
+  null
+>("pets.deletePet", ({ id: pID }) => {
   return {
     method: "DELETE",
     url: `/pets/${pID}`,
   };
-})
+});
 
-export const findPetByID = createRequest<{
-  id: number;
-}, IPet>("pets.find pet by id", ({
-  id: pID,
-}) => {
+export const findPetByID = createRequest<
+  {
+    id: number;
+  },
+  IPet
+>("pets.find pet by id", ({ id: pID }) => {
   return {
     method: "GET",
     url: `/pets/${pID}`,
   };
-})
+});
 
-export const findPets = createRequest<{
-  tags?: string[];
-  limit?: number;
-}, IPet[]>("pets.findPets", ({
-  tags: pTags,
-  limit: pLimit,
-}) => {
+export const findPets = createRequest<
+  {
+    tags?: string[];
+    limit?: number;
+  },
+  IPet[]
+>("pets.findPets", ({ tags: pTags, limit: pLimit }) => {
   return {
     method: "GET",
     url: `/pets`,
@@ -120,7 +119,7 @@ export const findPets = createRequest<{
       limit: pLimit,
     },
   };
-})
+});
 
 export interface IError {
   code: number;

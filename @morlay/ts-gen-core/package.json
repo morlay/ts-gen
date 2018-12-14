@@ -1,0 +1,14 @@
+{
+  "name": "@morlay/ts-gen-core",
+  "version": "0.8.1",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "types": "src/index.ts",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "license": "WTFPL",
+  "author": "Morlay Null <morlay.null@gmail.com>",
+  "description": ""
+}
