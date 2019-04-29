@@ -149,13 +149,13 @@ export const toTypings = (schema: IJSONSchema): Type => {
       return Type.tupleOf(...lodash.map(schema.items, toTypings));
     }
 
-    const additionalItems = schema.additionalItems === true ? {} : schema.additionalItems;
+    const arrayItem = (items: IJSONSchema | IJSONSchema[] = {}) => {
+      const additionalItems = schema.additionalItems === true ? {} : schema.additionalItems;
 
-    return Type.arrayOf(
-      Type.unionOf(
+      return Type.unionOf(
         ...lodash.map(
           ([] as IJSONSchema[])
-            .concat(schema.items || {})
+            .concat(items)
             .map((items) => ({
               ...items,
               id: items.id || [schema.id, "items"].join("_"),
@@ -163,8 +163,14 @@ export const toTypings = (schema: IJSONSchema): Type => {
             .concat(lodash.has(schema, "additionalItems") ? (additionalItems as any) : []),
           toTypings,
         ),
-      ),
-    );
+      );
+    };
+
+    if (schema.maxItems && schema.maxItems === schema.minItems) {
+      return Type.tupleOf(...lodash.times(schema.maxItems).map(() => arrayItem(schema.items)));
+    }
+
+    return Type.arrayOf(arrayItem(schema.items));
   }
 
   if (isStringType(schema)) {

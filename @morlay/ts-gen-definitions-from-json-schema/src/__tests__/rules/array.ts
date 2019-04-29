@@ -59,4 +59,14 @@ export const cases = [
     },
     result: "[string, number]",
   },
+  {
+    schema: {
+      items: {
+        type: "string",
+      },
+      minItems: 2,
+      maxItems: 2,
+    },
+    result: "[string, string]",
+  },
 ];
