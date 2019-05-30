@@ -1,4 +1,4 @@
-import { Decl, Identifier, ModuleExport, Type, Value } from "@morlay/ts-gen-core";
+import { Decl, Identifier, safeKey, ModuleExport, Type, Value } from "@morlay/ts-gen-core";
 import * as lodash from "lodash";
 import { IJSONSchema, ISimpleTypes } from "./interfaces";
 import {
@@ -65,7 +65,7 @@ export const toTypings = (schema: IJSONSchema): Type => {
             id.valueOf(
               Type.enumOf(
                 ...lodash.map(schema.enum, (value: any) =>
-                  Identifier.of(JSON.stringify(value)).valueOf(Identifier.of(JSON.stringify(value))),
+                  Identifier.of(safeKey(value)).valueOf(Identifier.of(JSON.stringify(value))),
                 ),
               ),
             ),
@@ -119,7 +119,7 @@ export const toTypings = (schema: IJSONSchema): Type => {
     const mayWithAdditionalPropertiesTypes = lodash.concat(patternPropertiesTypes, additionalPropertyType || []);
 
     let props = lodash.map(schema.properties || {}, (subSchema: IJSONSchema, key: string) => {
-      let id = Identifier.of(key);
+      let id = Identifier.of(safeKey(key));
 
       if (lodash.indexOf(schema.required || [], key) === -1) {
         id = id.asOptional();

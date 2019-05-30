@@ -1,87 +1,87 @@
 export enum HeaderType {
-  "string" = "string",
-  "number" = "number",
-  "integer" = "integer",
+  string = "string",
+  number = "number",
+  integer = "integer",
   "boolean" = "boolean",
-  "array" = "array",
+  array = "array",
 }
 
 export enum HeaderParameterSubSchemaType {
-  "string" = "string",
-  "number" = "number",
+  string = "string",
+  number = "number",
   "boolean" = "boolean",
-  "integer" = "integer",
-  "array" = "array",
+  integer = "integer",
+  array = "array",
 }
 
 export enum QueryParameterSubSchemaType {
-  "string" = "string",
-  "number" = "number",
+  string = "string",
+  number = "number",
   "boolean" = "boolean",
-  "integer" = "integer",
-  "array" = "array",
+  integer = "integer",
+  array = "array",
 }
 
 export enum FormDataParameterSubSchemaType {
-  "string" = "string",
-  "number" = "number",
+  string = "string",
+  number = "number",
   "boolean" = "boolean",
-  "integer" = "integer",
-  "array" = "array",
-  "file" = "file",
+  integer = "integer",
+  array = "array",
+  file = "file",
 }
 
 export enum PathParameterSubSchemaType {
-  "string" = "string",
-  "number" = "number",
+  string = "string",
+  number = "number",
   "boolean" = "boolean",
-  "integer" = "integer",
-  "array" = "array",
+  integer = "integer",
+  array = "array",
 }
 
 export enum SimpleTypes {
-  "array" = "array",
+  array = "array",
   "boolean" = "boolean",
-  "integer" = "integer",
+  integer = "integer",
   "null" = "null",
-  "number" = "number",
-  "object" = "object",
-  "string" = "string",
+  number = "number",
+  object = "object",
+  string = "string",
 }
 
 export enum PrimitivesItemsType {
-  "string" = "string",
-  "number" = "number",
-  "integer" = "integer",
+  string = "string",
+  number = "number",
+  integer = "integer",
   "boolean" = "boolean",
-  "array" = "array",
+  array = "array",
 }
 
 export enum APIKeySecurityIn {
-  "header" = "header",
-  "query" = "query",
+  header = "header",
+  query = "query",
 }
 
 export enum SchemesListItems {
-  "http" = "http",
-  "https" = "https",
-  "ws" = "ws",
-  "wss" = "wss",
+  http = "http",
+  https = "https",
+  ws = "ws",
+  wss = "wss",
 }
 
 export enum CollectionFormat {
-  "csv" = "csv",
-  "ssv" = "ssv",
-  "tsv" = "tsv",
-  "pipes" = "pipes",
+  csv = "csv",
+  ssv = "ssv",
+  tsv = "tsv",
+  pipes = "pipes",
 }
 
 export enum CollectionFormatWithMulti {
-  "csv" = "csv",
-  "ssv" = "ssv",
-  "tsv" = "tsv",
-  "pipes" = "pipes",
-  "multi" = "multi",
+  csv = "csv",
+  ssv = "ssv",
+  tsv = "tsv",
+  pipes = "pipes",
+  multi = "multi",
 }
 
 export interface IInfo {

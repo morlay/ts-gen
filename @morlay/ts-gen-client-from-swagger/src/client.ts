@@ -1,4 +1,4 @@
-import { Decl, Identifier, ModuleExport, ModuleImport, Value } from "@morlay/ts-gen-core";
+import { Decl, Identifier, ModuleExport, ModuleImport, safeKey, Value } from "@morlay/ts-gen-core";
 import {
   IJSONSchema,
   pickSideDefs,
@@ -56,7 +56,7 @@ const createParameterObject = (parameters: IParameter[]) =>
     ...lodash.map(parameters, (parameter) => {
       const propName = mayToId(parameter.name || "");
       if (propName !== parameter.name) {
-        return Identifier.of(String(Value.of(parameter.name))).valueOf(Identifier.of(mayToAliasID(propName)));
+        return Identifier.of(safeKey(parameter.name || "")).valueOf(Identifier.of(mayToAliasID(propName)));
       }
       return Identifier.of(parameter.name).valueOf(Identifier.of(mayToAliasID(propName)));
     }),
@@ -72,7 +72,7 @@ export const getReqParamSchema = (parameters: IParameter[]): IJSONSchema => ({
       let propName = mayToId(parameter.name || "");
 
       if (parameter.name !== propName) {
-        propName = String(Value.of(parameter.name));
+        propName = parameter.name || "";
       }
 
       return lodash.assign(properties, {
