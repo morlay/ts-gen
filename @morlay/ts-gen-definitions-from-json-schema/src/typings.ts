@@ -65,7 +65,7 @@ export const toTypings = (schema: IJSONSchema): Type => {
             id.valueOf(
               Type.enumOf(
                 ...lodash.map(schema.enum, (value: any) =>
-                  Identifier.of(value).valueOf(Identifier.of(JSON.stringify(value))),
+                  Identifier.of(JSON.stringify(value)).valueOf(Identifier.of(JSON.stringify(value))),
                 ),
               ),
             ),

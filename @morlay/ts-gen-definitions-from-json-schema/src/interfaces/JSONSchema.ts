@@ -1,11 +1,11 @@
 export enum SimpleTypes {
-  array = "array",
-  boolean = "boolean",
-  integer = "integer",
-  null = "null",
-  number = "number",
-  object = "object",
-  string = "string",
+  "array" = "array",
+  "boolean" = "boolean",
+  "integer" = "integer",
+  "null" = "null",
+  "number" = "number",
+  "object" = "object",
+  "string" = "string",
 }
 
 export type ISchemaArray = IJSONSchema[];

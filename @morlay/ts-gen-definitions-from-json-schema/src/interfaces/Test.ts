@@ -1,6 +1,6 @@
 export enum TestBaseID2 {
-  V1 = "V1",
-  V2 = "V2",
+  "V1" = "V1",
+  "V2" = "V2",
 }
 
 export interface ITestBase {

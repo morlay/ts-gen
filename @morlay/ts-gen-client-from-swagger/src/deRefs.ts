@@ -4,7 +4,7 @@ import { ISchema } from "./interfaces/Swagger";
 export const isObjectSchema = (schema: ISchema) => schema.type === "object" || has(schema, "properties");
 export const isArraySchema = (schema: ISchema) => schema.type === "array" || has(schema, "items");
 
-export function deRefs<T>(schema: any, definitions: Dictionary<ISchema>): T {
+export function deRefs<T extends {}>(schema: any, definitions: Dictionary<ISchema>): T {
   if (typeof schema === "undefined") {
     return {} as T;
   }
