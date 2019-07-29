@@ -72,7 +72,7 @@ export const getReqParamSchema = (parameters: IParameter[]): IJSONSchema => {
         let propName = mayToId(parameter.name || "");
 
         if (parameter.name !== propName) {
-          propName = String(Value.of(parameter.name));
+          propName = parameter.name || "";
         }
 
         return lodash.assign(properties, {
