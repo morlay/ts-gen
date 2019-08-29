@@ -36,12 +36,9 @@ export const getDefinitions = (openAPI: IOpenAPI): string => {
   definitions = lodash.pick(definitions, sortedKeys);
 
   const definitionString: string = lodash
-    .map(
-      definitions,
-      (definition: ISchema, id: string): string => {
-        return toDeclaration(lodash.assign(definition, { id }));
-      },
-    )
+    .map(definitions, (definition: ISchema, id: string): string => {
+      return toDeclaration(lodash.assign(definition, { id }));
+    })
     .join("\n\n");
 
   return pickSideDefs(definitionString);
@@ -80,7 +77,7 @@ export const getReqParamSchema = (parameters: IParameter[]): IJSONSchema => {
         });
       },
       {},
-    ),
+    ) as Dictionary<IJSONSchema>,
     required: pickRequiredList(parameters),
   };
 };
