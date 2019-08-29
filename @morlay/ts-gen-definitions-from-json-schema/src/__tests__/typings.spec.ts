@@ -12,7 +12,6 @@ const rules = {
   any: require("./rules/any"),
   anyOf: require("./rules/anyOf"),
   array: require("./rules/array"),
-  arrayType: require("./rules/arrayType"),
   boolean: require("./rules/boolean"),
   enum: require("./rules/enum"),
   null: require("./rules/null"),

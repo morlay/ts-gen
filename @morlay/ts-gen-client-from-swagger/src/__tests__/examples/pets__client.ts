@@ -51,7 +51,7 @@ export const findPetByID = createRequest<
   };
 });
 
-export const findPets = createRequest<void, IPet[]>("pets.findPets", () => {
+export const findPets = createRequest<void, [IPet][]>("pets.findPets", () => {
   return {
     method: "GET",
     url: `/pets`,

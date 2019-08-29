@@ -8,40 +8,46 @@ export enum SimpleTypes {
   string = "string",
 }
 
+export type ISchemaOrBoolean = IJSONSchema | boolean;
+
 export type ISchemaArray = IJSONSchema[];
 
-export type IPositiveInteger = number;
+export type INonNegativeInteger = number;
 
-export type IPositiveIntegerDefault0 = IPositiveInteger;
+export type INonNegativeIntegerDefault0 = INonNegativeInteger;
 
 export type ISimpleTypes = keyof typeof SimpleTypes;
 
 export type IStringArray = string[];
 
 export interface IJSONSchema {
-  id?: string;
-  $ref?: string;
+  $id?: string;
   $schema?: string;
+  $ref?: string;
+  $comment?: string;
   title?: string;
   description?: string;
   default?: any;
+  readOnly?: boolean;
+  examples?: any[];
   multipleOf?: number;
   maximum?: number;
   exclusiveMaximum?: boolean;
   minimum?: number;
   exclusiveMinimum?: boolean;
-  maxLength?: IPositiveInteger;
-  minLength?: IPositiveIntegerDefault0;
+  maxLength?: INonNegativeInteger;
+  minLength?: INonNegativeIntegerDefault0;
   pattern?: string;
-  additionalItems?: boolean | IJSONSchema;
+  additionalItems?: ISchemaOrBoolean;
   items?: IJSONSchema | ISchemaArray;
-  maxItems?: IPositiveInteger;
-  minItems?: IPositiveIntegerDefault0;
+  maxItems?: INonNegativeInteger;
+  minItems?: INonNegativeIntegerDefault0;
   uniqueItems?: boolean;
-  maxProperties?: IPositiveInteger;
-  minProperties?: IPositiveIntegerDefault0;
+  contains?: IJSONSchema;
+  maxProperties?: INonNegativeInteger;
+  minProperties?: INonNegativeIntegerDefault0;
   required?: IStringArray;
-  additionalProperties?: boolean | IJSONSchema;
+  additionalProperties?: ISchemaOrBoolean;
   definitions?: {
     [k: string]: IJSONSchema;
   };
@@ -54,8 +60,15 @@ export interface IJSONSchema {
   dependencies?: {
     [k: string]: IJSONSchema | IStringArray;
   };
+  propertyNames?: IJSONSchema;
   enum?: any[];
-  type?: ISimpleTypes | ISimpleTypes[];
+  type?: ISimpleTypes;
+  format?: string;
+  contentMediaType?: string;
+  contentEncoding?: string;
+  if?: IJSONSchema;
+  then?: IJSONSchema;
+  else?: IJSONSchema;
   allOf?: ISchemaArray;
   anyOf?: ISchemaArray;
   oneOf?: ISchemaArray;

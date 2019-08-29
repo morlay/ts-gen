@@ -120,6 +120,10 @@ export class Type extends Stringable implements IType {
     return Type.of(stringifyArray(...types.map(String)));
   }
 
+  static additionalTupleOf(additionalType: Type, ...types: Type[]) {
+    return Type.of(stringifyArray(...types.map(String), `...${additionalType}[]`));
+  }
+
   static intersectionOf(...types: Type[]) {
     return Type.of(types.join(" & "));
   }

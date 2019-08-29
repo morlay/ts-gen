@@ -1,3 +1,5 @@
+import { IJSONSchema } from "../../interfaces";
+
 export default {
   allOf: [
     {
@@ -28,4 +30,4 @@ export default {
       },
     },
   },
-};
+} as IJSONSchema;

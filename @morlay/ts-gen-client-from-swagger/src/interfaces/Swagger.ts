@@ -136,7 +136,7 @@ export interface IExamples {
 export type IMimeType = string;
 
 export interface IOperation {
-  tags?: string[];
+  tags?: [string][];
   summary?: string;
   description?: string;
   externalDocs?: IExternalDocs;
@@ -344,12 +344,12 @@ export interface ISchema {
   uniqueItems?: boolean;
   maxProperties?: number;
   minProperties?: number;
-  required?: string[];
-  enum?: any[];
+  required?: [string][];
+  enum?: [any][];
   additionalProperties?: ISchema | boolean;
-  type?: keyof typeof SimpleTypes | Array<keyof typeof SimpleTypes>;
-  items?: ISchema | ISchema[];
-  allOf?: ISchema[];
+  type?: keyof typeof SimpleTypes | Array<[keyof typeof SimpleTypes]>;
+  items?: ISchema | [ISchema][];
+  allOf?: [ISchema][];
   properties?: {
     [k: string]: ISchema;
   };
@@ -366,7 +366,7 @@ export interface IFileSchema {
   title?: string;
   description?: string;
   default?: any;
-  required?: string[];
+  required?: [string][];
   type: "file";
   readOnly?: boolean;
   externalDocs?: IExternalDocs;
@@ -395,10 +395,10 @@ export interface IPrimitivesItems {
   [k: string]: IVendorExtension;
 }
 
-export type ISecurity = ISecurityRequirement[];
+export type ISecurity = [ISecurityRequirement][];
 
 export interface ISecurityRequirement {
-  [k: string]: string[];
+  [k: string]: [string][];
 }
 
 export interface IXML {
@@ -482,11 +482,11 @@ export interface IOauth2Scopes {
   [k: string]: string;
 }
 
-export type IMediaTypeList = IMimeType[];
+export type IMediaTypeList = [IMimeType][];
 
-export type IParametersList = Array<IParameter | IJSONReference | any>;
+export type IParametersList = Array<[IParameter | IJSONReference, any]>;
 
-export type ISchemesList = Array<keyof typeof SchemesListItems>;
+export type ISchemesList = Array<[keyof typeof SchemesListItems]>;
 
 export type ICollectionFormat = keyof typeof CollectionFormat;
 
@@ -520,7 +520,7 @@ export type IMinItems = number;
 
 export type IUniqueItems = boolean;
 
-export type IEnum = any[];
+export type IEnum = [any][];
 
 export interface IJSONReference {
   $ref: string;
@@ -540,7 +540,7 @@ export interface ISwagger {
   responses?: IResponseDefinitions;
   security?: ISecurity;
   securityDefinitions?: ISecurityDefinitions;
-  tags?: ITag[];
+  tags?: [ITag][];
   externalDocs?: IExternalDocs;
   [k: string]: IVendorExtension;
 }

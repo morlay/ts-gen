@@ -32,32 +32,27 @@ export const cases = [
 }>`,
   },
   {
-    // TODO additional Tuple ?
     schema: {
-      items: [
-        {
-          type: "string",
-        },
-        {
-          type: "integer",
-        },
-      ],
-    },
-    result: "Array<string | number>",
-  },
-  {
-    schema: {
-      items: [
-        {
-          type: "string",
-        },
-        {
-          type: "integer",
-        },
-      ],
+      items: [{ type: "string" }, { type: "integer" }],
       additionalItems: false,
     },
     result: "[string, number]",
+  },
+  {
+    schema: {
+      items: [{ type: "string" }, { type: "integer" }],
+      additionalItems: true,
+    },
+    result: "[string, number, ...any[]]",
+  },
+  {
+    schema: {
+      items: [{ type: "string" }, { type: "integer" }],
+      additionalItems: {
+        type: "string",
+      },
+    },
+    result: "[string, number, ...string[]]",
   },
   {
     schema: {

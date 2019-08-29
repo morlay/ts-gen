@@ -1,4 +1,23 @@
-import * as lodash from "lodash";
+import {
+  cloneDeep,
+  cloneDeepWith,
+  drop,
+  first,
+  get,
+  has,
+  isArray,
+  isEmpty,
+  isObject,
+  isString,
+  last,
+  reduce,
+  some,
+  split,
+  toLower,
+  toUpper,
+  upperFirst,
+  words,
+} from "lodash";
 import { IJSONSchema } from "./interfaces";
 
 export interface IImports {
@@ -6,35 +25,35 @@ export interface IImports {
 }
 
 const resolveRef = (imports: IImports) => (value: any): any => {
-  if (!lodash.isArray(value) && lodash.isObject(value)) {
-    const ref = lodash.get(value, "$ref");
+  if (!isArray(value) && isObject(value)) {
+    const ref = get(value, "$ref");
 
-    if (lodash.isString(ref)) {
-      const [importRef, keyPath] = lodash.split(ref, "#");
+    if (isString(ref)) {
+      const [importRef, keyPath] = split(ref, "#");
 
-      const keyPathArr = lodash.drop(lodash.split(keyPath, "/"));
+      const keyPathArr = drop(split(keyPath, "/"));
 
-      if (lodash.isEmpty(importRef)) {
+      if (isEmpty(importRef)) {
         if (imports["#"]) {
           return {
-            ...lodash.cloneDeep(lodash.get(imports["#"], keyPathArr)),
-            id: lodash.last(keyPathArr),
+            ...cloneDeep(get(imports["#"], keyPathArr)),
+            id: last(keyPathArr),
           };
         }
 
-        if (keyPathArr.length === 2 && lodash.first(keyPathArr) === "definitions") {
+        if (keyPathArr.length === 2 && first(keyPathArr) === "definitions") {
           return {
-            $ref: `#/definitions/${lodash.last(keyPathArr)}`,
+            $ref: `#/definitions/${last(keyPathArr)}`,
           };
         }
       }
 
-      if (!lodash.has(imports, importRef)) {
+      if (!has(imports, importRef)) {
         throw new Error(`missing import ${importRef}`);
       }
 
-      return lodash.cloneDeepWith(
-        lodash.get(imports[importRef], keyPathArr),
+      return cloneDeepWith(
+        get(imports[importRef], keyPathArr),
         resolveRef({
           "#": imports[importRef],
         }),
@@ -45,12 +64,18 @@ const resolveRef = (imports: IImports) => (value: any): any => {
   return undefined;
 };
 
-const hasProps = (schema: IJSONSchema, props: string[]): boolean =>
-  lodash.reduce(props, (result: boolean, prop: string) => result || lodash.has(schema, prop), false);
+const hasProps = <T>(schema: T, props: Array<keyof T>): boolean => some(props, (prop: string) => has(schema, prop));
 
 export const isObjectType = (schema: IJSONSchema): boolean =>
   schema.type === "object" ||
-  hasProps(schema, ["properties", "additionalProperties", "patternProperties", "maxProperties", "minProperties"]);
+  hasProps(schema, [
+    "properties",
+    "additionalProperties",
+    "patternProperties",
+    "maxProperties",
+    "minProperties",
+    "propertyNames",
+  ]);
 
 export const isArrayType = (schema: IJSONSchema): boolean =>
   schema.type === "array" || hasProps(schema, ["items", "additionalItems", "maxItems", "minItems", "uniqueItems"]);
@@ -59,14 +84,15 @@ export const isNumberType = (schema: IJSONSchema): boolean =>
   schema.type === "number" || schema.type === "integer" || hasProps(schema, ["maximum", "minimum"]);
 
 export const isStringType = (schema: IJSONSchema): boolean =>
-  schema.type === "string" || hasProps(schema, ["maxLength", "minLength"]);
+  schema.type === "string" ||
+  hasProps(schema, ["maxLength", "minLength", "format", "pattern", "contentMediaType", "contentEncoding"]);
 
 export const isNullType = (schema: IJSONSchema): boolean => schema.type === "null";
 
 export const isBooleanType = (schema: IJSONSchema): boolean => schema.type === "boolean";
 
 export const toSingleSchema = (schema: IJSONSchema, imports: IImports): IJSONSchema => {
-  return lodash.cloneDeepWith(schema, resolveRef(imports));
+  return cloneDeepWith(schema, resolveRef(imports));
 };
 
 // https://github.com/golang/lint/blob/master/lint.go#L720
@@ -112,16 +138,16 @@ const commonInitialisms = {
 };
 
 export const toCamel = (word: string): string => {
-  const upperString = lodash.toUpper(word);
-  if (lodash.has(commonInitialisms, upperString)) {
+  const upperString = toUpper(word);
+  if (has(commonInitialisms, upperString)) {
     return upperString;
   }
-  return lodash.upperFirst(lodash.toLower(upperString));
+  return upperFirst(toLower(upperString));
 };
 
 export const toUpperCamelCase = (s: string): string => {
-  return lodash.reduce(
-    lodash.words(s),
+  return reduce(
+    words(s),
     (result, word) => {
       return result + toCamel(word);
     },
@@ -130,10 +156,10 @@ export const toUpperCamelCase = (s: string): string => {
 };
 
 export const toLowerCamelCase = (s: string): string => {
-  return lodash.reduce(
-    lodash.words(s),
+  return reduce(
+    words(s),
     (result, word, idx) => {
-      return result + (idx > 0 ? toCamel(word) : lodash.toLower(word));
+      return result + (idx > 0 ? toCamel(word) : toLower(word));
     },
     "",
   );

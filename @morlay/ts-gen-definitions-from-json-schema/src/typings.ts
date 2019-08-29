@@ -1,6 +1,23 @@
-import { Decl, Identifier, safeKey, ModuleExport, Type, Value } from "@morlay/ts-gen-core";
-import * as lodash from "lodash";
-import { IJSONSchema, ISimpleTypes } from "./interfaces";
+import { Decl, Identifier, ModuleExport, safeKey, Type, Value } from "@morlay/ts-gen-core";
+import {
+  assign,
+  concat,
+  filter,
+  forEach,
+  indexOf,
+  isArray,
+  isEmpty,
+  isObject,
+  keys,
+  last,
+  map,
+  pick,
+  split,
+  times,
+  uniq,
+  values,
+} from "lodash";
+import { IJSONSchema } from "./interfaces";
 import {
   isArrayType,
   isBooleanType,
@@ -18,18 +35,18 @@ export const pickRefName = (schema: IJSONSchema): string => {
   if (schema.$ref === "#") {
     return MAIN_SCHEMA_PLACEHOLDER;
   }
-  const refName = lodash.last(lodash.split(schema.$ref || "", "/")) || "";
+  const refName = last(split(schema.$ref || "", "/")) || "";
   return toSafeId(refName);
 };
 
 export const filterNonTypeSchemas = (schemas: IJSONSchema[]) =>
-  lodash.filter(schemas, (schema) => !!lodash.keys(lodash.pick(schema, ["enum", "type", "$ref"])).length);
+  filter(schemas, (schema) => !!keys(pick(schema, ["enum", "type", "$ref"])).length);
 
 export const extendsableAllOfSchema = (schemas: IJSONSchema[]): [IJSONSchema | undefined, IJSONSchema[]] => {
   const refSchemas: IJSONSchema[] = [];
   let objectSchema: IJSONSchema | undefined;
 
-  lodash.forEach(schemas, (schema) => {
+  forEach(schemas, (schema) => {
     if (isObjectType(schema)) {
       objectSchema = schema;
     }
@@ -57,14 +74,14 @@ export const toTypings = (schema: IJSONSchema): Type => {
   }
 
   if (schema.enum) {
-    if (schema.id && schema.enum.length > 1 && lodash.isNaN(Number(schema.enum[0]))) {
-      const id = Identifier.of(toUpperCamelCase(schema.id));
+    if (schema.$id && schema.enum.length > 1 && isNaN(Number(schema.enum[0]))) {
+      const id = Identifier.of(toUpperCamelCase(schema.$id));
       return Type.of(
         `keyof typeof ${id}${encode(
           Decl.enum(
             id.valueOf(
               Type.enumOf(
-                ...lodash.map(schema.enum, (value: any) =>
+                ...map(schema.enum, (value: any) =>
                   Identifier.of(safeKey(value)).valueOf(Identifier.of(JSON.stringify(value))),
                 ),
               ),
@@ -74,24 +91,20 @@ export const toTypings = (schema: IJSONSchema): Type => {
       );
     }
 
-    return Type.unionOf(...lodash.map(schema.enum, (value: any) => Type.of(Value.of(value))));
+    return Type.unionOf(...map(schema.enum, (value: any) => Type.of(Value.of(value))));
   }
 
   if (schema.allOf) {
-    return Type.intersectionOf(...lodash.map(filterNonTypeSchemas(schema.allOf), toTypings));
-  }
-
-  if (lodash.isArray(schema.type)) {
-    return Type.unionOf(...lodash.map(schema.type, (type: ISimpleTypes) => toTypings(lodash.assign(schema, { type }))));
+    return Type.intersectionOf(...map(filterNonTypeSchemas(schema.allOf), toTypings));
   }
 
   if (schema.anyOf) {
-    return Type.unionOf(...lodash.map(filterNonTypeSchemas(schema.anyOf), toTypings));
+    return Type.unionOf(...map(filterNonTypeSchemas(schema.anyOf), toTypings));
   }
 
   if (schema.oneOf) {
     // TODO xor not support
-    return Type.unionOf(...lodash.map(filterNonTypeSchemas(schema.oneOf), toTypings));
+    return Type.unionOf(...map(filterNonTypeSchemas(schema.oneOf), toTypings));
   }
 
   // TODO find better way
@@ -103,7 +116,7 @@ export const toTypings = (schema: IJSONSchema): Type => {
     let additionalPropertyType: Type | undefined;
     let patternPropertiesTypes: Type[] = [];
 
-    // if (lodash.isEmpty(schema.properties) && !schema.additionalProperties) {
+    // if (isEmpty(schema.properties) && !schema.additionalProperties) {
     //   schema.additionalProperties = true
     // }
 
@@ -113,27 +126,27 @@ export const toTypings = (schema: IJSONSchema): Type => {
     }
 
     if (schema.patternProperties) {
-      patternPropertiesTypes = lodash.map(lodash.values(schema.patternProperties), toTypings) || [];
+      patternPropertiesTypes = map(values(schema.patternProperties), toTypings) || [];
     }
 
-    const mayWithAdditionalPropertiesTypes = lodash.concat(patternPropertiesTypes, additionalPropertyType || []);
+    const mayWithAdditionalPropertiesTypes = concat(patternPropertiesTypes, additionalPropertyType || []);
 
-    let props = lodash.map(schema.properties || {}, (subSchema: IJSONSchema, key: string) => {
+    let props = map(schema.properties || {}, (subSchema: IJSONSchema, key: string) => {
       let id = Identifier.of(safeKey(key));
 
-      if (lodash.indexOf(schema.required || [], key) === -1) {
+      if (indexOf(schema.required || [], key) === -1) {
         id = id.asOptional();
       }
 
       return id.typed(
         toTypings({
           ...subSchema,
-          id: subSchema.id || [schema.id, key].join("_"),
+          $id: subSchema.$id || [schema.$id, key].join("_"),
         }),
       );
     });
 
-    if (!lodash.isEmpty(mayWithAdditionalPropertiesTypes)) {
+    if (!isEmpty(mayWithAdditionalPropertiesTypes)) {
       props = props.concat(
         Identifier.of("")
           .indexBy(Identifier.of("k").typed(Type.string()))
@@ -145,32 +158,26 @@ export const toTypings = (schema: IJSONSchema): Type => {
   }
 
   if (isArrayType(schema)) {
-    if (lodash.isArray(schema.items) && schema.additionalItems === false) {
-      return Type.tupleOf(...lodash.map(schema.items, toTypings));
+    if (isArray(schema.items)) {
+      if (isObject(schema.additionalItems)) {
+        return Type.additionalTupleOf(
+          toTypings(schema.additionalItems as IJSONSchema),
+          ...map(schema.items, toTypings),
+        );
+      }
+
+      if (schema.additionalItems === true) {
+        return Type.additionalTupleOf(toTypings({}), ...map(schema.items, toTypings));
+      }
+
+      return Type.tupleOf(...map(schema.items, toTypings));
     }
-
-    const arrayItem = (items: IJSONSchema | IJSONSchema[] = {}) => {
-      const additionalItems = schema.additionalItems === true ? {} : schema.additionalItems;
-
-      return Type.unionOf(
-        ...lodash.map(
-          ([] as IJSONSchema[])
-            .concat(items)
-            .map((items) => ({
-              ...items,
-              id: items.id || [schema.id, "items"].join("_"),
-            }))
-            .concat(lodash.has(schema, "additionalItems") ? (additionalItems as any) : []),
-          toTypings,
-        ),
-      );
-    };
 
     if (schema.maxItems && schema.maxItems === schema.minItems) {
-      return Type.tupleOf(...lodash.times(schema.maxItems).map(() => arrayItem(schema.items)));
+      return Type.tupleOf(...times(schema.maxItems).map(() => toTypings(schema.items as IJSONSchema)));
     }
 
-    return Type.arrayOf(arrayItem(schema.items));
+    return Type.arrayOf(toTypings(schema.items as IJSONSchema));
   }
 
   if (isStringType(schema)) {
@@ -197,7 +204,7 @@ export const toTypings = (schema: IJSONSchema): Type => {
 
 export const pickSideDefs = (s: string): string => {
   const [result, sideDefs] = decode(s);
-  const uniqedSideDefs = lodash.uniq(sideDefs);
+  const uniqedSideDefs = uniq(sideDefs);
 
   if (uniqedSideDefs.length > 0) {
     return uniqedSideDefs
@@ -210,7 +217,7 @@ export const pickSideDefs = (s: string): string => {
 };
 
 export const toDeclaration = (schema: IJSONSchema): string | never => {
-  if (!schema.id) {
+  if (!schema.$id) {
     throw new Error("Declaration should be need Schema have an `id`");
   }
 
@@ -222,7 +229,7 @@ export const toDeclaration = (schema: IJSONSchema): string | never => {
     if (objectSchema) {
       return `${ModuleExport.decl(
         Decl.interface(
-          Identifier.of(toSafeId(schema.id))
+          Identifier.of(toSafeId(schema.$id))
             .extendsWith(
               ...refSchemas
                 .map(toTypings)
@@ -232,7 +239,7 @@ export const toDeclaration = (schema: IJSONSchema): string | never => {
             .typed(
               toTypings({
                 ...objectSchema,
-                id: schema.id,
+                $id: schema.$id,
               }),
             ),
         ),
@@ -241,22 +248,21 @@ export const toDeclaration = (schema: IJSONSchema): string | never => {
   }
 
   if (isObjectType(schema) && !isArrayType(schema) && !(schema.oneOf || schema.allOf || schema.anyOf)) {
-    return `${ModuleExport.decl(Decl.interface(Identifier.of(toSafeId(schema.id)).typed(type)))}`;
+    return `${ModuleExport.decl(Decl.interface(Identifier.of(toSafeId(schema.$id)).typed(type)))}`;
   }
 
-  return `${ModuleExport.decl(Decl.type(Identifier.of(toSafeId(schema.id)).typed(type)))}`;
+  return `${ModuleExport.decl(Decl.type(Identifier.of(toSafeId(schema.$id)).typed(type)))}`;
 };
 
 export const toDeclarations = (schema: IJSONSchema) => {
   const main = toDeclaration(schema);
 
   return pickSideDefs(
-    lodash
-      .map(lodash.isEmpty(schema.definitions) ? {} : schema.definitions!, (defSchema, id) =>
-        toDeclaration(lodash.assign(defSchema, { id })),
-      )
+    map(isEmpty(schema.definitions) ? {} : schema.definitions!, (defSchema, $id) =>
+      toDeclaration(assign(defSchema, { $id })),
+    )
       .concat(main)
       .join("\n\n")
-      .replace(new RegExp(MAIN_SCHEMA_PLACEHOLDER, "g"), toSafeId(schema.id || "")),
+      .replace(new RegExp(MAIN_SCHEMA_PLACEHOLDER, "g"), toSafeId(schema.$id || "")),
   );
 };

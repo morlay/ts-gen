@@ -26,7 +26,7 @@ export const getDefinitions = (swagger: ISwagger): string => {
   definitions = lodash.pick(definitions, sortedKeys);
 
   const definitionString: string = lodash
-    .map(definitions, (definition: ISchema, id: string): string => toDeclaration(lodash.assign(definition, { id })))
+    .map(definitions, (definition: ISchema, $id: string): string => toDeclaration(lodash.assign(definition, { $id })))
     .join("\n\n");
 
   return pickSideDefs(definitionString);

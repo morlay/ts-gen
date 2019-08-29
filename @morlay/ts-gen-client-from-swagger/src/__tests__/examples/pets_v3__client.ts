@@ -8,7 +8,7 @@ export const formMultipartWithFile = createRequest<
       id: number;
     };
     file: File | Blob;
-    slice?: string[];
+    slice?: [string][];
     string?: string;
   },
   null
@@ -30,7 +30,7 @@ export const formMultipartWithFile = createRequest<
 
 export const formMultipartWithFiles = createRequest<
   {
-    files: Array<File | Blob>;
+    files: Array<[File | Blob]>;
   },
   null
 >("pets.FormMultipartWithFiles", ({ files: pFiles }) => {
@@ -53,7 +53,7 @@ export const formURLEncoded = createRequest<
       tag?: string;
       id: number;
     };
-    slice: string[];
+    slice: [string][];
     string: string;
   },
   null
@@ -114,10 +114,10 @@ export const findPetByID = createRequest<
 
 export const findPets = createRequest<
   {
-    tags?: string[];
+    tags?: [string][];
     limit?: number;
   },
-  IPet[]
+  [IPet][]
 >("pets.findPets", ({ tags: pTags, limit: pLimit }) => {
   return {
     method: "GET",
@@ -149,6 +149,6 @@ export interface IRequestForm {
     tag?: string;
     id: number;
   };
-  slice: string[];
+  slice: [string][];
   string: string;
 }

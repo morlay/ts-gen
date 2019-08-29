@@ -8,7 +8,7 @@ import testJSON from "./fixtures/test";
 it("#toSchema", () => {
   const result = toDeclarations(
     lodash.assign(schemaJSON, {
-      id: "JSONSchema",
+      $id: "JSONSchema",
     }),
   );
 
@@ -18,7 +18,7 @@ it("#toSchema", () => {
 it("#toTest", () => {
   const result = toDeclarations(
     lodash.assign(testJSON, {
-      id: "test",
+      $id: "test",
     }),
   );
 

@@ -29,7 +29,7 @@ export interface IServer {
 }
 
 export interface IServerVariable {
-  enum?: string[];
+  enum?: [string][];
   default: string;
   description?: string;
   [k: string]: ISpecificationExtension;
@@ -64,24 +64,24 @@ export interface IPathItem {
   head?: IOperation;
   patch?: IOperation;
   trace?: IOperation;
-  servers?: IServer[];
-  parameters?: IParameterOrReference[];
+  servers?: [IServer][];
+  parameters?: [IParameterOrReference][];
   [k: string]: ISpecificationExtension;
 }
 
 export interface IOperation {
-  tags?: string[];
+  tags?: [string][];
   summary?: string;
   description?: string;
   externalDocs?: IExternalDocs;
   operationId?: string;
-  parameters?: IParameterOrReference[];
+  parameters?: [IParameterOrReference][];
   requestBody?: IRequestBodyOrReference;
   responses: IResponses;
   callbacks?: ICallbacksOrReferences;
   deprecated?: boolean;
-  security?: ISecurityRequirement[];
-  servers?: IServer[];
+  security?: [ISecurityRequirement][];
+  servers?: [IServer][];
   [k: string]: ISpecificationExtension;
 }
 
@@ -218,14 +218,14 @@ export interface ISchema {
   uniqueItems?: boolean;
   maxProperties?: number;
   minProperties?: number;
-  required?: string[];
-  enum?: any[];
+  required?: [string][];
+  enum?: [any][];
   type?: string;
-  allOf?: ISchemaOrReference[];
-  oneOf?: ISchemaOrReference[];
-  anyOf?: ISchemaOrReference[];
+  allOf?: [ISchemaOrReference][];
+  oneOf?: [ISchemaOrReference][];
+  anyOf?: [ISchemaOrReference][];
   not?: ISchema;
-  items?: ISchemaOrReference | ISchemaOrReference[];
+  items?: ISchemaOrReference | [ISchemaOrReference][];
   properties?: {
     [k: string]: ISchemaOrReference;
   };
@@ -279,7 +279,7 @@ export interface IOauthFlow {
 }
 
 export interface ISecurityRequirement {
-  [k: string]: string[];
+  [k: string]: [string][];
 }
 
 export type IAnyOrExpression = IAny | IExpression;
@@ -381,11 +381,11 @@ export type IDefaultType = any;
 export interface IOpenAPI {
   openapi: "3.0.0";
   info: IInfo;
-  servers?: IServer[];
+  servers?: [IServer][];
   paths: IPaths;
   components?: IComponents;
-  security?: ISecurityRequirement[];
-  tags?: ITag[];
+  security?: [ISecurityRequirement][];
+  tags?: [ITag][];
   externalDocs?: IExternalDocs;
   [k: string]: ISpecificationExtension;
 }
