@@ -4,12 +4,9 @@ import * as lodash from "lodash";
 import { IParameter } from "./interfaces/Swagger";
 
 export const urlToTemplate = (url: string = "") =>
-  `\`${url.replace(
-    /\{([^}]+)\}/g,
-    (_, $1): string => {
-      return `\${${mayToAliasID($1)}}`;
-    },
-  )}\``;
+  `\`${url.replace(/\{([^}]+)\}/g, (_, $1): string => {
+    return `\${${mayToAliasID($1)}}`;
+  })}\``;
 
 export const filterParametersIn = (position: string) => {
   return (parameters: any[]): any[] =>
