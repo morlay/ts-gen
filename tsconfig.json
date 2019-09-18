@@ -5,25 +5,31 @@
     "paths": {
       "*": ["*", "__types__/*"]
     },
-    "noImplicitAny": true,
-    "experimentalDecorators": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "moduleResolution": "node",
-    "jsx": "react",
     "module": "commonjs",
-    "lib": ["dom", "esnext"],
-    "target": "es2015",
+    "removeComments": true,
+    "importHelpers": true,
     "pretty": true,
+    /* Strict Type-Checking Options */
     "strict": true,
+    "strictFunctionTypes": false,
     /* Additional Checks */
     "noUnusedLocals": true,
     "preserveConstEnums": false,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
+    /* Module Resolution Options */
+    "moduleResolution": "node",
+    /* Source Map Options */
+    "sourceMap": false,
+    /* Experimental Options */
+    "experimentalDecorators": false,
     "skipLibCheck": true,
-    "removeComments": true
+    "allowJs": false,
+    "declaration": false,
+    "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
   },
   "exclude": ["node_modules/*"]
 }

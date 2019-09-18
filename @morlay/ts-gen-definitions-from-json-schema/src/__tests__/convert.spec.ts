@@ -1,14 +1,14 @@
-import { IJSONSchema, SimpleTypes } from "../interfaces";
-import { toSingleSchema } from "../utils";
+import { ISchemaBasic, SimpleTypes } from "../Schema";
+import { simplifySchema } from "../convert";
 
 test("could replace imports schema with definitions", () => {
-  const result = toSingleSchema(
+  const result = simplifySchema(
     {
-      $ref: "otherSchema#/definitions/Test",
+      $ref: "otherSchema#/$defs/Test",
     },
     {
       otherSchema: {
-        definitions: {
+        $defs: {
           Test: {
             type: SimpleTypes.string,
           },
@@ -19,11 +19,11 @@ test("could replace imports schema with definitions", () => {
 
   expect(result).toEqual({
     type: "string",
-  } as IJSONSchema);
+  } as ISchemaBasic);
 });
 
 test("could replace imports schema with deep path", () => {
-  const result = toSingleSchema(
+  const result = simplifySchema(
     {
       $ref: "otherSchema#/properties/test",
     },
@@ -32,10 +32,10 @@ test("could replace imports schema with deep path", () => {
         type: "object",
         properties: {
           test: {
-            $ref: "#/definitions/Test",
+            $ref: "#/$defs/Test",
           },
         },
-        definitions: {
+        $defs: {
           Test: {
             type: "string",
           },
@@ -45,7 +45,6 @@ test("could replace imports schema with deep path", () => {
   );
 
   expect(result).toEqual({
-    id: "Test",
     type: "string",
-  } as IJSONSchema);
+  } as ISchemaBasic);
 });

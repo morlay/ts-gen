@@ -1,6 +1,6 @@
 import path from "path";
+// @ts-ignore
 import rollupBabel from "rollup-plugin-babel";
-import rollupTypeScript from "rollup-plugin-typescript";
 
 const pkg = require(path.join(process.cwd(), "package.json"));
 
@@ -24,12 +24,8 @@ module.exports = {
     ...Object.keys(pkg.peerDependencies || {}),
   ],
   plugins: [
-    rollupTypeScript({
-      target: "es5",
-      module: "es6",
-    }),
     rollupBabel({
-      plugins: ["babel-plugin-pure-calls-annotation"],
+      ...require("./babel.config"),
       exclude: "node_modules/**",
       extensions: [".js", ".jsx", ".ts", ".tsx"],
     }),

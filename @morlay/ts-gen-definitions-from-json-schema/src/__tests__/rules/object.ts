@@ -85,6 +85,21 @@ export const cases = [
   {
     schema: {
       type: "object",
+      additionalProperties: {
+        type: "string",
+      },
+      propertyNames: {
+        $id: "SomeEnum",
+        enum: ["A", "B"],
+      },
+    },
+    result: `{
+  [k in keyof typeof SomeEnum]: string;
+}`,
+  },
+  {
+    schema: {
+      type: "object",
       properties: {
         a: {
           type: "string",

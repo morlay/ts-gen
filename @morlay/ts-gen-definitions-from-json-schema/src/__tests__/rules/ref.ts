@@ -1,8 +1,11 @@
 export const cases = [
   {
     schema: {
-      $ref: "#/definitions/test",
+      $ref: "#/$defs/test",
+      $defs: {
+        test: {},
+      },
     },
-    result: "ITest",
+    result: "$$$Test",
   },
 ];

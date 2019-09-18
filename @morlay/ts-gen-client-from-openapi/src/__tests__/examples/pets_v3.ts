@@ -1,5 +1,5 @@
 // https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore-expanded.yaml
-import { IOpenAPI } from "../../interfaces/OpenAPI";
+import { IOpenAPI } from "../../OpenAPI";
 
 export default {
   openapi: "3.0.0",

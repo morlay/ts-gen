@@ -1,5 +1,5 @@
 {
-  "name": "@morlay/ts-gen-client-from-swagger",
+  "name": "@morlay/ts-gen-client-from-openapi",
   "version": "0.10.3",
   "main": "lib/index.js",
   "module": "es/index.js",
