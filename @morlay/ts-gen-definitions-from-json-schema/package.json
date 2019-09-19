@@ -1,5 +1,8 @@
 {
   "name": "@morlay/ts-gen-definitions-from-json-schema",
+  "publishConfig": {
+    "access": "public"
+  },
   "version": "1.0.2",
   "main": "lib/index.js",
   "module": "es/index.js",
