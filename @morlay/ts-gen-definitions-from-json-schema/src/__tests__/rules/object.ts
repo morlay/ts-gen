@@ -76,6 +76,9 @@ export const cases = [
       additionalProperties: {
         type: "string",
       },
+      propertyNames: {
+        type: "string",
+      },
     },
     result: `{
   a?: string;
@@ -94,7 +97,7 @@ export const cases = [
       },
     },
     result: `{
-  [k in keyof typeof SomeEnum]: string;
+  [k in keyof typeof SomeEnum]?: string;
 }`,
   },
   {

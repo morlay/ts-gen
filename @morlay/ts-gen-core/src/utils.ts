@@ -200,6 +200,10 @@ export class Identifier extends Stringable implements IIdentifier {
         i = i.typed(this.indexer.type);
       }
       result = `[${i}]`;
+
+      if (this.optional) {
+        result += "?";
+      }
     }
 
     if (this.optional && !this.indexer) {
@@ -245,8 +249,8 @@ export class Identifier extends Stringable implements IIdentifier {
     return this.set("optional", true);
   }
 
-  indexBy(i: Identifier) {
-    return this.set("indexer", i);
+  indexBy(i: Identifier, optional = false) {
+    return this.set("indexer", i).set("optional", optional);
   }
 
   is(typeName: string) {

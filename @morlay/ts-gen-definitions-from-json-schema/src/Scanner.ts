@@ -340,7 +340,7 @@ export class Scanner {
       if (schema.propertyNames) {
         const propertyNamesSchema = normalizeSchema(schema.propertyNames);
         const keyType = this.toType(propertyNamesSchema);
-        if (keyType.name !== "-" && keyType.name !== "any") {
+        if (keyType.name !== "string" && keyType.name !== "number" && keyType.name !== "-" && keyType.name !== "any") {
           composed = true;
           key = Identifier.of(`k in ${keyType}`);
         }
@@ -348,7 +348,7 @@ export class Scanner {
 
       props = props.concat(
         Identifier.of("")
-          .indexBy(key)
+          .indexBy(key, composed)
           .typed(Type.unionOf(...mayWithAdditionalPropertiesTypes)),
       );
     }
