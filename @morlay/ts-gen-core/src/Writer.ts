@@ -1,5 +1,5 @@
 import { Decl, ModuleExport, ModuleImport, toUpperCamelCase } from "./utils";
-import { keys, last, replace, split, values } from "lodash";
+import { last, orderBy, replace, split, values } from "lodash";
 
 export interface IWriterOpts {
   prefixInterface: string;
@@ -28,11 +28,8 @@ export class Writer {
         .map(String)
         .join("\n"),
 
-      keys(this.declarations)
-        .sort()
-        .map((k) => {
-          const d = this.declarations[k];
-
+      orderBy(values(this.declarations), [(d) => d.kind, (d) => d.identifier.name])
+        .map((d) => {
           return replace(ModuleExport.decl(d).toString(), /(\$\$\$[A-Za-z0-9_]+)/g, (match: string) => {
             return this.names[match] || match;
           });

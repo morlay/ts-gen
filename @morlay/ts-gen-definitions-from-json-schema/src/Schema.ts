@@ -1,3 +1,13 @@
+export enum SimpleTypes {
+  array = "array",
+  "boolean" = "boolean",
+  integer = "integer",
+  "null" = "null",
+  number = "number",
+  object = "object",
+  string = "string",
+}
+
 export interface IApplicator {
   additionalItems?: TSchema;
   unevaluatedItems?: TSchema;
@@ -62,19 +72,7 @@ export interface IMetaData {
   examples?: any[];
 }
 
-export type TNonNegativeInteger = number;
-
-export type TNonNegativeIntegerDefault0 = TNonNegativeInteger;
-
-export type TSchema = ISchemaBasic | boolean;
-
-export type TSchemaArray = TSchema[];
-
 export interface ISchemaBasic extends ICore, IApplicator, IValidation, IMetaData, IFormat, IContent {}
-
-export type TSimpleTypes = keyof typeof SimpleTypes;
-
-export type TStringArray = string[];
 
 export interface IValidation {
   multipleOf?: number;
@@ -101,12 +99,14 @@ export interface IValidation {
   type?: TSimpleTypes | TSimpleTypes[];
 }
 
-export enum SimpleTypes {
-  array = "array",
-  "boolean" = "boolean",
-  integer = "integer",
-  "null" = "null",
-  number = "number",
-  object = "object",
-  string = "string",
-}
+export type TNonNegativeInteger = number;
+
+export type TNonNegativeIntegerDefault0 = TNonNegativeInteger;
+
+export type TSchema = ISchemaBasic | boolean;
+
+export type TSchemaArray = TSchema[];
+
+export type TSimpleTypes = keyof typeof SimpleTypes;
+
+export type TStringArray = string[];

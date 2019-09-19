@@ -98,45 +98,6 @@ export interface IExternalDocumentation {
   [k: string]: any;
 }
 
-export type THTTPSecurityScheme =
-  | {
-      scheme?: "bearer";
-    } & {
-      scheme: string;
-      bearerFormat?: string;
-      description?: string;
-      type: "http";
-      [k: string]: any;
-    }
-  | {
-      scheme?: any;
-    } & {
-      scheme: string;
-      bearerFormat?: string;
-      description?: string;
-      type: "http";
-      [k: string]: any;
-    };
-
-export type THeader = TSchemaXorContent & {
-  description?: string;
-  required?: boolean;
-  deprecated?: boolean;
-  allowEmptyValue?: boolean;
-  style?: "simple";
-  explode?: boolean;
-  allowReserved?: boolean;
-  schema?: ISchema | IReference;
-  content?: {
-    [k: string]: IMediaType;
-  };
-  example?: any;
-  examples?: {
-    [k: string]: IExample | IReference;
-  };
-  [k: string]: any;
-};
-
 export interface IImplicitOAuthFlow {
   authorizationUrl: string;
   refreshUrl?: string;
@@ -238,46 +199,6 @@ export interface IOperation {
   [k: string]: any;
 }
 
-export type TParameter = TParameterLocation & {
-  name?: string;
-  in?: string;
-  description?: string;
-  required?: boolean;
-  deprecated?: boolean;
-  allowEmptyValue?: boolean;
-  style?: string;
-  explode?: boolean;
-  allowReserved?: boolean;
-  schema?: ISchema | IReference;
-  content: {
-    [k: string]: IMediaType;
-  };
-  example?: any;
-  examples?: {
-    [k: string]: IExample | IReference;
-  };
-  [k: string]: any;
-};
-
-export type TParameterLocation =
-  | {
-      in?: "path";
-      style?: "matrix" | "label" | "simple";
-      required: true;
-    }
-  | {
-      in?: "query";
-      style?: "form" | "spaceDelimited" | "pipeDelimited" | "deepObject";
-    }
-  | {
-      in?: "header";
-      style?: "simple";
-    }
-  | {
-      in?: "cookie";
-      style?: "form";
-    };
-
 export interface IPasswordOAuthFlow {
   tokenUrl: string;
   refreshUrl?: string;
@@ -374,17 +295,9 @@ export interface ISchema {
   [k: string]: any;
 }
 
-export type TSchemaXorContent = any;
-
 export interface ISecurityRequirement {
   [k: string]: string[];
 }
-
-export type TSecurityScheme =
-  | IAPIKeySecurityScheme
-  | THTTPSecurityScheme
-  | IOAuth2SecurityScheme
-  | IOpenIDConnectSecurityScheme;
 
 export interface IServer {
   url: string;
@@ -417,3 +330,90 @@ export interface IXML {
   wrapped?: boolean;
   [k: string]: any;
 }
+
+export type THTTPSecurityScheme =
+  | {
+      scheme?: "bearer";
+    } & {
+      scheme: string;
+      bearerFormat?: string;
+      description?: string;
+      type: "http";
+      [k: string]: any;
+    }
+  | {
+      scheme?: any;
+    } & {
+      scheme: string;
+      bearerFormat?: string;
+      description?: string;
+      type: "http";
+      [k: string]: any;
+    };
+
+export type THeader = TSchemaXorContent & {
+  description?: string;
+  required?: boolean;
+  deprecated?: boolean;
+  allowEmptyValue?: boolean;
+  style?: "simple";
+  explode?: boolean;
+  allowReserved?: boolean;
+  schema?: ISchema | IReference;
+  content?: {
+    [k: string]: IMediaType;
+  };
+  example?: any;
+  examples?: {
+    [k: string]: IExample | IReference;
+  };
+  [k: string]: any;
+};
+
+export type TParameter = TParameterLocation & {
+  name: string;
+  in: string;
+  description?: string;
+  required?: boolean;
+  deprecated?: boolean;
+  allowEmptyValue?: boolean;
+  style?: string;
+  explode?: boolean;
+  allowReserved?: boolean;
+  schema?: ISchema | IReference;
+  content?: {
+    [k: string]: IMediaType;
+  };
+  example?: any;
+  examples?: {
+    [k: string]: IExample | IReference;
+  };
+  [k: string]: any;
+};
+
+export type TParameterLocation =
+  | {
+      in?: "path";
+      style?: "matrix" | "label" | "simple";
+      required: true;
+    }
+  | {
+      in?: "query";
+      style?: "form" | "spaceDelimited" | "pipeDelimited" | "deepObject";
+    }
+  | {
+      in?: "header";
+      style?: "simple";
+    }
+  | {
+      in?: "cookie";
+      style?: "form";
+    };
+
+export type TSchemaXorContent = any;
+
+export type TSecurityScheme =
+  | IAPIKeySecurityScheme
+  | THTTPSecurityScheme
+  | IOAuth2SecurityScheme
+  | IOpenIDConnectSecurityScheme;

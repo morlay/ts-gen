@@ -1,20 +1,5 @@
 import { createRequest } from "./utils";
 
-export interface INewPet {
-  name: string;
-  tag?: string;
-}
-
-export interface IPet extends INewPet {
-  id: number;
-}
-
-export interface IRequestForm {
-  data: IPet;
-  slice: string[];
-  string: string;
-}
-
 export const addPet = createRequest<
   {
     body: INewPet;
@@ -126,3 +111,18 @@ export const formURLEncoded = createRequest<
     },
   };
 });
+
+export interface INewPet {
+  name: string;
+  tag?: string;
+}
+
+export interface IPet extends INewPet {
+  id: number;
+}
+
+export interface IRequestForm {
+  data: IPet;
+  slice: string[];
+  string: string;
+}
