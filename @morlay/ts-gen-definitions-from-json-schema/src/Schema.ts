@@ -50,7 +50,7 @@ export interface ICore {
   $recursiveRef?: string;
   $recursiveAnchor?: true;
   $vocabulary?: {
-    [k: string]: boolean;
+    [k in string]: boolean;
   };
   $comment?: string;
   $defs?: {

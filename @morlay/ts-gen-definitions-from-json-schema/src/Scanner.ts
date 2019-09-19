@@ -25,7 +25,6 @@ import {
   map,
   omit,
   split,
-  startsWith,
   times,
   values,
 } from "lodash";
@@ -340,10 +339,8 @@ export class Scanner {
 
       if (schema.propertyNames) {
         const propertyNamesSchema = normalizeSchema(schema.propertyNames);
-
-        const keyType = this.toType(propertyNamesSchema).toString();
-
-        if (startsWith(keyType, "keyof")) {
+        const keyType = this.toType(propertyNamesSchema);
+        if (keyType.name !== "-" && keyType.name !== "any") {
           composed = true;
           key = Identifier.of(`k in ${keyType}`);
         }
