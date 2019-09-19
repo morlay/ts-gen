@@ -330,12 +330,7 @@ export class Scanner {
         id = id.asOptional();
       }
 
-      return id.typed(
-        this.toType({
-          ...subSchema,
-          $id: subSchema.$id || [schema.$id, key].join("_"),
-        }),
-      );
+      return id.typed(this.toType(subSchema));
     });
 
     let composed = false;

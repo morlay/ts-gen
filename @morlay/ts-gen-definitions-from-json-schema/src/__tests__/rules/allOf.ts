@@ -5,4 +5,25 @@ export const cases = [
     },
     result: "string & boolean",
   },
+  {
+    schema: {
+      type: "object",
+      properties: {
+        accountType: {
+          allOf: [
+            {
+              type: "string",
+            },
+            {
+              description: "111",
+            },
+          ],
+        },
+      },
+      required: ["accountType"],
+    },
+    result: `{
+  accountType: string;
+}`,
+  },
 ];

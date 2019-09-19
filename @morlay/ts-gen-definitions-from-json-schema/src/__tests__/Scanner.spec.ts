@@ -10,16 +10,16 @@ export interface ICase {
 
 const rules = {
   allOf: require("./rules/allOf"),
-  any: require("./rules/any"),
-  anyOf: require("./rules/anyOf"),
-  array: require("./rules/array"),
-  boolean: require("./rules/boolean"),
-  enum: require("./rules/enum"),
-  null: require("./rules/null"),
-  number: require("./rules/number"),
-  object: require("./rules/object"),
-  ref: require("./rules/ref"),
-  string: require("./rules/string"),
+  // any: require("./rules/any"),
+  // anyOf: require("./rules/anyOf"),
+  // array: require("./rules/array"),
+  // boolean: require("./rules/boolean"),
+  // enum: require("./rules/enum"),
+  // null: require("./rules/null"),
+  // number: require("./rules/number"),
+  // object: require("./rules/object"),
+  // ref: require("./rules/ref"),
+  // string: require("./rules/string"),
 };
 
 describe("TypeBuilder#toType", () => {
