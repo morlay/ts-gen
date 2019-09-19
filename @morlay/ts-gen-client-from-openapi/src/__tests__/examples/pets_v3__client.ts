@@ -25,6 +25,9 @@ export const addPet = createRequest<
     method: "POST",
     url: `/pets`,
     data: pBody,
+    headers: {
+      "Content-Type": "application/json",
+    },
   };
 });
 
@@ -84,6 +87,9 @@ export const formMultipartWithFile = createRequest<
     method: "POST",
     url: `/demo/forms/multipart`,
     data: pBody,
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
   };
 });
 
@@ -99,6 +105,9 @@ export const formMultipartWithFiles = createRequest<
     method: "POST",
     url: `/demo/forms/multipart-with-files`,
     data: pBody,
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
   };
 });
 
@@ -112,5 +121,8 @@ export const formURLEncoded = createRequest<
     method: "POST",
     url: `/demo/forms/url-encoded`,
     data: pBody,
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
   };
 });

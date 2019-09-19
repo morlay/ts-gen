@@ -50,6 +50,8 @@ class ClientBuilder extends Scanner {
         const mediaType = (operation.requestBody as IRequestBody).content[contentType];
 
         if (mediaType.schema) {
+          bodyContentType = contentType;
+
           params.push({
             in: "body",
             name: "body",
