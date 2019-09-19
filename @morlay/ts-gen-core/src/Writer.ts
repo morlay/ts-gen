@@ -1,6 +1,5 @@
-import { Decl, ModuleExport, ModuleImport } from "./utils";
+import { Decl, ModuleExport, ModuleImport, toUpperCamelCase } from "./utils";
 import { keys, last, replace, split, values } from "lodash";
-import { toUpperCamelCase } from "../../ts-gen-definitions-from-json-schema/src";
 
 export interface IWriterOpts {
   prefixInterface: string;

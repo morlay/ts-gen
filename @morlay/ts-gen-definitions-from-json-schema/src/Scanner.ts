@@ -1,4 +1,4 @@
-import { Decl, Identifier, safeKey, Type, Value, Writer } from "@morlay/ts-gen-core";
+import { Decl, Identifier, safeKey, toUpperCamelCase, Type, Value, Writer } from "@morlay/ts-gen-core";
 import { ISchemaBasic, TSchema } from "./Schema";
 import {
   isArrayType,
@@ -9,7 +9,6 @@ import {
   isObjectType,
   isStringType,
   normalizeSchema,
-  toUpperCamelCase,
 } from "./utils";
 
 import {

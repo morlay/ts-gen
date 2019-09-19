@@ -17,11 +17,15 @@
   "devDependencies": {
     "@babel/core": "7.6.0",
     "@babel/preset-env": "7.6.0",
-    "@babel/preset-typescript": "7.6.0",
+    "@babel/plugin-proposal-class-properties": "7.5.5",
+    "@babel/plugin-proposal-object-rest-spread": "7.5.5",
+    "@babel/plugin-transform-typescript": "7.6.0",
     "@types/jest": "24.0.18",
     "@types/lodash": "4.14.138",
     "@types/node": "12.7.5",
     "babel-jest": "24.9.0",
+    "babel-plugin-pure-calls-annotation": "0.2.2",
+    "babel-plugin-typescript-iife-enum": "0.2.1",
     "husky": "3.0.5",
     "jest": "24.9.0",
     "lerna": "3.16.4",
@@ -29,6 +33,7 @@
     "prettier": "1.18.2",
     "rollup": "1.21.4",
     "rollup-plugin-babel": "4.3.3",
+    "rollup-plugin-node-resolve": "5.2.0",
     "typescript": "3.6.3"
   },
   "jest": {
