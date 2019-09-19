@@ -10,7 +10,7 @@ export interface IPet extends INewPet {
 }
 
 export interface IRequestForm {
-  data: IPet & any;
+  data: IPet;
   slice: string[];
   string: string;
 }
@@ -75,7 +75,7 @@ export const findPets = createRequest<
 export const formMultipartWithFile = createRequest<
   {
     body: {
-      data?: IPet & any;
+      data?: IPet;
       file: File | Blob;
       slice?: string[];
       string?: string;
@@ -113,7 +113,7 @@ export const formMultipartWithFiles = createRequest<
 
 export const formURLEncoded = createRequest<
   {
-    body: IRequestForm & any;
+    body: IRequestForm;
   },
   null
 >("pets.FormURLEncoded", ({ body: pBody }) => {

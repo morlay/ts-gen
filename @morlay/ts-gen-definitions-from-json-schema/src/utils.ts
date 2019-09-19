@@ -1,4 +1,4 @@
-import { filter, has, isBoolean, some } from "lodash";
+import { assign, filter, has, isBoolean, some } from "lodash";
 
 import { ISchemaBasic, SimpleTypes, TSchema } from "./Schema";
 
@@ -46,20 +46,26 @@ export const normalizeSchema = (schema: TSchema): ISchemaBasic => {
     }
   }
 
-  if (!!schema.allOf) {
-    schema.allOf = filter(schema.allOf!, (s) => !isMetaType(normalizeSchema(s)));
-    schema.allOf.length === 0 && delete schema.allOf;
-  }
+  const mayNormalizeMeta = (key: "allOf" | "anyOf" | "oneOf") => {
+    if (!!schema[key]) {
+      schema[key] = filter(schema[key], (s) => {
+        const ns = normalizeSchema(s);
+        if (isMetaType(ns)) {
+          assign(schema, ns);
+          return false;
+        }
+        return true;
+      });
 
-  if (!!schema.anyOf) {
-    schema.anyOf = filter(schema.anyOf!, (s) => !isMetaType(normalizeSchema(s)));
-    schema.anyOf.length === 0 && delete schema.anyOf;
-  }
+      if (schema[key]!.length === 0) {
+        delete schema[key];
+      }
+    }
+  };
 
-  if (!!schema.oneOf) {
-    schema.oneOf = filter(schema.oneOf!, (s) => !isMetaType(normalizeSchema(s)));
-    schema.oneOf.length === 0 && delete schema.oneOf;
-  }
+  mayNormalizeMeta("allOf");
+  mayNormalizeMeta("anyOf");
+  mayNormalizeMeta("oneOf");
 
   return schema;
 };

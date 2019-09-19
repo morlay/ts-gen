@@ -1,7 +1,7 @@
 export interface IAPIKeySecurityScheme {
   type: "apiKey";
   name: string;
-  in: keyof typeof APIKeySecuritySchemeIn;
+  in: "header" | "query" | "cookie";
   description?: string;
   [k: string]: any;
 }
@@ -79,7 +79,7 @@ export interface IEncoding {
   headers?: {
     [k: string]: THeader;
   };
-  style?: keyof typeof EncodingStyle;
+  style?: "form" | "spaceDelimited" | "pipeDelimited" | "deepObject";
   explode?: boolean;
   allowReserved?: boolean;
 }
@@ -239,8 +239,8 @@ export interface IOperation {
 }
 
 export type TParameter = TParameterLocation & {
-  name: string;
-  in: string;
+  name?: string;
+  in?: string;
   description?: string;
   required?: boolean;
   deprecated?: boolean;
@@ -249,7 +249,7 @@ export type TParameter = TParameterLocation & {
   explode?: boolean;
   allowReserved?: boolean;
   schema?: ISchema | IReference;
-  content?: {
+  content: {
     [k: string]: IMediaType;
   };
   example?: any;
@@ -262,12 +262,12 @@ export type TParameter = TParameterLocation & {
 export type TParameterLocation =
   | {
       in?: "path";
-      style?: keyof typeof Style;
+      style?: "matrix" | "label" | "simple";
       required: true;
     }
   | {
       in?: "query";
-      style?: keyof typeof Style;
+      style?: "form" | "spaceDelimited" | "pipeDelimited" | "deepObject";
     }
   | {
       in?: "header";
@@ -349,7 +349,7 @@ export interface ISchema {
   minProperties?: number;
   required?: string[];
   enum?: any[];
-  type?: keyof typeof SchemaType;
+  type?: "array" | "boolean" | "integer" | "number" | "object" | "string";
   not?: ISchema | IReference;
   allOf?: Array<ISchema | IReference>;
   oneOf?: Array<ISchema | IReference>;
@@ -416,33 +416,4 @@ export interface IXML {
   attribute?: boolean;
   wrapped?: boolean;
   [k: string]: any;
-}
-
-export enum APIKeySecuritySchemeIn {
-  header = "header",
-  query = "query",
-  cookie = "cookie",
-}
-
-export enum EncodingStyle {
-  form = "form",
-  spaceDelimited = "spaceDelimited",
-  pipeDelimited = "pipeDelimited",
-  deepObject = "deepObject",
-}
-
-export enum SchemaType {
-  array = "array",
-  "boolean" = "boolean",
-  integer = "integer",
-  number = "number",
-  object = "object",
-  string = "string",
-}
-
-export enum Style {
-  form = "form",
-  spaceDelimited = "spaceDelimited",
-  pipeDelimited = "pipeDelimited",
-  deepObject = "deepObject",
 }
