@@ -667,21 +667,21 @@ export const toCamel = (word: string): string => {
   return upperFirst(toLower(upperString));
 };
 
-export const toUpperCamelCase = (s: string): string => {
-  return reduce(
-    words(s),
-    (result, word) => {
-      return result + toCamel(word);
-    },
-    "",
-  );
-};
-
 export const toLowerCamelCase = (s: string): string => {
   return reduce(
     words(s),
     (result, word, idx) => {
       return result + (idx > 0 ? toCamel(word) : toLower(word));
+    },
+    "",
+  );
+};
+
+export const toUpperCamelCase = (s: string): string => {
+  return reduce(
+    words(s),
+    (result, word) => {
+      return result + toCamel(word);
     },
     "",
   );
