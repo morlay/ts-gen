@@ -51,7 +51,10 @@ export const normalizeSchema = (schema: TSchema): ISchemaBasic => {
       schema[key] = filter(schema[key], (s) => {
         const ns = normalizeSchema(s);
         if (isMetaType(ns)) {
-          assign(schema, ns);
+          if (key === "allOf") {
+            // only allOf will merge meta
+            assign(schema, ns);
+          }
           return false;
         }
         return true;
