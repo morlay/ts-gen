@@ -3,5 +3,5 @@
   "publish": {
     "ignoreChanges": ["*.js", "__tests__/**"]
   },
-  "version": "1.0.1"
+  "version": "1.0.2"
 }
