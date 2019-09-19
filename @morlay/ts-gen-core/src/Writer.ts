@@ -45,8 +45,12 @@ export class Writer {
     this.imports[imp.path] = imp;
   }
 
-  write(decl: Decl) {
+  onWrite?: (decl: Decl, ctx: any) => void;
+
+  write(decl: Decl, ctx?: any) {
     const id = decl.identifier.name;
+
+    this.onWrite && ctx && this.onWrite(decl, ctx);
 
     this.declarations[id] = decl;
 

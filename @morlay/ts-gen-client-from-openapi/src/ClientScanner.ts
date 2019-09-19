@@ -1,6 +1,6 @@
 import { ISchemaBasic, Scanner } from "@morlay/ts-gen-definitions-from-json-schema";
 import { IOpenAPI, IOperation, IReference, IRequestBody, IResponse, IResponses, ISchema, TParameter } from "./OpenAPI";
-import { Decl, Identifier, isIdentifier, ModuleImport, Value, Writer, toLowerCamelCase } from "@morlay/ts-gen-core";
+import { Decl, Identifier, isIdentifier, ModuleImport, toLowerCamelCase, Value, Writer } from "@morlay/ts-gen-core";
 import { assign, concat, Dictionary, filter, first, forEach, map, reduce, toUpper, values } from "lodash";
 
 export interface IClientOpts {

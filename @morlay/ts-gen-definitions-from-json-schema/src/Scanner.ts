@@ -47,7 +47,7 @@ export class Scanner {
       };
     }
 
-    this.writer.write(this.toDecl(schema));
+    this.writer.write(this.toDecl(schema), schema);
   }
 
   toDecl = (schema: ISchemaBasic): Decl => {
@@ -69,7 +69,7 @@ export class Scanner {
                 $id: schema.$id + "Basic",
               };
 
-              this.writer.write(this.toDecl(s));
+              this.writer.write(this.toDecl(s), schema);
 
               return this.toRefType({
                 $ref: s.$id,
@@ -112,7 +112,7 @@ export class Scanner {
       subSchema = normalizeSchema(subSchema);
 
       if (subSchema.$id) {
-        this.writer.write(this.toDecl(subSchema));
+        this.writer.write(this.toDecl(subSchema), subSchema);
 
         subSchema = {
           $ref: subSchema.$id,
@@ -270,14 +270,16 @@ export class Scanner {
       }
 
       // just for placeholder
-      this.writer.write(Decl.interface(Identifier.of(id)));
+      this.writer.write(Decl.interface(Identifier.of(id)), null);
 
-      const decl = this.toDecl({
+      const subSchema = {
         ...refSchema,
         $id: last(keyPathArr),
-      });
+      };
 
-      this.writer.write(decl);
+      const decl = this.toDecl(subSchema);
+
+      this.writer.write(decl, subSchema);
     }
 
     return Type.of(id);
@@ -380,6 +382,7 @@ export class Scanner {
             ),
           ),
         ),
+        schema,
       );
 
       return Type.of(`keyof typeof ${$id}`);
