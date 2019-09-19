@@ -1,6 +1,6 @@
 {
   "name": "@morlay/ts-gen-client-from-openapi",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "lib/index.js",
   "module": "es/index.js",
   "types": "src/index.ts",
@@ -12,8 +12,8 @@
   "author": "Morlay Null <morlay.null@gmail.com>",
   "description": "",
   "dependencies": {
-    "@morlay/ts-gen-core": "^1.0.0",
-    "@morlay/ts-gen-definitions-from-json-schema": "^1.0.0",
+    "@morlay/ts-gen-core": "^1.0.1",
+    "@morlay/ts-gen-definitions-from-json-schema": "^1.0.1",
     "@types/lodash": "4.14.x",
     "lodash": "4.17.x"
   }
