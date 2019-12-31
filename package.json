@@ -31,7 +31,7 @@
     "lerna": "3.16.4",
     "lint-staged": "9.2.5",
     "prettier": "1.18.2",
-    "rollup": "1.21.4",
+    "rollup": "1.27.14",
     "rollup-plugin-babel": "4.3.3",
     "rollup-plugin-node-resolve": "5.2.0",
     "typescript": "3.6.3"
