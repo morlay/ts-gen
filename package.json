@@ -22,7 +22,7 @@
     "@babel/plugin-transform-typescript": "7.6.0",
     "@types/jest": "24.0.18",
     "@types/lodash": "4.14.138",
-    "@types/node": "12.7.5",
+    "@types/node": "12.12.22",
     "babel-jest": "24.9.0",
     "babel-plugin-pure-calls-annotation": "0.2.2",
     "babel-plugin-typescript-iife-enum": "0.2.1",
