@@ -112,7 +112,7 @@ const walkSchema = (schema: TSchema, cb: (schema: ISchemaBasic, next: () => void
       schemaObj.properties,
       schemaObj.patternProperties,
       schemaObj.$defs,
-    ].forEach((schemas) => forEach(schemas, nextIfExists));
+    ].forEach((schemas) => forEach(schemas as any, nextIfExists));
 
     [
       schemaObj.not,

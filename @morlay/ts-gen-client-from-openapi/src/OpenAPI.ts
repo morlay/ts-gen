@@ -332,7 +332,7 @@ export interface IXML {
 }
 
 export type THTTPSecurityScheme =
-  | {
+  | ({
       scheme?: "bearer";
     } & {
       scheme: string;
@@ -340,8 +340,8 @@ export type THTTPSecurityScheme =
       description?: string;
       type: "http";
       [k: string]: any;
-    }
-  | {
+    })
+  | ({
       scheme?: any;
     } & {
       scheme: string;
@@ -349,7 +349,7 @@ export type THTTPSecurityScheme =
       description?: string;
       type: "http";
       [k: string]: any;
-    };
+    });
 
 export type THeader = TSchemaXorContent & {
   description?: string;

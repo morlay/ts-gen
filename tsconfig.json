@@ -2,34 +2,33 @@
   "compileOnSave": true,
   "compilerOptions": {
     "baseUrl": ".",
+    "rootDir": ".",
+    "outDir": ".tmp",
     "paths": {
-      "*": ["*", "__types__/*"]
+      "*": ["__types__/*", "*/src", "*"]
     },
+    "noImplicitAny": true,
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
+    "jsx": "react",
     "module": "commonjs",
-    "removeComments": true,
-    "importHelpers": true,
+    "lib": ["dom", "esnext"],
+    "target": "es2015",
     "pretty": true,
-    /* Strict Type-Checking Options */
     "strict": true,
-    "strictFunctionTypes": false,
     /* Additional Checks */
     "noUnusedLocals": true,
     "preserveConstEnums": false,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    /* Module Resolution Options */
-    "moduleResolution": "node",
-    /* Source Map Options */
-    "sourceMap": false,
-    /* Experimental Options */
-    "experimentalDecorators": false,
     "skipLibCheck": true,
-    "allowJs": false,
-    "declaration": false,
-    "forceConsistentCasingInFileNames": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true
+    "removeComments": false,
+    "declaration": true,
+    "noEmitOnError": false,
+    "emitDeclarationOnly": true
   },
-  "exclude": ["node_modules/*"]
+  "exclude": [".tmp/*", "node_modules/*"]
 }

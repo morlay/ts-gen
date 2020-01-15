@@ -322,15 +322,18 @@ export class Scanner {
 
     const mayWithAdditionalPropertiesTypes = concat(patternPropertiesTypes, additionalPropertyType || []);
 
-    let props = map(schema.properties || {}, (subSchema: ISchemaBasic, key: string) => {
-      let id = Identifier.of(safeKey(key));
+    let props = map<ISchemaBasic, Identifier>(
+      schema.properties || {},
+      (subSchema: ISchemaBasic, key: string): Identifier => {
+        let id = Identifier.of(safeKey(key));
 
-      if (indexOf(schema.required || [], key) === -1) {
-        id = id.asOptional();
-      }
+        if (indexOf(schema.required || [], key) === -1) {
+          id = id.asOptional();
+        }
 
-      return id.typed(this.toType(subSchema));
-    });
+        return id.typed(this.toType(subSchema));
+      },
+    );
 
     let composed = false;
 

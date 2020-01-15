@@ -1,7 +1,5 @@
 {
+  "version": "1.1.5",
   "packages": ["@morlay/*"],
-  "publish": {
-    "ignoreChanges": ["*.js", "__tests__/**"]
-  },
-  "version": "1.1.5"
+  "npmClientArgs": ["--no-lockfile"]
 }

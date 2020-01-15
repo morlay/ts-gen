@@ -2,7 +2,9 @@
 *.js.map
 *.log
 
+.tmp/
 lib/
 node_modules/
 
 !babel.config.js
+!rollup.config.js
