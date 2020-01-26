@@ -33,7 +33,7 @@
     "prettier": "1.19.1",
     "rollup": "1.29.0",
     "rollup-plugin-babel": "4.3.3",
-    "rollup-plugin-dts": "1.2.0",
+    "rollup-plugin-dts": "1.2.1",
     "rollup-plugin-node-resolve": "5.2.0",
     "typescript": "3.7.4"
   },
