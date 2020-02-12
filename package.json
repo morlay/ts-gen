@@ -26,7 +26,7 @@
     "babel-jest": "24.9.0",
     "babel-plugin-pure-calls-annotation": "0.2.2",
     "babel-plugin-typescript-iife-enum": "0.2.1",
-    "husky": "4.0.9",
+    "husky": "4.2.3",
     "jest": "24.9.0",
     "lerna": "3.20.2",
     "lint-staged": "9.5.0",
