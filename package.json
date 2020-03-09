@@ -1,46 +1,24 @@
 {
   "private": true,
+  "workspaces": [
+    "@morlay/*"
+  ],
   "scripts": {
-    "fmt": "npx prettier --write @morlay/**/src/{,**/}{,**/}*.{ts,json}",
-    "clean": "npx lerna exec -- rm -rf lib",
-    "clean:js": "npx lerna exec -- rm -rf \"src/{,**/}{,**/}{,**/}*.js*\"",
-    "build": "tsc && lerna exec -- rollup -c ../../rollup.config.js",
+    "build": "lerna exec monobundle",
     "test": "jest",
-    "prepare": "npm run clean && npm run clean:js && npm run build && npm run test"
-  },
-  "lint-staged": {
-    "*.{ts,tsx,json}": [
-      "npx prettier --write",
-      "git add"
-    ]
+    "prepare": "yarn test & yarn build"
   },
   "devDependencies": {
-    "@babel/core": "7.8.3",
-    "@babel/plugin-proposal-class-properties": "7.8.3",
-    "@babel/plugin-proposal-object-rest-spread": "7.8.3",
-    "@babel/plugin-transform-typescript": "7.8.3",
-    "@babel/preset-env": "7.8.3",
-    "@types/jest": "24.0.25",
-    "@types/lodash": "4.14.149",
-    "@types/node": "13.1.6",
-    "babel-jest": "24.9.0",
-    "babel-plugin-pure-calls-annotation": "0.2.2",
-    "babel-plugin-typescript-iife-enum": "0.2.1",
-    "husky": "4.0.9",
-    "jest": "24.9.0",
-    "lerna": "3.20.2",
-    "lint-staged": "9.5.0",
-    "prettier": "1.19.1",
-    "rollup": "1.29.0",
-    "rollup-plugin-babel": "4.3.3",
-    "rollup-plugin-dts": "1.2.0",
-    "rollup-plugin-node-resolve": "5.2.0",
-    "typescript": "3.7.4"
+    "@querycap-dev/dev-deps": "*",
+    "@querycap-dev/monobundle": "*"
   },
   "jest": {
-    "testEnvironment": "node",
+    "testEnvironment": "jsdom",
     "transform": {
       "^.+\\.[t|j]sx?$": "babel-jest"
+    },
+    "moduleNameMapper": {
+      "^@morlay/([^/]+)$": "<rootDir>/@morlay/$1/index.ts"
     },
     "moduleFileExtensions": [
       "tsx",
@@ -52,14 +30,42 @@
     "modulePaths": [
       "<rootDir>"
     ],
-    "moduleNameMapper": {
-      "^@morlay/(.*)$": "<rootDir>/@morlay/$1/src"
-    },
     "testRegex": ".*/__tests__/.+\\.(generator|test|spec)\\.(ts|tsx)$"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "post-merge": "yarn",
+      "pre-commit": "lint-staged && pretty-quick --staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --quiet"
+    ]
+  },
+  "prettier": {
+    "trailingComma": "all",
+    "arrowParens": "always",
+    "printWidth": 120,
+    "jsxBracketSameLine": true
+  },
+  "eslintConfig": {
+    "extends": [
+      "@querycap-dev/eslint-config"
+    ],
+    "settings": {
+      "react": {
+        "version": "detect"
+      }
+    },
+    "rules": {
+      "@typescript-eslint/ban-ts-ignore": "off"
     }
   }
 }

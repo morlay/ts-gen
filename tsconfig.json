@@ -2,10 +2,8 @@
   "compileOnSave": true,
   "compilerOptions": {
     "baseUrl": ".",
-    "rootDir": ".",
-    "outDir": ".tmp",
     "paths": {
-      "*": ["__types__/*", "*/src", "*"]
+      "*": ["__types__/*", "*"]
     },
     "noImplicitAny": true,
     "experimentalDecorators": true,
@@ -14,7 +12,7 @@
     "moduleResolution": "node",
     "jsx": "react",
     "module": "commonjs",
-    "lib": ["dom", "esnext"],
+    "lib": ["dom", "esnext", "webworker"],
     "target": "es2015",
     "pretty": true,
     "strict": true,
@@ -28,7 +26,8 @@
     "removeComments": false,
     "declaration": true,
     "noEmitOnError": false,
-    "emitDeclarationOnly": true
+    "emitDeclarationOnly": true,
+    "outDir": ".tmp"
   },
-  "exclude": [".tmp/*", "node_modules/*"]
+  "exclude": [".tmp/*", "dist/*", "node_modules/*"]
 }

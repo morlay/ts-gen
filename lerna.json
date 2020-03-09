@@ -1,5 +1,14 @@
 {
-  "version": "1.2.0",
-  "packages": ["@morlay/*"],
-  "npmClientArgs": ["--no-lockfile"]
+  "packages": ["@querycap/*"],
+  "npmClient": "yarn",
+  "useWorkspaces": true,
+  "ignoreChanges": ["**/__fixtures__/**", "**/__tests__/**", "**/*.md"],
+  "command": {
+    "version": {
+      "exact": true,
+      "allowBranch": "master",
+      "message": "chore(release): %s"
+    }
+  },
+  "version": "independent"
 }

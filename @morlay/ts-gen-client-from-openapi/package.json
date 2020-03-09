@@ -4,12 +4,9 @@
     "access": "public"
   },
   "version": "1.2.0",
-  "ts": "src/index.ts",
-  "main": "lib/index.js",
-  "module": "lib/index.es.js",
-  "types": "lib/index.d.ts",
   "files": [
-    "lib/"
+    "lib/",
+    "dist/"
   ],
   "license": "WTFPL",
   "author": "Morlay Null <morlay.null@gmail.com>",
@@ -19,5 +16,11 @@
     "@morlay/ts-gen-definitions-from-json-schema": "^1.2.0",
     "@types/lodash": "4.14.x",
     "lodash": "4.17.x"
-  }
+  },
+  "peerDependencies": {
+    "@babel/runtime-corejs3": "*"
+  },
+  "types": "dist/index.d.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js"
 }
