@@ -2063,10 +2063,10 @@
     eslint-plugin-react "7.x"
     eslint-plugin-react-hooks "2.x"
 
-"@querycap-dev/monobundle@*":
-  version "0.4.5"
-  resolved "https://registry.yarnpkg.com/@querycap-dev/monobundle/-/monobundle-0.4.5.tgz#afafdfe72ba2aa7265c8a6388e979eb9e88c66d2"
-  integrity sha512-xrUoaz4oe1AcP9UUpY4A0NaK5gnePmaLwSmXr/7z48zQivJSOTs4UHyReauB/SUR+p6Okf+S99+wjLQG5oAfMQ==
+"@querycap-dev/monobundle@0.4.6":
+  version "0.4.6"
+  resolved "https://registry.yarnpkg.com/@querycap-dev/monobundle/-/monobundle-0.4.6.tgz#7ceee1f6843667605f11ec5ae23e4a6b5ade9ac1"
+  integrity sha512-Pn/J31/ISofNh7udi6dpUBOyZbdJ8DQMJ7tJvtDN3Z+j9OLf32Rbx+zhJ8xwzeQGIhv5MDm/0Mu48IP0uwLOXA==
   dependencies:
     "@rollup/plugin-node-resolve" "7.1.1"
     "@types/yargs" "15.x"

@@ -5,12 +5,12 @@
   ],
   "scripts": {
     "build": "lerna exec monobundle",
-    "test": "jest",
-    "prepare": "yarn test & yarn build"
+    "test": "jest --coverage",
+    "prepare": "yarn test"
   },
   "devDependencies": {
     "@querycap-dev/dev-deps": "*",
-    "@querycap-dev/monobundle": "*"
+    "@querycap-dev/monobundle": "0.4.6"
   },
   "jest": {
     "testEnvironment": "jsdom",
