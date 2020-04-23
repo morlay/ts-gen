@@ -22,7 +22,7 @@ export const indentAllExpectFirst = (s: string) => indentAll(s).slice(INDENT.len
 export const stringifyArray = (...ss: string[]) => `[${ss.join(", ")}]`;
 export const stringifyGeneric = (...ss: string[]) => `<${ss.join(", ")}>`;
 export const stringifyParameters = (...ss: string[]) => `(${ss.join(", ")})`;
-export const stringifyMembers = (lineEnds: string = ",", ...ss: string[]) => {
+export const stringifyMembers = (lineEnds = ",", ...ss: string[]) => {
   return `{
 ${ss.map((s) => indent(endWith(lineEnds)(s))).join("\n")}
 }`;
@@ -169,7 +169,7 @@ export interface IIdentifier {
 }
 
 export class Identifier extends Stringable implements IIdentifier {
-  name: string = "";
+  name = "";
   optional?: boolean;
   indexer?: Identifier;
   type?: Type;
@@ -281,7 +281,10 @@ export class Identifier extends Stringable implements IIdentifier {
   }
 
   implementsWith(...identifiers: Identifier[]) {
-    return this.set("implements", identifiers.map((i) => Identifier.of(i.name).generics(...(i.types || []))));
+    return this.set(
+      "implements",
+      identifiers.map((i) => Identifier.of(i.name).generics(...(i.types || []))),
+    );
   }
 
   valueOf(value: Stringable) {
@@ -460,7 +463,7 @@ export interface IModuleImport {
 }
 
 export class ModuleImport extends Stringable implements IModuleImport {
-  path: string = "";
+  path = "";
   all?: string;
   default?: string;
   members?: string[];
@@ -485,7 +488,10 @@ export class ModuleImport extends Stringable implements IModuleImport {
   }
 
   membersAs(...members: Identifier[]) {
-    return this.set("members", members.map((i) => i.name));
+    return this.set(
+      "members",
+      members.map((i) => i.name),
+    );
   }
 
   toString() {
@@ -543,18 +549,6 @@ export class ModuleExport extends Stringable implements IModuleExport {
     return `export ${this.members[0]}`;
   }
 }
-
-/** IdentifierName can be written as unquoted property names, but may be reserved words. */
-export function isIdentifierName(s: string) {
-  return /^[$A-Z_][0-9A-Z_$]*$/i.test(s);
-}
-
-/** Identifiers are e.g. legal variable names. They may not be reserved words */
-export function isIdentifier(s: string) {
-  return isIdentifierName(s) && reservedWords.indexOf(s) < 0;
-}
-
-export const safeKey = (key: string): string => (isIdentifier(key) ? key : JSON.stringify(key));
 
 export const reservedWords = [
   "abstract",
@@ -662,6 +656,14 @@ const commonInitialisms = {
   XSRF: true,
   XSS: true,
 };
+
+/** IdentifierName can be written as unquoted property names, but may be reserved words. */
+export const isIdentifierName = (s: string) => /^[$A-Z_][0-9A-Z_$]*$/i.test(s);
+
+/** Identifiers are e.g. legal variable names. They may not be reserved words */
+export const isIdentifier = (s: string) => isIdentifierName(s) && !reservedWords.includes(s);
+
+export const safeKey = (key: string): string => (isIdentifier(key) ? key : JSON.stringify(key));
 
 export const toCamel = (word: string): string => {
   const upperString = toUpper(word);

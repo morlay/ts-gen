@@ -42,7 +42,7 @@ export const findPetByID = createRequest<
 
 export const findPets = createRequest<
   {
-    tags?: string[];
+    tags?: Array<"a" | "b" | "c" | "z">;
     limit?: number;
   },
   IPet[]

@@ -151,6 +151,7 @@ export default {
               type: "array",
               items: {
                 type: "string",
+                enum: ["z", "b", "c", "a"],
               },
             },
           },

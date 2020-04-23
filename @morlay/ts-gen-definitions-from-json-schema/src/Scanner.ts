@@ -33,6 +33,10 @@ export const scan = (writer: Writer, schema: ISchemaBasic) => {
   return new Scanner(writer).scan(schema, true);
 };
 
+const canInterface = (type: Type) => {
+  return !type.composed && type.name.startsWith("{");
+};
+
 export class Scanner {
   $root: any = {};
 
@@ -145,14 +149,17 @@ export class Scanner {
     }
 
     if (ok) {
-      return Identifier.of(id)
-        .extendsWith(...types.map(String).map(Identifier.of))
-        .typed(
-          this.toType({
-            ...objectSchema,
-            $id: schema.$id,
-          }),
-        );
+      return (
+        Identifier.of(id)
+          // eslint-disable-next-line @typescript-eslint/unbound-method
+          .extendsWith(...types.map(String).map(Identifier.of))
+          .typed(
+            this.toType({
+              ...objectSchema,
+              $id: schema.$id,
+            }),
+          )
+      );
     }
 
     return null;
@@ -212,11 +219,11 @@ export class Scanner {
   };
 
   toAnyOfType = (schema: ISchemaBasic): Type => {
-    return Type.unionOf(...map(schema.anyOf!, this.toType));
+    return Type.unionOf(...map(schema.anyOf, this.toType));
   };
 
   toAllOfType = (schema: ISchemaBasic): Type => {
-    const allOf = filter(schema.allOf!, (s) => !isMetaType(normalizeSchema(s)));
+    const allOf = filter(schema.allOf, (s) => !isMetaType(normalizeSchema(s)));
     const rootSchema = omit(schema, "allOf");
 
     if (!isMetaType(rootSchema)) {
@@ -230,7 +237,7 @@ export class Scanner {
     const objectParent = isObjectType(schema);
 
     return Type.unionOf(
-      ...map(schema.oneOf!, (subSchema) => {
+      ...map(schema.oneOf, (subSchema) => {
         if (objectParent) {
           return this.toType({
             ...schema,
@@ -249,12 +256,12 @@ export class Scanner {
       return Type.of(this.writer.id(this.$root.$id));
     }
 
-    let ref$ = schema.$ref!;
+    const ref$ = schema.$ref;
 
     const id = this.writer.id(schema.$ref);
 
     if (!!id && !this.writer.has(id)) {
-      let [, keyPath] = split(ref$, "#");
+      const [, keyPath] = split(ref$, "#");
       let keyPathArr = filter(split(keyPath, "/"), (v) => v) as string[];
 
       if (keyPathArr.length === 1) {
@@ -287,10 +294,7 @@ export class Scanner {
   toArrayType = (schema: ISchemaBasic): Type => {
     if (isArray(schema.items)) {
       if (isObject(schema.additionalItems)) {
-        return Type.additionalTupleOf(
-          this.toType(schema.additionalItems as ISchemaBasic),
-          ...map(schema.items, this.toType),
-        );
+        return Type.additionalTupleOf(this.toType(schema.additionalItems), ...map(schema.items, this.toType));
       }
 
       if (schema.additionalItems) {
@@ -304,7 +308,7 @@ export class Scanner {
       return Type.tupleOf(...times(schema.maxItems).map(() => this.toType(schema.items as ISchemaBasic)));
     }
 
-    return Type.arrayOf(this.toType(normalizeSchema(schema.items as TSchema) as ISchemaBasic));
+    return Type.arrayOf(this.toType(normalizeSchema(schema.items as TSchema)));
   };
 
   toObjectType = (schema: ISchemaBasic): Type => {
@@ -371,7 +375,7 @@ export class Scanner {
         Decl.enum(
           Identifier.of($id).valueOf(
             Type.enumOf(
-              ...map(schema.enum, (value: any) =>
+              ...map(schema.enum?.sort(), (value: any) =>
                 Identifier.of(safeKey(value)).valueOf(Identifier.of(JSON.stringify(value))),
               ),
             ),
@@ -383,10 +387,6 @@ export class Scanner {
       return Type.of(`keyof typeof ${$id}`);
     }
 
-    return Type.unionOf(...map(schema.enum, (value: any) => Type.of(Value.of(value))));
+    return Type.unionOf(...map(schema.enum?.sort(), (value: any) => Type.of(Value.of(value))));
   };
 }
-
-const canInterface = (type: Type) => {
-  return !type.composed && type.name[0] === "{";
-};

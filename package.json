@@ -4,13 +4,15 @@
     "@morlay/*"
   ],
   "scripts": {
-    "build": "lerna exec monobundle",
+    "release": "lerna version --conventional-commits --no-commit-hooks",
+    "clean": "rm -rf @morlay/*/node_modules",
+    "fmt": "prettier --write @morlay/{,**/}{,**/}*.{ts,tsx,json,md}",
     "test": "jest --coverage",
-    "prepare": "yarn test"
+    "build": "lerna exec monobundle"
   },
   "devDependencies": {
     "@querycap-dev/dev-deps": "*",
-    "@querycap-dev/monobundle": "0.4.6"
+    "@querycap-dev/monobundle": "0.7.0"
   },
   "jest": {
     "testEnvironment": "jsdom",

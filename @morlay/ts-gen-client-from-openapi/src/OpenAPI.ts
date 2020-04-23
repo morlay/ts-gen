@@ -1,7 +1,7 @@
 export interface IAPIKeySecurityScheme {
   type: "apiKey";
   name: string;
-  in: "header" | "query" | "cookie";
+  in: "cookie" | "header" | "query";
   description?: string;
   [k: string]: any;
 }
@@ -79,7 +79,7 @@ export interface IEncoding {
   headers?: {
     [k: string]: THeader;
   };
-  style?: "form" | "spaceDelimited" | "pipeDelimited" | "deepObject";
+  style?: "deepObject" | "form" | "pipeDelimited" | "spaceDelimited";
   explode?: boolean;
   allowReserved?: boolean;
 }
@@ -394,12 +394,12 @@ export type TParameter = TParameterLocation & {
 export type TParameterLocation =
   | {
       in?: "path";
-      style?: "matrix" | "label" | "simple";
+      style?: "label" | "matrix" | "simple";
       required: true;
     }
   | {
       in?: "query";
-      style?: "form" | "spaceDelimited" | "pipeDelimited" | "deepObject";
+      style?: "deepObject" | "form" | "pipeDelimited" | "spaceDelimited";
     }
   | {
       in?: "header";
