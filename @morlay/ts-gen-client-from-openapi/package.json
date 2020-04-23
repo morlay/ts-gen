@@ -1,9 +1,9 @@
 {
   "name": "@morlay/ts-gen-client-from-openapi",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "dependencies": {
-    "@morlay/ts-gen-core": "^1.2.1",
-    "@morlay/ts-gen-definitions-from-json-schema": "^1.2.1"
+    "@morlay/ts-gen-core": "^1.2.2",
+    "@morlay/ts-gen-definitions-from-json-schema": "^1.2.2"
   },
   "peerDependencies": {
     "@babel/runtime-corejs3": "*",

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.2](https://github.com/morlay/ts-gen/compare/@morlay/ts-gen-client-from-openapi@1.2.1...@morlay/ts-gen-client-from-openapi@1.2.2) (2020-04-23)
+
+
+### Bug Fixes
+
+* deps cleanup ([8895ccc](https://github.com/morlay/ts-gen/commit/8895ccc837874e7934b9b176a62f701cc0b17c22))
+
+
+
+
+
 ## 1.2.1 (2020-04-23)
 
 

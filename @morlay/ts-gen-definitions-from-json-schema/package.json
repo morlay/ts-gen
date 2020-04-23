@@ -3,14 +3,14 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "1.2.1",
+  "version": "1.2.2",
   "dependencies": {
-    "@morlay/ts-gen-core": "^1.2.1"
+    "@morlay/ts-gen-core": "^1.2.2"
   },
   "peerDependencies": {
+    "@babel/runtime-corejs3": "*",
     "@types/lodash": "4.x",
-    "lodash": "4.x",
-    "@babel/runtime-corejs3": "*"
+    "lodash": "4.x"
   },
   "scripts": {
     "prepare": "monobundle"
