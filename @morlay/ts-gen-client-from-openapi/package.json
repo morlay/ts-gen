@@ -3,7 +3,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "1.2.0",
+  "version": "1.2.1",
   "files": [
     "lib/",
     "dist/"
@@ -12,8 +12,8 @@
   "author": "Morlay Null <morlay.null@gmail.com>",
   "description": "",
   "dependencies": {
-    "@morlay/ts-gen-core": "^1.2.0",
-    "@morlay/ts-gen-definitions-from-json-schema": "^1.2.0",
+    "@morlay/ts-gen-core": "1.2.1",
+    "@morlay/ts-gen-definitions-from-json-schema": "1.2.1",
     "@types/lodash": "4.14.x",
     "lodash": "4.17.x"
   },
