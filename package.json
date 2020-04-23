@@ -12,7 +12,8 @@
   },
   "devDependencies": {
     "@querycap-dev/dev-deps": "*",
-    "@querycap-dev/monobundle": "0.7.0"
+    "@querycap-dev/monobundle": "0.7.x",
+    "require-dir": "1.2.x"
   },
   "jest": {
     "testEnvironment": "jsdom",

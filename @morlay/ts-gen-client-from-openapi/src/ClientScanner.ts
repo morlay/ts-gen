@@ -1,5 +1,5 @@
 import { ISchemaBasic, Scanner } from "@morlay/ts-gen-definitions-from-json-schema";
-import { IOpenAPI, IOperation, IReference, IRequestBody, IResponse, IResponses, ISchema, TParameter } from "./OpenAPI";
+import { IOpenAPI, IOperation, IRequestBody, IResponse, IResponses, ISchema, TParameter } from "./OpenAPI";
 import { Decl, Identifier, isIdentifier, ModuleImport, toLowerCamelCase, Value, Writer } from "@morlay/ts-gen-core";
 import { assign, concat, Dictionary, filter, first, forEach, map, reduce, toUpper, values } from "lodash";
 
@@ -15,7 +15,18 @@ export const clientScanner = (writer: Writer, openAPI: IOpenAPI, opts: IClientOp
   return new ClientBuilder(writer, opts).scanClient(openAPI);
 };
 
-type TSchemaOrReference = ISchema | IReference;
+export const mayToId = (id: string): string => (isIdentifier(id) ? id : toLowerCamelCase(id));
+
+export const mayToAliasID = (id: string) => mayToId(`p-${id}`);
+
+export const urlToTemplate = (url = "") =>
+  `\`${url.replace(/\{([^}]+)\}/g, (_, $1): string => {
+    return `\${${mayToAliasID($1)}}`;
+  })}\``;
+
+export const filterParametersIn = (position: string) => {
+  return (parameters: any[]): any[] => filter(parameters, (parameter: any): boolean => parameter.in === position);
+};
 
 class ClientBuilder extends Scanner {
   constructor(writer: Writer, protected opts: IClientOpts) {
@@ -56,7 +67,7 @@ class ClientBuilder extends Scanner {
             in: "body",
             name: "body",
             required: true,
-            schema: mediaType.schema as TSchemaOrReference,
+            schema: mediaType.schema,
           } as any);
 
           members.push(Identifier.of("data").valueOf(Identifier.of(mayToAliasID("body"))));
@@ -100,9 +111,7 @@ class ClientBuilder extends Scanner {
     let callbackFunc = Identifier.of("").operatorsWith(": ", " => ");
 
     if (parameters.length) {
-      callbackFunc = callbackFunc.paramsWith(
-        Identifier.of(String(this.createParameterObject(parameters as TParameter[]))),
-      );
+      callbackFunc = callbackFunc.paramsWith(Identifier.of(String(this.createParameterObject(parameters))));
     } else {
       callbackFunc = callbackFunc.paramsWith(Identifier.of(""));
     }
@@ -113,7 +122,7 @@ class ClientBuilder extends Scanner {
 
     return Identifier.of(this.opts.clientLib.method)
       .generics(
-        parameters.length ? this.toType(this.getReqParamSchema(parameters as TParameter[])) : Identifier.of("void"),
+        parameters.length ? this.toType(this.getReqParamSchema(parameters)) : Identifier.of("void"),
         this.toType(respBodySchema as ISchemaBasic),
       )
       .paramsWith(Identifier.of(String(Value.of(operationUiq))), callbackFunc);
@@ -122,7 +131,7 @@ class ClientBuilder extends Scanner {
   createParameterObject = (parameters: TParameter[]) =>
     Value.objectOf(
       ...map(parameters, (parameter) => {
-        if (!!parameter.value) {
+        if (parameter.value) {
           return Identifier.of(String(Value.of(parameter.name))).valueOf(Value.of(parameter.value));
         }
         const propName = mayToId(parameter.name || "");
@@ -177,7 +186,7 @@ class ClientBuilder extends Scanner {
       if (code >= 200 && code < 300 && resp.content) {
         const mediaType = first(values(resp.content));
         if (mediaType && mediaType.schema) {
-          bodySchema = mediaType.schema!;
+          bodySchema = mediaType.schema;
         }
       }
     });
@@ -191,15 +200,3 @@ class ClientBuilder extends Scanner {
     );
   }
 }
-
-export const urlToTemplate = (url: string = "") =>
-  `\`${url.replace(/\{([^}]+)\}/g, (_, $1): string => {
-    return `\${${mayToAliasID($1)}}`;
-  })}\``;
-
-export const filterParametersIn = (position: string) => {
-  return (parameters: any[]): any[] => filter(parameters, (parameter: any): boolean => parameter.in === position);
-};
-
-export const mayToId = (id: string): string => (isIdentifier(id) ? id : toLowerCamelCase(id));
-export const mayToAliasID = (id: string) => mayToId(`p-${id}`);

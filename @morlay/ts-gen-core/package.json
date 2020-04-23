@@ -1,26 +1,20 @@
 {
   "name": "@morlay/ts-gen-core",
+  "version": "1.2.1",
+  "peerDependencies": {
+    "@babel/runtime-corejs3": "*",
+    "@types/lodash": "4.x",
+    "lodash": "4.x"
+  },
   "publishConfig": {
     "access": "public"
-  },
-  "version": "1.2.1",
-  "files": [
-    "lib/",
-    "dist/"
-  ],
-  "license": "WTFPL",
-  "author": "Morlay Null <morlay.null@gmail.com>",
-  "description": "",
-  "dependencies": {
-    "@types/lodash": "4.14.x",
-    "lodash": "4.17.x"
-  },
-  "peerDependencies": {
-    "@babel/runtime-corejs3": "*"
   },
   "scripts": {
     "prepare": "monobundle"
   },
+  "files": [
+    "dist/"
+  ],
   "types": "dist/index.d.ts",
   "main": "dist/index.js",
   "module": "dist/index.es.js"
