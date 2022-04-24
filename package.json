@@ -12,7 +12,7 @@
   },
   "devDependencies": {
     "@querycap-dev/dev-deps": "*",
-    "@querycap-dev/monobundle": "0.7.x",
+    "@querycap-dev/monobundle": "0.12.x",
     "require-dir": "1.2.x"
   },
   "jest": {
